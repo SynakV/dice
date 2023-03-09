@@ -1,0 +1,15 @@
+@import '../Music/Music.scss', '../Main/Main.scss';
+
+.layout {
+    .background {
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        transform: scaleX(-1);
+        background-size: cover;
+        background-image: url('../../../public/images/striga.jpeg');
+    }
+}

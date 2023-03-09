@@ -1,0 +1,113 @@
+.music {
+    display: flex;
+    justify-content: center;
+    top: 15px;
+    right: 0;
+    width: 100px;
+    height: 55px;
+    position: absolute;
+    z-index: 11;
+
+    .wave {
+        left: 50%;
+        top: -23px;
+        width: 100px;
+        height: 100px;
+        transition: 1s;
+        position: absolute;
+        transform: translateX(-50%);
+
+        &.play {
+            opacity: 1;
+        }
+
+        &.pause {
+            opacity: 0;
+        }
+    }
+
+    .amulet {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    #player {
+        display: none;
+    }
+}
+
+.overlay {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: black;
+    transition: 1s opacity;
+
+    &.visible {
+        z-index: 10;
+        opacity: 0.7;
+    }
+
+    &.hidden {
+        opacity: 0;
+        z-index: -2;
+    }
+
+    .message {
+        top: 90px;
+        right: 25px;
+        padding: 10px;
+        max-width: 300px;
+        position: absolute;
+        border-radius: 15px;
+
+        .text {
+            color: rgba(229, 240, 235, 0.85);
+        }
+
+        .arrow {
+            position: absolute;
+            right: 20px;
+            border: solid rgba(229, 240, 235, 0.7);
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+            animation: backForward 2s infinite ease-out;
+
+            &.right {
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+            }
+              
+            &.left {
+                transform: rotate(135deg);
+                -webkit-transform: rotate(135deg);
+            }
+            
+            &.up {
+                transform: rotate(-135deg);
+                -webkit-transform: rotate(-135deg);
+            }
+            
+            &.down {
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+            }
+        }
+    }
+}
+
+@keyframes backForward {
+    0% {
+        top: -5px;
+    }
+    50% {
+        top: -12px;
+    }
+    100% {
+        top: -5px;
+    }
+}

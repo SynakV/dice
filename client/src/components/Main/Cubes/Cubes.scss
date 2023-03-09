@@ -1,0 +1,20 @@
+@import './Cube/Cube.scss';
+
+.cubes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .cubes {
+        display: flex;
+        gap: 0 40px;
+        height: 80px;
+    }
+
+    .ranking-text {
+        cursor: pointer;
+        font-size: 40px;
+        margin-top: 60px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
