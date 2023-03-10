@@ -6,11 +6,13 @@
     left: 50%;
     width: 50%;
     height: 40%;
+    gap: 40px 0;
+    display: flex;
     border-radius: 15px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

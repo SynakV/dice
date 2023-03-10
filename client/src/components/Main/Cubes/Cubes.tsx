@@ -1,27 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Cube } from "@components/Main/Cubes/Cube/Cube";
-import { getRandomIntsFromInterval } from "@src/utils/helpers/randomizer.helper";
 import { getRankingResult } from "@src/utils/helpers/ranking/ranking.helper";
+import { getRandomIntsFromInterval } from "@src/utils/helpers/randomizer.helper";
 
-export const Cubes = () => {
+interface Props {
+  testCubes?: number[];
+  setRankingResult: (result: any) => void;
+}
+
+export const Cubes: FC<Props> = ({ testCubes, setRankingResult }) => {
   const [cubes, setCubes] = useState<number[]>([]);
+  const [ranking, setRanking] = useState<any>({});
 
-  useEffect(() => {
-    handleSetRandomCubes();
-  }, []);
+  // useEffect(() => {
+  //   handleSetRandomCubes();
+  // }, []);
 
   const handleSetRandomCubes = () => {
     setCubes(getRandomIntsFromInterval(5, [1, 6]));
   };
 
-  const ranking = getRankingResult(cubes);
+  // useEffect(() => {
+  //   if (cubes.length) {
+  //     const ranking = getRankingResult(cubes);
 
-  const text = ranking.value.text;
+  //     setRanking(ranking);
+  //     setRankingResult(ranking);
+  //   }
+  // }, [cubes]);
+
+  useEffect(() => {
+    if (testCubes?.length) {
+      const ranking = getRankingResult(testCubes);
+
+      setRanking(ranking);
+      setRankingResult(ranking);
+    }
+  }, [testCubes]);
+
+  const text = ranking?.value?.text;
 
   return (
     <div className="cubes-container">
       <div className="cubes">
-        {cubes.map((cube, index) => (
+        {(testCubes || cubes).map((cube, index) => (
           <Cube key={index} value={cube} />
         ))}
       </div>
