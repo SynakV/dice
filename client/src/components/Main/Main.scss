@@ -1,16 +1,17 @@
-@import './Cubes/Cubes.scss';
+@import './Desk/Desk.scss', './OpponentSelector/OpponentSelector.scss';
 
 .main {
-    position: absolute;
     top: 50%;
     left: 50%;
-    width: 50%;
-    height: 40%;
     gap: 40px 0;
+    height: auto;
     display: flex;
+    max-width: 50%;
+    position: absolute;
     border-radius: 15px;
+    padding: 50px 150px;
     align-items: center;
-    flex-direction: column;
+    min-width: fit-content;
     justify-content: center;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);

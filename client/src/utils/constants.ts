@@ -58,3 +58,5 @@ export const RANKING_OF_HANDS: RankingOfHandsType = {
     function: isFiveOfAKind,
   },
 };
+
+export const MAX_WINS = 2;

@@ -16,6 +16,29 @@ export enum USER {
   SECOND,
 }
 
+export enum OPPONENT {
+  COMPUTER = "Computer",
+  ANOTHER_USER = "Another user",
+}
+
+export enum ROUND_STAGE {
+  START,
+  END,
+}
+
+export enum ROUND {
+  FIRST,
+  SECOND,
+  THIRD,
+}
+
+export type RoundType = {
+  value?: ROUND;
+  stage?: ROUND_STAGE;
+  winner?: WinnerType;
+  isCompleted?: boolean;
+};
+
 export type RankingOfHandsType = {
   [key in RANKING_OF_HANDS_KEYS]: RankingOfTypeValueType;
 };
@@ -39,9 +62,25 @@ export type RankingResultType = {
   result: StructuredType;
 };
 
+export type RankingResultWithStageAndUserType = RankingResultType & {
+  stage?: ROUND_STAGE;
+  user: Exclude<USER, USER.NOBODY>;
+};
+
 export type StructuredType = {
   appeared: AppearedType;
   rest: AppearedType;
+};
+
+export type WinnerType = {
+  [USER.FIRST]?: USER;
+  [USER.SECOND]?: USER;
+  value?: ROUND | null;
+};
+
+export type DiceType = {
+  [USER.FIRST]: RankingResultWithStageAndUserType;
+  [USER.SECOND]: RankingResultWithStageAndUserType;
 };
 
 export type WinnerResultValueType = USER.NOBODY | USER.FIRST | USER.SECOND;

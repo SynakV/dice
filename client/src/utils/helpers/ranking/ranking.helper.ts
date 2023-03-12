@@ -1,5 +1,8 @@
 import {
   USER,
+  DiceType,
+  WinnerType,
+  StructuredType,
   RankingResultType,
   AppearesAndRestsType,
   RANKING_OF_HANDS_KEYS,
@@ -8,7 +11,7 @@ import {
   getHighestRest,
   getAppearedNumbers,
 } from "@src/utils/helpers/ranking/calculations.helper";
-import { RANKING_OF_HANDS } from "@utils/constants";
+import { MAX_WINS, RANKING_OF_HANDS } from "@utils/constants";
 
 export const getRankingResult = (numbers: number[]): RankingResultType => {
   const appeared = getAppearedNumbers(numbers);
@@ -16,7 +19,7 @@ export const getRankingResult = (numbers: number[]): RankingResultType => {
   let ranking: any;
 
   Object.entries(RANKING_OF_HANDS).find(([key, value]) => {
-    const result = value.function(appeared);
+    const result: StructuredType | false = value.function(appeared);
 
     if (result) {
       return (ranking = {
@@ -36,45 +39,52 @@ export const getRankingResult = (numbers: number[]): RankingResultType => {
   );
 };
 
-export const getWinner = (
-  cubes1: RankingResultType,
-  cubes2: RankingResultType
-) => {
-  const value1 = cubes1.value.value;
-  const value2 = cubes2.value.value;
+export const getRoundWinner = (dice: DiceType) => {
+  const value = {
+    [USER.FIRST]: dice[USER.FIRST].value.value,
+    [USER.SECOND]: dice[USER.SECOND].value.value,
+  };
 
-  if (value1 === value2) {
+  if (value[USER.FIRST] === value[USER.SECOND]) {
     const appeares = {
-      [USER.FIRST]: cubes1.result?.appeared,
-      [USER.SECOND]: cubes2.result?.appeared,
+      [USER.FIRST]: dice[USER.FIRST].result?.appeared,
+      [USER.SECOND]: dice[USER.SECOND].result?.appeared,
     };
 
     const rests = {
-      [USER.FIRST]: cubes1.result?.rest,
-      [USER.SECOND]: cubes2.result?.rest,
+      [USER.FIRST]: dice[USER.FIRST].result?.rest,
+      [USER.SECOND]: dice[USER.SECOND].result?.rest,
     };
 
     if (
-      cubes1.key === RANKING_OF_HANDS_KEYS.PAIR ||
-      cubes1.key === RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND ||
-      cubes1.key === RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND ||
-      cubes1.key === RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND
+      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.PAIR ||
+      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND ||
+      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND ||
+      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND
     ) {
       return getOfAKindWinner(appeares, rests);
     }
 
-    if (cubes1.key === RANKING_OF_HANDS_KEYS.TWO_PAIRS) {
+    if (dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.TWO_PAIRS) {
       return getTwoPairsWinner(appeares, rests);
     }
 
-    if (cubes1.key === RANKING_OF_HANDS_KEYS.FULL_HOUSE) {
+    if (dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FULL_HOUSE) {
       return getFullHouseWinner(appeares);
     }
 
     return USER.NOBODY;
   }
 
-  return value1 > value2 ? USER.FIRST : USER.SECOND;
+  return value[USER.FIRST] > value[USER.SECOND] ? USER.FIRST : USER.SECOND;
+};
+
+export const getGameWinner = (winner: WinnerType) => {
+  if (winner?.[USER.FIRST] === MAX_WINS || winner?.[USER.SECOND] === MAX_WINS) {
+    return Object.entries(winner).find((winner) => winner[1] === MAX_WINS)?.[0];
+  } else {
+    return 0;
+  }
 };
 
 const getFullHouseWinner = (appeares: AppearesAndRestsType) => {
@@ -103,16 +113,13 @@ const getTwoPairsWinner = <T extends AppearesAndRestsType>(
   appeares: T,
   rests: T
 ) => {
-  const hightAmongAppeared = getHighestRest(
-    appeares[USER.FIRST],
-    appeares[USER.SECOND]
-  );
+  const hightAmongAppeared = getHighestRest(appeares);
 
   if (hightAmongAppeared) {
     return hightAmongAppeared;
   }
 
-  return getHighestRest(rests[USER.FIRST], rests[USER.SECOND]);
+  return getHighestRest(rests);
 };
 
 const getOfAKindWinner = <T extends AppearesAndRestsType>(
@@ -125,7 +132,7 @@ const getOfAKindWinner = <T extends AppearesAndRestsType>(
   };
 
   if (firstValues[USER.FIRST] === firstValues[USER.SECOND]) {
-    return getHighestRest(rests[USER.FIRST], rests[USER.SECOND]);
+    return getHighestRest(rests);
   }
 
   return firstValues[USER.FIRST] > firstValues[USER.SECOND]

@@ -108,24 +108,26 @@ export const isFiveOfAKind = (appeared: AppearedType) => {
   return isFound ? quintetOccurrences : false;
 };
 
-export const getHighestRest = <T extends [key: string, value: number][]>(
-  rest1: T,
-  rest2: T
-): WinnerResultValueType => {
-  const length = rest1.length;
+export const getHighestRest = <
+  T extends [key: string, value: number][]
+>(rests: {
+  [USER.FIRST]: T;
+  [USER.SECOND]: T;
+}): WinnerResultValueType => {
+  const length = rests[USER.FIRST].length;
 
   let maxes = {
     [USER.FIRST]: {
       index: 0,
-      value: rest1[0]?.[1] || 0,
+      value: rests[USER.FIRST][0]?.[1] || 0,
     },
     [USER.SECOND]: {
       index: 0,
-      value: rest2[0]?.[1] || 0,
+      value: rests[USER.SECOND][0]?.[1] || 0,
     },
   };
 
-  return calculateHighestRest({ rest1, rest2 }, maxes, length);
+  return calculateHighestRest(rests, maxes, length);
 };
 
 const calculateHighestRest = <
@@ -141,22 +143,21 @@ const calculateHighestRest = <
     };
   }
 >(
-  rests: { rest1: T; rest2: T },
+  rests: { [USER.FIRST]: T; [USER.SECOND]: T },
   maxes: U,
   length: number
 ) => {
-  const { rest1, rest2 } = rests;
   let result: WinnerResultValueType = 0;
 
   for (let i = 0; i < length; i++) {
-    for (let j = 0; j < rest1.length; j++) {
-      if (+rest1[j][0] > maxes[USER.FIRST].value) {
+    for (let j = 0; j < rests[USER.FIRST].length; j++) {
+      if (+rests[USER.FIRST][j][0] > maxes[USER.FIRST].value) {
         maxes[USER.FIRST].index = j;
-        maxes[USER.FIRST].value = +rest1[j][0];
+        maxes[USER.FIRST].value = +rests[USER.FIRST][j][0];
       }
-      if (+rest2[j][0] > maxes[USER.SECOND].value) {
+      if (+rests[USER.SECOND][j][0] > maxes[USER.SECOND].value) {
         maxes[USER.SECOND].index = j;
-        maxes[USER.SECOND].value = +rest2[j][0];
+        maxes[USER.SECOND].value = +rests[USER.SECOND][j][0];
       }
     }
 
@@ -168,8 +169,8 @@ const calculateHighestRest = <
       break;
     }
 
-    rest1.splice(maxes[USER.FIRST].index, 1);
-    rest2.splice(maxes[USER.SECOND].index, 1);
+    rests[USER.FIRST].splice(maxes[USER.FIRST].index, 1);
+    rests[USER.SECOND].splice(maxes[USER.SECOND].index, 1);
 
     maxes[USER.FIRST].value = 0;
     maxes[USER.SECOND].value = 0;
