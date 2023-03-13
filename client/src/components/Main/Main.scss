@@ -1,19 +1,16 @@
-@import './Desk/Desk.scss', './OpponentSelector/OpponentSelector.scss';
+@import './Game/Game.scss', './Selector/Selector.scss';
 
 .main {
-    top: 50%;
-    left: 50%;
     gap: 40px 0;
     height: auto;
     display: flex;
+    padding: 50px;
     max-width: 50%;
     position: absolute;
     border-radius: 15px;
-    padding: 50px 150px;
     align-items: center;
     min-width: fit-content;
     justify-content: center;
-    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5);
 }

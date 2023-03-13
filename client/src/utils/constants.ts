@@ -59,4 +59,11 @@ export const RANKING_OF_HANDS: RankingOfHandsType = {
   },
 };
 
-export const MAX_WINS = 2;
+export const DICE = {
+  COUNT: 5,
+  MAX_WINS: 2,
+  RANGE: {
+    MIN: 1,
+    MAX: 6,
+  },
+};

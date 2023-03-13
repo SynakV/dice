@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { OPPONENT } from "@src/utils/types";
-import { Desk } from "@components/Main/Desk/Desk";
-import { OpponentSelector } from "@components/Main/OpponentSelector/OpponentSelector";
+import { Game } from "@components/Main/Game/Game";
+import { Selector } from "@components/Main/Selector/Selector";
 
 export const Main = () => {
   const [selectedOpponent, setSelectedOpponent] = useState<OPPONENT | null>(
@@ -11,9 +11,9 @@ export const Main = () => {
   return (
     <div className="main">
       {selectedOpponent ? (
-        <OpponentSelector setSelectedOpponent={setSelectedOpponent} />
+        <Selector setSelectedOpponent={setSelectedOpponent} />
       ) : (
-        <Desk />
+        <Game />
       )}
     </div>
   );

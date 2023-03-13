@@ -62,7 +62,8 @@ export type RankingResultType = {
   result: StructuredType;
 };
 
-export type RankingResultWithStageAndUserType = RankingResultType & {
+export type RankingResultWithInfoType = RankingResultType & {
+  cubes?: number[];
   stage?: ROUND_STAGE;
   user: Exclude<USER, USER.NOBODY>;
 };
@@ -75,12 +76,26 @@ export type StructuredType = {
 export type WinnerType = {
   [USER.FIRST]?: USER;
   [USER.SECOND]?: USER;
-  value?: ROUND | null;
+  current?: WinnerResultValueType;
 };
 
 export type DiceType = {
-  [USER.FIRST]: RankingResultWithStageAndUserType;
-  [USER.SECOND]: RankingResultWithStageAndUserType;
+  [USER.FIRST]: RankingResultWithInfoType;
+  [USER.SECOND]: RankingResultWithInfoType;
 };
 
 export type WinnerResultValueType = USER.NOBODY | USER.FIRST | USER.SECOND;
+
+export type ConclusionType = {
+  round?: RoundType | null;
+  result?: DiceType | null;
+  history?: HistoryType | null;
+};
+
+export type HistoryType = {
+  [key in ROUND]?: {
+    [key in ROUND_STAGE]?: {
+      [key in USER]: RankingResultWithInfoType;
+    };
+  };
+};

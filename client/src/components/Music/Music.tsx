@@ -52,6 +52,7 @@ export const Music = () => {
       <div className="music">
         <WaveSvg className={`wave ${isPlaying ? "play" : "pause"}`} />
         <Image
+          priority
           width={100}
           height={55}
           alt="amulet"

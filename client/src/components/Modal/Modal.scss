@@ -1,0 +1,30 @@
+.modal {
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    transition: 0.5s;
+    background: rgba(0, 0, 0, 0.5);
+
+    &__window {
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        width: 500px;
+        display: flex;
+        min-height: 250px;
+        position: absolute;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px 20px 55px;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    &__title {
+        font-size: 30px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+}

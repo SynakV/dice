@@ -4,6 +4,7 @@ import {
   StructuredType,
   WinnerResultValueType,
 } from "@src/utils/types";
+import { DICE } from "@src/utils/constants";
 
 export const getAppearedNumbers = (numbers: number[]) => {
   const appeared: { [key: number]: number } = {};
@@ -19,7 +20,7 @@ export const getAppearedNumbers = (numbers: number[]) => {
 };
 
 const getHighStraight = (appeared: [string, number][], min: number) => {
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < DICE.COUNT; i++) {
     if (appeared[i][1] !== 1 || +appeared[i][0] !== min + i) {
       return false;
     }

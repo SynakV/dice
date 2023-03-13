@@ -1,7 +1,7 @@
 import {
   USER,
   DiceType,
-  WinnerType,
+  RoundType,
   StructuredType,
   RankingResultType,
   AppearesAndRestsType,
@@ -11,7 +11,7 @@ import {
   getHighestRest,
   getAppearedNumbers,
 } from "@src/utils/helpers/ranking/calculations.helper";
-import { MAX_WINS, RANKING_OF_HANDS } from "@utils/constants";
+import { DICE, RANKING_OF_HANDS } from "@utils/constants";
 
 export const getRankingResult = (numbers: number[]): RankingResultType => {
   const appeared = getAppearedNumbers(numbers);
@@ -79,12 +79,21 @@ export const getRoundWinner = (dice: DiceType) => {
   return value[USER.FIRST] > value[USER.SECOND] ? USER.FIRST : USER.SECOND;
 };
 
-export const getGameWinner = (winner: WinnerType) => {
-  if (winner?.[USER.FIRST] === MAX_WINS || winner?.[USER.SECOND] === MAX_WINS) {
-    return Object.entries(winner).find((winner) => winner[1] === MAX_WINS)?.[0];
-  } else {
-    return 0;
+export const getGameWinner = (round: RoundType) => {
+  if (
+    round.winner?.[USER.FIRST] === DICE.MAX_WINS ||
+    round.winner?.[USER.SECOND] === DICE.MAX_WINS
+  ) {
+    if (round.winner?.[USER.FIRST] === round.winner?.[USER.SECOND]) {
+      return USER.NOBODY;
+    }
+
+    return (round.winner[USER.FIRST] || 0) > (round.winner[USER.SECOND] || 0)
+      ? USER.FIRST
+      : USER.SECOND;
   }
+
+  return false;
 };
 
 const getFullHouseWinner = (appeares: AppearesAndRestsType) => {

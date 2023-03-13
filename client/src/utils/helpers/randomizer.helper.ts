@@ -1,6 +1,8 @@
+import { DICE } from "@utils/constants";
+
 export const getRandomIntsFromInterval = (
-  randomNumbersCount: number,
-  [min, max]: [number, number]
+  randomNumbersCount: number = DICE.COUNT,
+  [min, max]: [number, number] = [DICE.RANGE.MIN, DICE.RANGE.MAX]
 ) => {
   const randomNumbers = [];
 
@@ -24,5 +26,7 @@ export const permute = (arr: number[], start = 0, result: number[][] = []) => {
   return result;
 };
 
-const getRandomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+export const getRandomInt = (
+  min: number = DICE.RANGE.MIN,
+  max: number = DICE.RANGE.MAX
+) => Math.floor(Math.random() * (max - min + 1) + min);

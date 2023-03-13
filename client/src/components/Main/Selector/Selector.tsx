@@ -5,15 +5,15 @@ interface Props {
   setSelectedOpponent: (selectedOpponent: OPPONENT | null) => void;
 }
 
-export const OpponentSelector: FC<Props> = ({ setSelectedOpponent }) => {
+export const Selector: FC<Props> = ({ setSelectedOpponent }) => {
   return (
-    <div className="opponent-selector">
-      <span className="opponent-selector__head-text">Select opponent</span>
-      <div className="opponent-selector__selector">
+    <div className="selector">
+      <span className="selector__head-text">Select opponent</span>
+      <div className="selector__selector">
         {Object.entries(OPPONENT).map(([_, value]) => (
           <span
             key={value}
-            className="opponent-selector__select-option"
+            className="selector__option"
             onClick={setSelectedOpponent.bind(this, value)}
           >
             {value}
