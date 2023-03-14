@@ -14,48 +14,57 @@ import {
 export const RANKING_OF_HANDS: RankingOfHandsType = {
   [RANKING_OF_HANDS_KEYS.NOTHING]: {
     value: 0,
-    text: "Nothing",
+    name: "Nothing",
     function: isNothing,
+    description: "five mismatched dice forming no sequence longer than four.",
   },
   [RANKING_OF_HANDS_KEYS.PAIR]: {
     value: 1,
-    text: "Pair",
+    name: "Pair",
     function: isPair,
+    description: "two dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.TWO_PAIRS]: {
     value: 2,
-    text: "Two pairs",
+    name: "Two pairs",
     function: isTwoPairs,
+    description: "two pairs of dice, each showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND]: {
     value: 3,
-    text: "Three of a kind",
+    name: "Three of a kind",
     function: isThreeOfAKind,
+    description: "three dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.FIVE_HIGH_STRAIGHT]: {
     value: 4,
-    text: "Five high straight",
+    name: "Five high straight",
     function: isFiveHighStraight,
+    description: "dice showing values from 1 through 5, inclusive.",
   },
   [RANKING_OF_HANDS_KEYS.SIX_HIGH_STRAIGHT]: {
     value: 5,
-    text: "Six high straight",
+    name: "Six high straight",
     function: isSixHighStraight,
+    description: "dice showing values from 2 through 6, inclusive.",
   },
   [RANKING_OF_HANDS_KEYS.FULL_HOUSE]: {
     value: 6,
-    text: "Full house",
+    name: "Full house",
     function: isFullHouse,
+    description: "Pair of one value and Three-of-a-Kind of another.",
   },
   [RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND]: {
     value: 7,
-    text: "Four of a kind",
+    name: "Four of a kind",
     function: isFourOfAKind,
+    description: "four dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND]: {
     value: 8,
-    text: "Five of a kind",
+    name: "Five of a kind",
     function: isFiveOfAKind,
+    description: "all five dice showing the same value.",
   },
 };
 

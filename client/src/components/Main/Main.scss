@@ -14,3 +14,51 @@
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5);
 }
+
+@media (min-width: 1200px) or (max-width: 1400px) {
+    .main {
+        transform: scale(1.5);
+    }
+}
+
+@media (max-width: 1200px) {
+    .main {
+        transform: scale(1.2);
+    }
+}
+
+@media (max-width: 1000px) {
+    .main {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 800px) {
+    .main {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 650px) {
+    .main {
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 500px) {
+    .main {
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 390px) {
+    .main {
+        transform: scale(0.4);
+    }
+}
+
+@media (max-width: 320px) {
+    .main {
+        transform: scale(0.3);
+    }
+}

@@ -1,0 +1,29 @@
+.music {
+    &__wave {
+        left: 50%;
+        top: -23px;
+        width: 100px;
+        height: 100px;
+        transition: 1s;
+        position: absolute;
+        transform: translateX(-50%);
+
+        &.play {
+            opacity: 1;
+        }
+
+        &.pause {
+            opacity: 0;
+        }
+    }
+
+    &__icon {
+        top: 0;
+        left: 0;
+        position: absolute;
+    }
+
+    #player {
+        display: none;
+    }
+}

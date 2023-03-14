@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { Main } from "@components/Main/Main";
-import { Music } from "@src/components/Music/Music";
+import { Menu } from "@components/Layout/Menu/Menu";
 
 export const Layout: FC = () => {
   return (
     <div className="layout">
-      <div className="background" />
-      <Music />
+      <div className="layout__background" />
+      <Menu />
       <Main />
     </div>
   );

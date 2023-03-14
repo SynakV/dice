@@ -1,0 +1,35 @@
+.rules {
+    display: flex;
+    margin-top: 80px;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 25px 20px 20px;
+    color: rgba(255, 255, 255, 0.5);
+    
+    &__title {
+        font-size: 50px;
+    }
+
+    &__subtitle {
+        font-size: 30px;
+    }
+
+    &__content {
+        max-width: 700px;
+    }
+
+    &__list {
+        margin: 20px 0;
+
+        & > * {
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+    }
+
+    &__paragraph {
+        line-height: 25px;
+        padding-left: 25px;
+        text-align: justify;
+    }
+}

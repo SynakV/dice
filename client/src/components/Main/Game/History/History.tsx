@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from "react";
-import { HistoryType, USER } from "@src/utils/types";
 import { Modal } from "@src/components/Modal/Modal";
+import { HistoryType, USER } from "@src/utils/types";
 
 interface Props {
   isOpen: boolean;
@@ -10,7 +10,7 @@ interface Props {
 
 export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
   return (
-    <Modal title="History" isOpen={isOpen}>
+    <Modal className="history" title="History" isOpen={isOpen}>
       {history ? (
         <ul>
           {Object.entries(history).map(([round, result]) => {
@@ -24,9 +24,9 @@ export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
                         <li>Stage: {+stage + 1}</li>
                         <ul>
                           <li>
-                            {user?.[USER.FIRST].value.text} [
+                            {user?.[USER.FIRST].value.name} [
                             {user?.[USER.FIRST].cubes?.toString()}] -{" "}
-                            {user?.[USER.SECOND].value.text} [
+                            {user?.[USER.SECOND].value.name} [
                             {user?.[USER.SECOND].cubes?.toString()}]
                           </li>
                         </ul>

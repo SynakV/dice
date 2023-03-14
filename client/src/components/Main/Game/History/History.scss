@@ -1,4 +1,14 @@
 .history {
+    ul {
+        color: white;
+        text-align: left;
+        list-style-type: none;
+        align-self: self-start;
+        margin-block: 8px;
+        padding-inline-start: 20px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
     &__no-data {
         top: 50%;
         left: 50%;
@@ -21,14 +31,4 @@
         transform: translateX(-50%);
         color: rgba(255, 255, 255, 0.5);
     }
-}
-
-ul {
-    color: white;
-    text-align: left;
-    list-style-type: none;
-    align-self: self-start;
-    margin-block: 8px;
-    padding-inline-start: 20px;
-    color: rgba(255, 255, 255, 0.5);
 }

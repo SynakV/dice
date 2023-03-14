@@ -98,7 +98,7 @@ export const Cubes: FC<Props> = ({
     }
   }, [forceRefresh]);
 
-  const text = ranking?.value?.text || <>&nbsp;</>;
+  const text = ranking?.value?.name || <>&nbsp;</>;
 
   const isRoundStart = stage !== ROUND_STAGE.START;
 

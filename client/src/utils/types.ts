@@ -44,8 +44,9 @@ export type RankingOfHandsType = {
 };
 
 export type RankingOfTypeValueType = {
+  name: string;
   value: number;
-  text: string;
+  description: string;
   function: (numbers: AppearedType) => AppearedType | false | any;
 };
 

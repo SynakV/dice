@@ -1,4 +1,4 @@
-@import '../Music/Music.scss', '../Main/Main.scss', '../Modal/Modal.scss';
+@import '../Main/Main.scss', './Menu/Menu.scss';
 
 .layout {
     width: 100vw;
@@ -7,7 +7,7 @@
     align-items: center;
     justify-content: center;
 
-    .background {
+    &__background {
         top: 0;
         left: 0;
         z-index: -1;
