@@ -7,7 +7,7 @@
     position: fixed;
     animation: fadeIn 0.3s;
     transition: opacity 0.5s;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
 
     &.closing {
         opacity: 0;
@@ -26,8 +26,6 @@
         flex-direction: column;
         padding: 20px 20px 55px;
         transform: translate(-50%, -50%);
-        background-color: rgba(0, 0, 0, 0.5);
-        box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.5);
     }
 
     &__title {

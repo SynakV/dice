@@ -13,6 +13,7 @@ import { getRoundWinner } from "@src/utils/helpers/ranking/ranking.helper";
 interface Props {
   isGameEnd: boolean;
   toggleHistory: () => void;
+  setIsGameEnd: (isGameEnd: boolean) => void;
   setConclusion: (result: ConclusionType) => void;
   setHistory: (history: DiceType | null, round: RoundType | null) => void;
 }
@@ -20,6 +21,7 @@ interface Props {
 export const Desk: FC<Props> = ({
   isGameEnd,
   setHistory,
+  setIsGameEnd,
   setConclusion,
   toggleHistory,
 }) => {
@@ -57,8 +59,9 @@ export const Desk: FC<Props> = ({
               }),
         },
       }));
-      setConclusion({ result });
+
       setResult(null);
+      setConclusion({ result });
     }
   }, [result, round]);
 
@@ -83,6 +86,7 @@ export const Desk: FC<Props> = ({
       setRound(null);
       setResult(null);
       setForceRefresh({});
+      setIsGameEnd(false);
       setHistory(null, null);
     }
   }, [isGameEnd]);

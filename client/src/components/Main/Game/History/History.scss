@@ -2,10 +2,12 @@
     ul {
         color: white;
         text-align: left;
+        overflow-y: auto;
+        margin-block: 8px;
         list-style-type: none;
         align-self: self-start;
-        margin-block: 8px;
         padding-inline-start: 20px;
+        max-height: calc(40vh + 50px);
         color: rgba(255, 255, 255, 0.5);
     }
     

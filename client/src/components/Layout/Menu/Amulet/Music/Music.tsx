@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React, { useState } from "react";
 import { WaveSvg } from "./WaveSvg";
+import React, { useState } from "react";
 
 const PLAYER = "player";
 

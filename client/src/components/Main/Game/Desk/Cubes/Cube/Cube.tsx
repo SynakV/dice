@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { playAudio } from "@src/utils/helpers/audio.helper";
 
 interface Props {
   value: number;
@@ -14,11 +15,8 @@ export const Cube: FC<Props> = ({
   setDieForReRoll,
 }) => {
   const handleClick = () => {
-    const audio = new Audio("/music/dog.mp3");
-    audio.volume = 0.02;
-    audio.play();
-
     setDieForReRoll(value);
+    playAudio("selectDieForReroll");
   };
 
   return (

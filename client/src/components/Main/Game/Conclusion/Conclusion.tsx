@@ -1,5 +1,6 @@
 import { Modal } from "@src/components/Modal/Modal";
 import React, { FC, useEffect, useState } from "react";
+import { playAudio } from "@src/utils/helpers/audio.helper";
 import { ConclusionType, ROUND_STAGE, USER } from "@src/utils/types";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
@@ -9,11 +10,11 @@ interface Props {
 }
 
 export const Conclusion: FC<Props> = ({
-  conclusion: { result, round },
   setIsClearOnEnd,
+  conclusion: { result, round },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isGameEnd, setIsGameEnd] = useState(false);
+  const [isLastRound, setIsLastRound] = useState(false);
 
   const getTitle = () => {
     if (round?.winner?.current === USER.FIRST) {
@@ -27,14 +28,36 @@ export const Conclusion: FC<Props> = ({
     if (round) {
       const gameWinner = getGameWinner(round);
 
-      setIsGameEnd(gameWinner !== false);
+      if (gameWinner !== false) {
+        setIsLastRound(true);
+        playWinnerSound("game");
+      } else {
+        setIsLastRound(false);
+        playWinnerSound("round");
+      }
+
       setIsOpen(round?.stage === ROUND_STAGE.END);
     }
   }, [round]);
 
+  const playWinnerSound = (phase: "round" | "game") => {
+    if (!round?.winner?.current || !round?.isCompleted) {
+      return;
+    }
+
+    const isGameWinner = phase === "game";
+
+    if (round?.winner?.current === USER.FIRST) {
+      playAudio(isGameWinner ? "gameWin" : "roundWin");
+    } else {
+      playAudio(isGameWinner ? "gameLoose" : "roundLoose");
+    }
+  };
+
   const handleClick = () => {
     setIsOpen(false);
-    setIsClearOnEnd(isGameEnd);
+    playAudio("hover");
+    setIsClearOnEnd(isLastRound);
   };
 
   const isShow = !!(isOpen && round);
@@ -45,7 +68,7 @@ export const Conclusion: FC<Props> = ({
         <div className="conclusion__pool-ranking">
           {result?.[USER.FIRST].value.name}
         </div>
-        <span className="conclusion__pool-header">Pool</span>
+        <span className="conclusion__pool-header"></span>
         <div className="conclusion__pool-ranking">
           {result?.[USER.SECOND].value.name}
         </div>
@@ -59,7 +82,7 @@ export const Conclusion: FC<Props> = ({
         </div>
       </div>
       <div onClick={handleClick} className="conclusion__button">
-        {isGameEnd ? "Close" : "Continue"}
+        {isLastRound ? "Close" : "Continue"}
       </div>
     </Modal>
   );

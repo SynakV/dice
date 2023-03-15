@@ -6,6 +6,7 @@ import {
   HistoryType,
   ConclusionType,
 } from "@src/utils/types";
+import { playAudio } from "@src/utils/helpers/audio.helper";
 import { History } from "@components/Main/Game/History/History";
 import { Conclusion } from "@components/Main/Game/Conclusion/Conclusion";
 
@@ -20,6 +21,11 @@ export const Game = () => {
       ...prev,
       ...conclusion,
     }));
+  };
+
+  const handleToggleHistory = () => {
+    playAudio("hover");
+    setIsHistoryOpen((prev) => !prev);
   };
 
   const handleSetHistory = (
@@ -39,10 +45,6 @@ export const Game = () => {
     }
   };
 
-  const handleToggleHistory = () => {
-    setIsHistoryOpen((prev) => !prev);
-  };
-
   return (
     <div className="game">
       {conclusion && (
@@ -55,6 +57,7 @@ export const Game = () => {
       />
       <Desk
         isGameEnd={isGameEnd}
+        setIsGameEnd={setIsGameEnd}
         setHistory={handleSetHistory}
         setConclusion={handleSetConclusion}
         toggleHistory={handleToggleHistory}

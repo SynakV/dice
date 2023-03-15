@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFadeIn } from "@src/utils/hooks/useFadeIn";
+import { playAudio } from "@src/utils/helpers/audio.helper";
 import { Rules } from "@src/components/Layout/Menu/Rules/Rules";
 import { Amulet } from "@src/components/Layout/Menu/Amulet/Amulet";
 
@@ -8,6 +9,7 @@ export const Menu = () => {
   const { isShow, fadeInClass } = useFadeIn(isOpen);
 
   const toggleMenuOpen = () => {
+    playAudio("hover");
     setIsOpen((prev) => !prev);
   };
 
