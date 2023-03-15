@@ -48,7 +48,11 @@ export const Game = () => {
   return (
     <div className="game">
       {conclusion && (
-        <Conclusion conclusion={conclusion} setIsClearOnEnd={setIsGameEnd} />
+        <Conclusion
+          conclusion={conclusion}
+          setIsClearOnEnd={setIsGameEnd}
+          toggleHistoryOpen={handleToggleHistory}
+        />
       )}
       <History
         history={history}

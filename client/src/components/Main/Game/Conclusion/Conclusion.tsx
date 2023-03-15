@@ -6,11 +6,13 @@ import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
   conclusion: ConclusionType;
+  toggleHistoryOpen: () => void;
   setIsClearOnEnd: (isGameEnd: boolean) => void;
 }
 
 export const Conclusion: FC<Props> = ({
   setIsClearOnEnd,
+  toggleHistoryOpen,
   conclusion: { result, round },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,6 +66,9 @@ export const Conclusion: FC<Props> = ({
 
   return (
     <Modal title={getTitle()} isOpen={isShow}>
+      <span className="conclusion__history" onClick={toggleHistoryOpen}>
+        History
+      </span>
       <div className="conclusion__pool">
         <div className="conclusion__pool-ranking">
           {result?.[USER.FIRST].value.name}
