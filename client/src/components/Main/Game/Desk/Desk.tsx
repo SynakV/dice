@@ -2,10 +2,10 @@ import {
   USER,
   DiceType,
   RoundType,
+  UpdateType,
   ROUND_STAGE,
   ConclusionType,
   RankingResultWithInfoType,
-  UpdateType,
 } from "@src/utils/types";
 import React, { FC, useEffect, useState } from "react";
 import { Cubes } from "@src/components/Main/Game/Desk/Cubes/Cubes";
@@ -186,8 +186,21 @@ export const Desk: FC<Props> = ({
     });
   };
 
+  const isNotStart = !round?.stage?.isStart;
+  const isFirstStageNotCompleted =
+    !round?.stage?.isCompleted?.[ROUND_STAGE.START];
+
   return (
     <div className="desk">
+      <span className="desk__history" onClick={toggleHistory}>
+        History
+      </span>
+      <span
+        onClick={isNotStart ? () => handleRollDice() : () => {}}
+        className={`desk__roll ${isNotStart ? "" : "desk__roll--disabled"}`}
+      >
+        {isFirstStageNotCompleted ? "Roll" : "Re-roll"}
+      </span>
       <Cubes
         round={round}
         user={USER.FIRST}
@@ -200,12 +213,6 @@ export const Desk: FC<Props> = ({
         forceRefresh={forceRefresh}
         setRankingResult={handleResult}
       />
-      <span className="desk__history" onClick={toggleHistory}>
-        History
-      </span>
-      <span className="desk__roll" onClick={handleRollDice}>
-        {!round?.stage?.isCompleted?.[ROUND_STAGE.START] ? "Roll" : "Re-roll"}
-      </span>
     </div>
   );
 };

@@ -7,7 +7,7 @@
     position: fixed;
     animation: fadeIn 0.3s;
     transition: opacity 0.5s;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.95);
 
     &.closing {
         opacity: 0;

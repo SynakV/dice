@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import { playAudio } from "@src/utils/helpers/audio.helper";
 
 interface Props {
   value: number;
@@ -14,15 +13,10 @@ export const Cube: FC<Props> = ({
   isOtherUser,
   setDieForReRoll,
 }) => {
-  const handleClick = () => {
-    setDieForReRoll(value);
-    playAudio("selectDieForReroll");
-  };
-
   return (
     <div
       className={`cube ${isSelected ? "selected" : ""}`}
-      onClick={isOtherUser ? () => {} : () => handleClick()}
+      onClick={isOtherUser ? () => {} : () => setDieForReRoll(value)}
     >
       {value}
     </div>

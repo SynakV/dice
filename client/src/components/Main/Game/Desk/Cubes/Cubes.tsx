@@ -85,6 +85,7 @@ export const Cubes: FC<Props> = ({
         copy[index] = getRandomInt();
       }
       setCubesReroll(copy);
+      playAudio("selectDieForReroll");
     }
   };
 

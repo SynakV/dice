@@ -36,18 +36,6 @@ export const Conclusion: FC<Props> = ({
     }
   };
 
-  const handleSetUpdate = () => {
-    setUpdate({
-      ...update,
-      round: {
-        ...round,
-        value: (round?.value || 0) + 1,
-        isCompleted: false,
-        stage: {},
-      },
-    });
-  };
-
   const getWinnerIcons = (winns: number = 0) => {
     return (
       <div
@@ -67,6 +55,18 @@ export const Conclusion: FC<Props> = ({
         ))}
       </div>
     );
+  };
+
+  const handleSetUpdate = () => {
+    setUpdate({
+      ...update,
+      round: {
+        ...round,
+        value: (round?.value || 0) + 1,
+        isCompleted: false,
+        stage: {},
+      },
+    });
   };
 
   useEffect(() => {
@@ -113,9 +113,6 @@ export const Conclusion: FC<Props> = ({
       <span className="conclusion__round">
         Round: {(round?.value || 0) + 1}
       </span>
-      <span className="conclusion__history" onClick={toggleHistoryOpen}>
-        History
-      </span>
 
       <div className="conclusion__pool">
         <div className="conclusion__pool-ranking">
@@ -130,9 +127,12 @@ export const Conclusion: FC<Props> = ({
         {getWinnerIcons(round?.winner?.[USER.FIRST])}
         {getWinnerIcons(round?.winner?.[USER.SECOND])}
       </div>
-      <div onClick={handleClick} className="conclusion__button">
+      <span onClick={handleClick} className="conclusion__button">
         {isLastRound ? "Close" : "Continue"}
-      </div>
+      </span>
+      <span className="conclusion__history" onClick={toggleHistoryOpen}>
+        History
+      </span>
     </Modal>
   );
 };

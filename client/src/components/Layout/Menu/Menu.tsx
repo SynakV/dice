@@ -18,6 +18,7 @@ export const Menu = () => {
       <Amulet isOpen={isOpen} toggleMenuOpen={toggleMenuOpen} />
       {isShow && (
         <div className={`menu__overlay ${fadeInClass}`}>
+          <span className={`menu__text`}>Some random text</span>
           <Rules />
         </div>
       )}

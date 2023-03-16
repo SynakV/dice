@@ -13,11 +13,22 @@
         overflow-y: auto;
         animation: fadeIn 0.3s;
         transition: 0.3s opacity;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0, 0, 0, 0.95);
 
         &.closing {
             opacity: 0;
         }
+    }
+
+    &__text {
+        top: 25px;
+        z-index: 6;
+        right: 100px;
+        display: flex;
+        font-size: 20px;
+        transition: 0.3s;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.5);
     }
 }
 

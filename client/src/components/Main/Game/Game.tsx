@@ -3,9 +3,9 @@ import { Desk } from "@components/Main/Game/Desk/Desk";
 import {
   DiceType,
   RoundType,
+  UpdateType,
   HistoryType,
   ConclusionType,
-  UpdateType,
 } from "@src/utils/types";
 import { playAudio } from "@src/utils/helpers/audio.helper";
 import { History } from "@components/Main/Game/History/History";
