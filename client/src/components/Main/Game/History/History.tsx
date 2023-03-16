@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from "react";
 import { Modal } from "@src/components/Modal/Modal";
-import { HistoryType, USER } from "@src/utils/types";
+import { HistoryType, ROUND_STAGE, USER } from "@src/utils/types";
 
 interface Props {
   isOpen: boolean;
@@ -14,20 +14,28 @@ export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
       {history ? (
         <ul>
           {Object.entries(history).map(([round, result]) => {
+            const roundWinner =
+              result?.[ROUND_STAGE.END]?.round?.stage?.winner?.toString();
             return (
               <Fragment key={round}>
-                <li>Round: {+round + 1}</li>
+                <li>
+                  Round: {+round + 1}{" "}
+                  {roundWinner ? `(Winner: ${+roundWinner})` : ""}
+                </li>
                 <ul>
                   {Object.entries(result).map(([stage, user]) => {
                     return (
                       <Fragment key={stage}>
-                        <li>{+stage === 0 ? "Roll" : "Re-roll"}</li>
+                        <li>
+                          {+stage === 0 ? `Roll` : "Re-roll"} (Winner:{" "}
+                          {user.round?.stage?.winner})
+                        </li>
                         <ul>
                           <li>
-                            {user?.[USER.FIRST].value.name} [
-                            {user?.[USER.FIRST].cubes?.toString()}] -{" "}
-                            {user?.[USER.SECOND].value.name} [
-                            {user?.[USER.SECOND].cubes?.toString()}]
+                            {user?.result?.[USER.FIRST].value.name} [
+                            {user?.result?.[USER.FIRST].cubes?.toString()}] -{" "}
+                            {user?.result?.[USER.SECOND].value.name} [
+                            {user?.result?.[USER.SECOND].cubes?.toString()}]
                           </li>
                         </ul>
                       </Fragment>

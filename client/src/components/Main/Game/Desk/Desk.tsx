@@ -96,7 +96,14 @@ export const Desk: FC<Props> = ({
     }
 
     if (result?.[USER.FIRST]?.stage === result?.[USER.SECOND]?.stage) {
-      setHistory(result, round);
+      const stageWinner = getRoundWinner(result);
+      setHistory(result, {
+        ...round,
+        stage: {
+          ...round?.stage,
+          winner: stageWinner,
+        },
+      });
     }
   }, [result]);
 

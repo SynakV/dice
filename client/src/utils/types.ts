@@ -44,6 +44,7 @@ export type RoundType = {
       [ROUND_STAGE.END]?: boolean;
     };
     isStart?: boolean;
+    winner?: USER;
   };
   winner?: WinnerType;
   isCompleted?: boolean;
@@ -106,7 +107,8 @@ export type ConclusionType = {
 export type HistoryType = {
   [key in ROUND]?: {
     [key in ROUND_STAGE]?: {
-      [key in USER]: RankingResultWithInfoType;
+      round?: RoundType;
+      result?: DiceType;
     };
   };
 };

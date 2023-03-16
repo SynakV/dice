@@ -41,7 +41,10 @@ export const Game = () => {
         ...prev,
         [round?.value || 0]: {
           ...prev?.[round?.value || 0],
-          [round?.stage?.value || 0]: result,
+          [round?.stage?.value || 0]: {
+            round,
+            result,
+          },
         },
       }));
     }
