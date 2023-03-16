@@ -1,16 +1,26 @@
+import Image from "next/image";
 import { Modal } from "@src/components/Modal/Modal";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@src/utils/helpers/audio.helper";
-import { ConclusionType, ROUND_STAGE, USER } from "@src/utils/types";
+import {
+  USER,
+  UpdateType,
+  ROUND_STAGE,
+  ConclusionType,
+} from "@src/utils/types";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
+  update: UpdateType | null;
   conclusion: ConclusionType;
   toggleHistoryOpen: () => void;
+  setUpdate: (update: UpdateType) => void;
   setIsClearOnEnd: (isGameEnd: boolean) => void;
 }
 
 export const Conclusion: FC<Props> = ({
+  update,
+  setUpdate,
   setIsClearOnEnd,
   toggleHistoryOpen,
   conclusion: { result, round },
@@ -26,6 +36,39 @@ export const Conclusion: FC<Props> = ({
     }
   };
 
+  const handleSetUpdate = () => {
+    setUpdate({
+      ...update,
+      round: {
+        ...round,
+        value: (round?.value || 0) + 1,
+        isCompleted: false,
+        stage: {},
+      },
+    });
+  };
+
+  const getWinnerIcons = (winns: number = 0) => {
+    return (
+      <div
+        className={`conclusion__wins-count
+           conclusion__wins-count--${winns > 1 ? "two" : ""}`}
+      >
+        {new Array(winns).fill(null).map((_, index) => (
+          <Image
+            key={index}
+            width={100}
+            height={100}
+            alt="winner"
+            src="/icons/winner.webp"
+            className={`conclusion__wins-img 
+              conclusion__wins-img--${index + 1}`}
+          />
+        ))}
+      </div>
+    );
+  };
+
   useEffect(() => {
     if (round) {
       const gameWinner = getGameWinner(round);
@@ -38,7 +81,7 @@ export const Conclusion: FC<Props> = ({
         playWinnerSound("round");
       }
 
-      setIsOpen(round?.stage === ROUND_STAGE.END);
+      setIsOpen(round?.stage?.value === ROUND_STAGE.END);
     }
   }, [round]);
 
@@ -58,6 +101,7 @@ export const Conclusion: FC<Props> = ({
 
   const handleClick = () => {
     setIsOpen(false);
+    handleSetUpdate();
     playAudio("hover");
     setIsClearOnEnd(isLastRound);
   };
@@ -66,9 +110,13 @@ export const Conclusion: FC<Props> = ({
 
   return (
     <Modal title={getTitle()} isOpen={isShow}>
+      <span className="conclusion__round">
+        Round: {(round?.value || 0) + 1}
+      </span>
       <span className="conclusion__history" onClick={toggleHistoryOpen}>
         History
       </span>
+
       <div className="conclusion__pool">
         <div className="conclusion__pool-ranking">
           {result?.[USER.FIRST].value.name}
@@ -79,12 +127,8 @@ export const Conclusion: FC<Props> = ({
         </div>
       </div>
       <div className="conclusion__wins">
-        <div className="conclusion__wins-count">
-          {round?.winner?.[USER.FIRST] || <></>}
-        </div>
-        <div className="conclusion__wins-count">
-          {round?.winner?.[USER.SECOND] || <></>}
-        </div>
+        {getWinnerIcons(round?.winner?.[USER.FIRST])}
+        {getWinnerIcons(round?.winner?.[USER.SECOND])}
       </div>
       <div onClick={handleClick} className="conclusion__button">
         {isLastRound ? "Close" : "Continue"}

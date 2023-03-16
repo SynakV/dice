@@ -5,6 +5,7 @@ import {
   RoundType,
   HistoryType,
   ConclusionType,
+  UpdateType,
 } from "@src/utils/types";
 import { playAudio } from "@src/utils/helpers/audio.helper";
 import { History } from "@components/Main/Game/History/History";
@@ -13,6 +14,7 @@ import { Conclusion } from "@components/Main/Game/Conclusion/Conclusion";
 export const Game = () => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [update, setUpdate] = useState<UpdateType | null>(null);
   const [history, setHistory] = useState<HistoryType | null>(null);
   const [conclusion, setConclusion] = useState<ConclusionType | null>(null);
 
@@ -37,9 +39,9 @@ export const Game = () => {
     } else {
       setHistory((prev) => ({
         ...prev,
-        [round?.value!]: {
-          ...prev?.[round?.value!],
-          [round?.stage!]: result,
+        [round?.value || 0]: {
+          ...prev?.[round?.value || 0],
+          [round?.stage?.value || 0]: result,
         },
       }));
     }
@@ -49,6 +51,8 @@ export const Game = () => {
     <div className="game">
       {conclusion && (
         <Conclusion
+          update={update}
+          setUpdate={setUpdate}
           conclusion={conclusion}
           setIsClearOnEnd={setIsGameEnd}
           toggleHistoryOpen={handleToggleHistory}
@@ -60,6 +64,7 @@ export const Game = () => {
         toggleHistory={handleToggleHistory}
       />
       <Desk
+        update={update}
         isGameEnd={isGameEnd}
         setIsGameEnd={setIsGameEnd}
         setHistory={handleSetHistory}

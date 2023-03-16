@@ -11,12 +11,12 @@ import {
   getRandomInt,
   getRandomIntsFromInterval,
 } from "@src/utils/helpers/randomizer.helper";
+import { playAudio } from "@src/utils/helpers/audio.helper";
 import { getRankingResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
 interface Props {
-  stage?: ROUND_STAGE;
   forceRefresh: {} | null;
   round?: RoundType | null;
   user: USER.FIRST | USER.SECOND;
@@ -25,7 +25,6 @@ interface Props {
 
 export const Cubes: FC<Props> = ({
   user,
-  stage,
   round,
   forceRefresh,
   setRankingResult,
@@ -37,11 +36,11 @@ export const Cubes: FC<Props> = ({
 
   const isOtherUser = user !== USER.FIRST;
 
-  const handleSetRandomCubes = ({
+  const handleSetCubes = ({
     round,
     cubes,
   }: {
-    round?: RoundType;
+    round: RoundType;
     cubes?: number[];
   }) => {
     const newCubes = cubes || getRandomIntsFromInterval();
@@ -49,31 +48,36 @@ export const Cubes: FC<Props> = ({
 
     setCubes(newCubes);
     setRanking(ranking);
-    setRankingResult({
-      ...ranking,
-      user,
-      cubes: newCubes,
-      stage: round?.stage,
-    });
+
+    playAudio("handThrowDice").onended = () => {
+      setRankingResult({
+        ...ranking,
+        user,
+        cubes: newCubes,
+        stage: round?.stage?.value,
+      });
+    };
   };
 
-  const handleReRollDice = () => {
+  const handleReRollDice = (round: RoundType) => {
     if (!cubes) {
       return;
     }
 
-    const newCubes = [];
+    const newCubes: number[] = [];
 
     for (let i = 0; i < cubesReroll.length; i++) {
       newCubes.push(cubesReroll[i] ? cubesReroll[i]! : cubes[i]);
     }
 
-    setCubesReroll(DEFAULT_CUBES);
-    handleSetRandomCubes({ cubes: newCubes });
+    playAudio("handMixDice").onended = () => {
+      setCubesReroll(DEFAULT_CUBES);
+      handleSetCubes({ cubes: newCubes, round });
+    };
   };
 
   const handleSetDieForReRoll = (value: number, index: number) => {
-    if (stage === ROUND_STAGE.START) {
+    if (round?.stage?.isCompleted?.[ROUND_STAGE.START]) {
       const copy = [...cubesReroll];
       if (copy[index]) {
         copy.splice(index, 1, null);
@@ -85,8 +89,37 @@ export const Cubes: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (round && !round.isCompleted) {
-      handleSetRandomCubes({ round });
+    if (!round) {
+      return;
+    }
+
+    if (!round.stage?.isStart) {
+      return;
+    }
+
+    // STAGE 1 (Roll)
+    if (!round.stage?.isCompleted?.[ROUND_STAGE.START]) {
+      if (user === USER.FIRST && !round.stage?.threw?.[USER.FIRST]) {
+        return handleRollDice(round);
+      }
+
+      if (user === USER.SECOND && round.stage?.threw?.[USER.FIRST]) {
+        return handleRollDice(round);
+      }
+    }
+
+    // STAGE 2 (Re-roll)
+    if (
+      round.stage?.value === ROUND_STAGE.END &&
+      !round.stage.isCompleted?.[ROUND_STAGE.END]
+    ) {
+      if (user === USER.FIRST && !round.stage?.threw?.[USER.FIRST]) {
+        return handleReRollDice(round);
+      }
+
+      if (user === USER.SECOND && round.stage?.threw?.[USER.FIRST]) {
+        return handleRollDice(round);
+      }
     }
   }, [round]);
 
@@ -98,25 +131,16 @@ export const Cubes: FC<Props> = ({
     }
   }, [forceRefresh]);
 
-  const text = ranking?.value?.name || <>&nbsp;</>;
+  const handleRollDice = (round: RoundType) => {
+    playAudio("handMixDice").onended = () => {
+      handleSetCubes({ round });
+    };
+  };
 
-  const isRoundStart = stage !== ROUND_STAGE.START;
+  const text = ranking?.value?.name || <>&nbsp;</>;
 
   return (
     <div className="cubes">
-      {!isOtherUser && (
-        <span
-          className="cubes__roll"
-          onClick={
-            isRoundStart
-              ? () => handleSetRandomCubes({})
-              : () => handleReRollDice()
-          }
-        >
-          {isRoundStart ? "Roll" : "Re-roll"}
-        </span>
-      )}
-
       <div className="cubes__container">
         {(cubes || DEFAULT_CUBES).map((cube, index) => (
           <Cube

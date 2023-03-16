@@ -34,7 +34,17 @@ export enum ROUND {
 
 export type RoundType = {
   value?: ROUND;
-  stage?: ROUND_STAGE;
+  stage?: {
+    value?: ROUND_STAGE;
+    threw?: {
+      [key in USER]?: boolean;
+    };
+    isCompleted?: {
+      [ROUND_STAGE.START]?: boolean;
+      [ROUND_STAGE.END]?: boolean;
+    };
+    isStart?: boolean;
+  };
   winner?: WinnerType;
   isCompleted?: boolean;
 };
@@ -99,4 +109,8 @@ export type HistoryType = {
       [key in USER]: RankingResultWithInfoType;
     };
   };
+};
+
+export type UpdateType = {
+  round: RoundType | null;
 };

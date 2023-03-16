@@ -5,6 +5,7 @@ import {
   ROUND_STAGE,
   ConclusionType,
   RankingResultWithInfoType,
+  UpdateType,
 } from "@src/utils/types";
 import React, { FC, useEffect, useState } from "react";
 import { Cubes } from "@src/components/Main/Game/Desk/Cubes/Cubes";
@@ -12,6 +13,7 @@ import { getRoundWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
   isGameEnd: boolean;
+  update: UpdateType | null;
   toggleHistory: () => void;
   setIsGameEnd: (isGameEnd: boolean) => void;
   setConclusion: (result: ConclusionType) => void;
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export const Desk: FC<Props> = ({
+  update,
   isGameEnd,
   setHistory,
   setIsGameEnd,
@@ -58,6 +61,16 @@ export const Desk: FC<Props> = ({
                 current: 0,
               }),
         },
+        stage: {
+          ...prev?.stage,
+          [ROUND_STAGE.START]: true,
+          [ROUND_STAGE.END]: true,
+          value: 1,
+          threw: {
+            [USER.FIRST]: true,
+            [USER.SECOND]: true,
+          },
+        },
       }));
 
       setResult(null);
@@ -66,10 +79,16 @@ export const Desk: FC<Props> = ({
   }, [result, round]);
 
   useEffect(() => {
-    if (round?.stage === ROUND_STAGE.END) {
+    if (round?.isCompleted) {
       setConclusion({ round });
     }
   }, [round]);
+
+  useEffect(() => {
+    if (update) {
+      setRound(update.round);
+    }
+  }, [update]);
 
   useEffect(() => {
     if (!result) {
@@ -91,7 +110,7 @@ export const Desk: FC<Props> = ({
     }
   }, [isGameEnd]);
 
-  const handleRollDice = (result: RankingResultWithInfoType | null) => {
+  const handleResult = (result: RankingResultWithInfoType | null) => {
     if (!result) {
       return;
     }
@@ -110,14 +129,13 @@ export const Desk: FC<Props> = ({
 
       setRound((prev: RoundType | null) => ({
         ...prev,
-        value:
-          prev?.stage === ROUND_STAGE.END
-            ? (prev?.value || 0) + 1
-            : prev?.value || 0,
-        stage:
-          prev?.stage === ROUND_STAGE.START
-            ? ROUND_STAGE.END
-            : ROUND_STAGE.START,
+        stage: {
+          ...prev?.stage,
+          threw: {
+            ...prev?.stage?.threw,
+            [USER.FIRST]: true,
+          },
+        },
         isCompleted: false,
       }));
     } else {
@@ -127,29 +145,59 @@ export const Desk: FC<Props> = ({
           ...result,
         },
       }));
+      setRound((prev) => ({
+        ...prev,
+        stage: {
+          ...prev?.stage,
+          isCompleted: {
+            ...prev?.stage?.isCompleted,
+            [+(prev?.stage?.isCompleted?.[ROUND_STAGE.START] || 0)]: true,
+          },
+          threw: {
+            ...prev?.stage?.threw,
+            [USER.SECOND]: true,
+          },
+          isStart: false,
+        },
+      }));
     }
+  };
+
+  const handleRollDice = () => {
+    setRound((prev) => {
+      return {
+        ...prev,
+        stage: {
+          ...prev?.stage,
+          isStart: true,
+          threw: {},
+          value: prev?.stage?.isCompleted?.[ROUND_STAGE.START]
+            ? ROUND_STAGE.END
+            : ROUND_STAGE.START,
+        },
+      };
+    });
   };
 
   return (
     <div className="desk">
       <Cubes
+        round={round}
         user={USER.FIRST}
-        stage={round?.stage}
         forceRefresh={forceRefresh}
-        setRankingResult={handleRollDice}
+        setRankingResult={handleResult}
       />
       <Cubes
         round={round}
         user={USER.SECOND}
-        stage={round?.stage}
         forceRefresh={forceRefresh}
-        setRankingResult={handleRollDice}
+        setRankingResult={handleResult}
       />
       <span className="desk__history" onClick={toggleHistory}>
         History
       </span>
-      <span className="desk__round">
-        Round: {(round?.value || 0) + 1}/{(round?.stage || 0) + 1}
+      <span className="desk__roll" onClick={handleRollDice}>
+        {!round?.stage?.isCompleted?.[ROUND_STAGE.START] ? "Roll" : "Re-roll"}
       </span>
     </div>
   );

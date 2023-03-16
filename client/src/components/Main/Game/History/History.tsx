@@ -21,7 +21,7 @@ export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
                   {Object.entries(result).map(([stage, user]) => {
                     return (
                       <Fragment key={stage}>
-                        <li>Stage: {+stage + 1}</li>
+                        <li>{+stage === 0 ? "Roll" : "Re-roll"}</li>
                         <ul>
                           <li>
                             {user?.[USER.FIRST].value.name} [
