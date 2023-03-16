@@ -4,7 +4,7 @@ interface Props {
   value: number;
   isSelected: boolean;
   isOtherUser: boolean;
-  setDieForReRoll: (value: number) => void;
+  setDieForReRoll: () => void;
 }
 
 export const Cube: FC<Props> = ({
@@ -16,7 +16,7 @@ export const Cube: FC<Props> = ({
   return (
     <div
       className={`cube ${isSelected ? "selected" : ""}`}
-      onClick={isOtherUser ? () => {} : () => setDieForReRoll(value)}
+      onClick={isOtherUser ? () => {} : () => setDieForReRoll()}
     >
       {value}
     </div>

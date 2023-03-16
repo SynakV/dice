@@ -18,7 +18,7 @@ const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
 interface Props {
   forceRefresh: {} | null;
-  round?: RoundType | null;
+  round: RoundType | null;
   user: USER.FIRST | USER.SECOND;
   setRankingResult: (result: RankingResultWithInfoType | null) => void;
 }
@@ -76,7 +76,7 @@ export const Cubes: FC<Props> = ({
     };
   };
 
-  const handleSetDieForReRoll = (value: number, index: number) => {
+  const handleSetDieForReRoll = (index: number) => {
     if (round?.stage?.isCompleted?.[ROUND_STAGE.START]) {
       const copy = [...cubesReroll];
       if (copy[index]) {
@@ -149,7 +149,7 @@ export const Cubes: FC<Props> = ({
             value={cube}
             isOtherUser={isOtherUser}
             isSelected={!!cubesReroll[index]}
-            setDieForReRoll={(value) => handleSetDieForReRoll(value, index)}
+            setDieForReRoll={() => handleSetDieForReRoll(index)}
           />
         ))}
       </div>

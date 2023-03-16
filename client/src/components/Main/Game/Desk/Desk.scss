@@ -28,12 +28,12 @@
     }
 
     &__status {
-        left: 50%;
         top: -40px;
+        width: 100%;
         cursor: default;
         transition: 0.3s;
         position: absolute;
-        transform: translateX(-50%);
+        text-align: center;
     }
 
     &__roll {
