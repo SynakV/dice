@@ -46,6 +46,7 @@ export type RoundType = {
     isStart?: boolean;
     winner?: USER;
   };
+  status?: string;
   winner?: WinnerType;
   isCompleted?: boolean;
 };

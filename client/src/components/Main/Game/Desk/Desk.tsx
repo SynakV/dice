@@ -71,6 +71,7 @@ export const Desk: FC<Props> = ({
             [USER.SECOND]: true,
           },
         },
+        status: "",
       }));
 
       setResult(null);
@@ -144,6 +145,7 @@ export const Desk: FC<Props> = ({
           },
         },
         isCompleted: false,
+        status: "Opponent rolling...",
       }));
     } else {
       setResult((prev) => ({
@@ -166,53 +168,63 @@ export const Desk: FC<Props> = ({
           },
           isStart: false,
         },
+        status: "Select dice to roll again",
       }));
     }
   };
 
   const handleRollDice = () => {
     setRound((prev) => {
+      const isFirstStageCompleted =
+        prev?.stage?.isCompleted?.[ROUND_STAGE.START];
       return {
         ...prev,
         stage: {
           ...prev?.stage,
           isStart: true,
           threw: {},
-          value: prev?.stage?.isCompleted?.[ROUND_STAGE.START]
-            ? ROUND_STAGE.END
-            : ROUND_STAGE.START,
+          value: isFirstStageCompleted ? ROUND_STAGE.END : ROUND_STAGE.START,
         },
+        status: "Rolling...",
       };
     });
   };
 
+  const status = round?.status;
   const isNotStart = !round?.stage?.isStart;
   const isFirstStageNotCompleted =
     !round?.stage?.isCompleted?.[ROUND_STAGE.START];
 
   return (
     <div className="desk">
-      <span className="desk__history" onClick={toggleHistory}>
-        History
-      </span>
-      <span
-        onClick={isNotStart ? () => handleRollDice() : () => {}}
-        className={`desk__roll ${isNotStart ? "" : "desk__roll--disabled"}`}
-      >
-        {isFirstStageNotCompleted ? "Roll" : "Re-roll"}
-      </span>
-      <Cubes
-        round={round}
-        user={USER.FIRST}
-        forceRefresh={forceRefresh}
-        setRankingResult={handleResult}
-      />
-      <Cubes
-        round={round}
-        user={USER.SECOND}
-        forceRefresh={forceRefresh}
-        setRankingResult={handleResult}
-      />
+      <div className="desk__header">
+        <span
+          onClick={isNotStart ? () => handleRollDice() : () => {}}
+          className={`desk__roll ${isNotStart ? "" : "desk__roll--disabled"}`}
+        >
+          {isFirstStageNotCompleted ? "Roll" : "Re-roll"} dice
+        </span>
+        <span className="desk__status">
+          {status ? status : 'Click "Roll dice"'}
+        </span>
+        <span className="desk__history" onClick={toggleHistory}>
+          History
+        </span>
+      </div>
+      <div className="desk__cubes">
+        <Cubes
+          round={round}
+          user={USER.FIRST}
+          forceRefresh={forceRefresh}
+          setRankingResult={handleResult}
+        />
+        <Cubes
+          round={round}
+          user={USER.SECOND}
+          forceRefresh={forceRefresh}
+          setRankingResult={handleResult}
+        />
+      </div>
     </div>
   );
 };
