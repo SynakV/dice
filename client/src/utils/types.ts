@@ -70,7 +70,7 @@ export type AppearesAndRestsType = {
 };
 
 export type RankingResultType = {
-  key: string;
+  key: RANKING_OF_HANDS_KEYS;
   value: RankingOfTypeValueType;
   result: StructuredType;
 };

@@ -29,10 +29,15 @@ export const Conclusion: FC<Props> = ({
   const [isLastRound, setIsLastRound] = useState(false);
 
   const getTitle = () => {
-    if (round?.winner?.current === USER.FIRST) {
-      return "You win!";
-    } else {
-      return "You loose!";
+    switch (round?.winner?.current) {
+      case USER.FIRST:
+        return "You win!";
+      case USER.SECOND:
+        return "You loose!";
+      case USER.NOBODY:
+        return "Draw!";
+      default:
+        return "";
     }
   };
 
