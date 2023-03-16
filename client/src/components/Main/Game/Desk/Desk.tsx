@@ -71,7 +71,7 @@ export const Desk: FC<Props> = ({
             [USER.SECOND]: true,
           },
         },
-        status: "",
+        status: "Results",
       }));
 
       setResult(null);

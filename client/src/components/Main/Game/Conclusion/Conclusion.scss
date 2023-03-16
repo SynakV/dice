@@ -62,8 +62,13 @@
         bottom: 40px;
         font-size: 16px;
         cursor: pointer;
+        transition: 0.3s;
         position: absolute;
         color: rgba(255, 255, 255, 0.5);
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.35);
+        }
     }
 
     &__button {
@@ -72,10 +77,15 @@
         width: 100px;
         display: flex;
         cursor: pointer;
+        transition: 0.3s;
         position: absolute;
         align-items: center;
         justify-content: center;
         transform: translateX(-50%);
         color: rgba(255, 255, 255, 0.5);
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.35);
+        }
     }
 }

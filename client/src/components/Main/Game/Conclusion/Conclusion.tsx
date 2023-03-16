@@ -65,6 +65,7 @@ export const Conclusion: FC<Props> = ({
         value: (round?.value || 0) + 1,
         isCompleted: false,
         stage: {},
+        status: "",
       },
     });
   };
