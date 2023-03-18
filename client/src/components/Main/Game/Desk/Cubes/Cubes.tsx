@@ -59,6 +59,12 @@ export const Cubes: FC<Props> = ({
     };
   };
 
+  const handleRollDice = (round: RoundType) => {
+    playAudio("handMixDice").onended = () => {
+      handleSetCubes({ round });
+    };
+  };
+
   const handleReRollDice = (round: RoundType) => {
     if (!cubes) {
       return;
@@ -89,6 +95,7 @@ export const Cubes: FC<Props> = ({
     }
   };
 
+  // Round flow
   useEffect(() => {
     if (!round) {
       return;
@@ -131,12 +138,6 @@ export const Cubes: FC<Props> = ({
       setCubesReroll(DEFAULT_CUBES);
     }
   }, [forceRefresh]);
-
-  const handleRollDice = (round: RoundType) => {
-    playAudio("handMixDice").onended = () => {
-      handleSetCubes({ round });
-    };
-  };
 
   const text = ranking?.value?.name || <>&nbsp;</>;
 

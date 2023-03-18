@@ -9,7 +9,7 @@ import {
 } from "@src/utils/types";
 import React, { FC, useEffect, useState } from "react";
 import { Cubes } from "@src/components/Main/Game/Desk/Cubes/Cubes";
-import { getRoundWinner } from "@src/utils/helpers/ranking/ranking.helper";
+import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
   isGameEnd: boolean;
@@ -37,7 +37,7 @@ export const Desk: FC<Props> = ({
       result?.[USER.FIRST]?.stage === ROUND_STAGE.END &&
       result?.[USER.SECOND]?.stage === ROUND_STAGE.END
     ) {
-      const roundWinner = getRoundWinner(result);
+      const roundWinner = getComparisonResult(result);
 
       setRound((prev: RoundType | null) => ({
         ...prev,
@@ -97,7 +97,7 @@ export const Desk: FC<Props> = ({
     }
 
     if (result?.[USER.FIRST]?.stage === result?.[USER.SECOND]?.stage) {
-      const stageWinner = getRoundWinner(result);
+      const stageWinner = getComparisonResult(result);
       setHistory(result, {
         ...round,
         stage: {

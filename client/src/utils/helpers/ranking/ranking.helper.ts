@@ -39,7 +39,7 @@ export const getRankingResult = (numbers: number[]): RankingResultType => {
   );
 };
 
-export const getRoundWinner = (dice: DiceType) => {
+export const getComparisonResult = (dice: DiceType) => {
   const value = {
     [USER.FIRST]: dice[USER.FIRST].value.value,
     [USER.SECOND]: dice[USER.SECOND].value.value,

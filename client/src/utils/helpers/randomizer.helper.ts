@@ -1,4 +1,5 @@
 import { DICE } from "@utils/constants";
+import { RANKING_OF_HANDS_KEYS } from "../types";
 
 export const getRandomIntsFromInterval = (
   randomNumbersCount: number = DICE.COUNT,
@@ -30,3 +31,65 @@ export const getRandomInt = (
   min: number = DICE.RANGE.MIN,
   max: number = DICE.RANGE.MAX
 ) => Math.floor(Math.random() * (max - min + 1) + min);
+
+export const getRepeatedInts = (
+  options: {
+    [key: number]: number;
+  },
+  max: number = 5
+) => {
+  const array: number[] = [];
+
+  const keys = Object.keys(options);
+  const values = Object.values(options);
+
+  for (let i = 0; i < keys.length; i++) {
+    array.push(...new Array(+values[i]).fill(+keys[i]));
+  }
+
+  while (array.length < max) {
+    const randomInt = getRandomInt();
+
+    if (!array.includes(randomInt)) {
+      array.push(randomInt);
+    }
+  }
+
+  return array;
+};
+
+export const getAllPossibleRepeatedInts = (options: {
+  repeats?: [number, number?];
+  key?: RANKING_OF_HANDS_KEYS;
+}) => {
+  const arrays: number[][] = [];
+
+  const { repeats, key } = options;
+
+  for (let i = DICE.RANGE.MIN; i <= DICE.RANGE.MAX; i++) {
+    if (
+      key === RANKING_OF_HANDS_KEYS.TWO_PAIRS ||
+      key === RANKING_OF_HANDS_KEYS.FULL_HOUSE
+    ) {
+      for (let j = DICE.RANGE.MIN; j <= DICE.RANGE.MAX; j++) {
+        if (i !== j) {
+          arrays.push(
+            getRepeatedInts({
+              [i]: repeats?.[0]!,
+              [j]: repeats?.[1]!,
+            })
+          );
+        }
+      }
+      continue;
+    }
+
+    arrays.push(
+      getRepeatedInts({
+        [i]: repeats?.[0]!,
+      })
+    );
+  }
+
+  return arrays;
+};
