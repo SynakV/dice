@@ -1,0 +1,77 @@
+@import './Create/Create.scss';
+
+.desks {
+    gap: 10px 0;
+    width: 600px;
+    height: 300px;
+    padding: 25px;
+    display: flex;
+    position: relative;
+    border-radius: 15px;
+    flex-direction: column;
+
+    &__header {
+        width: 100%;
+        display: flex;
+        font-size: 25px;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__create {
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.35);
+        }
+    }
+
+    &__list {
+        display: flex;
+        overflow-y: auto;
+        flex-direction: column;
+    }
+
+    &__empty {
+        top: 50%;
+        left: 50%;
+        cursor: default;
+        font-size: 20px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.list {
+    &__desk {
+        display: flex;
+        padding: 0 10px;
+        transition: 0.3s;
+        min-height: 40px;
+        max-height: 40px;
+        align-items: center;
+        justify-content: space-between;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    }
+
+    &__title {
+        cursor: default;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__join {
+        cursor: pointer;
+        transition: 0.3s;
+        color: rgba(255, 255, 255, 0.5);
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.35);
+        }
+    }
+}
