@@ -16,10 +16,21 @@ export enum USER {
   SECOND,
 }
 
-export enum OPPONENT {
-  COMPUTER = "Computer",
-  ANOTHER_USER = "Another user",
-}
+// export enum OPPONENT {
+//   COMPUTER = "Computer",
+//   ANOTHER_USER = "Another user",
+// }
+
+export const OPPONENT = {
+  online: {
+    url: "online",
+    title: "Another user",
+  },
+  offline: {
+    url: "offline",
+    title: "Computer",
+  },
+};
 
 export enum ROUND_STAGE {
   START,

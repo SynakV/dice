@@ -1,9 +1,9 @@
 import { OnModuleInit } from '@nestjs/common';
 import {
   MessageBody,
+  WebSocketServer,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { MESSAGES, EVENTS } from '../utils/common/types';

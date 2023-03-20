@@ -12,12 +12,31 @@ export class DeskService {
   }
 
   async createDesk(body: any): Promise<Desk> {
-    const createdTab = new this.deskModel({
-      name: body.name,
-    });
+    const { name, creator, players } = body;
 
-    createdTab.save();
+    const existedDesk = await this.deskModel.findOne({ name });
 
-    return { name: body.name };
+    if (existedDesk) {
+      return {};
+    } else {
+      const createdDesk = new this.deskModel({
+        name: name,
+        creator,
+        players: {
+          max: players,
+          players: [
+            {
+              index: 0,
+              isCreator: true,
+              name: creator.name,
+            },
+          ],
+        },
+      });
+
+      createdDesk.save();
+
+      return { id: createdDesk._id.toString() };
+    }
   }
 }

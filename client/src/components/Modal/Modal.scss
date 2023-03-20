@@ -50,15 +50,6 @@
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 @media (min-width: 1200px) or (max-width: 1400px) {
     .modal__window {
         transform: translate(-50%, -50%) scale(1.5);

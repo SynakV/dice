@@ -1,6 +1,6 @@
 import { DICE } from "@src/utils/constants";
 import React, { FC, useEffect, useState } from "react";
-import { Cube } from "@src/components/Main/Game/Desk/Cubes/Cube/Cube";
+import { Cube } from "@src/components/Game/Desk/Cubes/Cube/Cube";
 import {
   USER,
   RoundType,

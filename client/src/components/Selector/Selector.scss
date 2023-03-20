@@ -1,3 +1,5 @@
+@import './Credentials/Credentials.scss';
+
 .selector {
     gap: 20px 0;
     display: flex;
@@ -18,6 +20,7 @@
     &__option {
         font-size: 25px;
         cursor: pointer;
+        transition: 0.3s;
         color: rgba(255, 255, 255, 0.5);
 
         &:hover {

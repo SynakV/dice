@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Desk } from "@components/Main/Game/Desk/Desk";
+import { Desk } from "@src/components/Game/Desk/Desk";
 import {
   DiceType,
   RoundType,
@@ -8,8 +8,8 @@ import {
   ConclusionType,
 } from "@src/utils/types";
 import { playAudio } from "@src/utils/helpers/audio.helper";
-import { History } from "@components/Main/Game/History/History";
-import { Conclusion } from "@components/Main/Game/Conclusion/Conclusion";
+import { History } from "@src/components/Game/History/History";
+import { Conclusion } from "@src/components/Game/Conclusion/Conclusion";
 
 export const Game = () => {
   const [isGameEnd, setIsGameEnd] = useState(false);

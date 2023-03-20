@@ -1,45 +1,41 @@
-import { Main } from "@components/Main/Main";
+import { useRouter } from "next/router";
 import { Menu } from "@components/Layout/Menu/Menu";
-import { EVENTS, MESSAGES } from "../../utils/common/types";
-import React, { FC, useContext, useEffect, useState } from "react";
-import { WebsocketContext } from "@src/utils/contexts/WebsocketContext";
+import React, { FC, ReactNode, useEffect, useState } from "react";
+import { NotificationProvider } from "@components/Notification/Notification";
 
-export const Layout: FC = () => {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
+interface Props {
+  children: ReactNode;
+}
 
-  const socket = useContext(WebsocketContext);
+export const Layout: FC<Props> = ({ children }) => {
+  const [isShowChildren, setIsShowChildren] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
-    socket.on(EVENTS.CONNECTION, () => {
-      console.log("Connected!");
-    });
-    socket.on(EVENTS.ON_MESSAGE, (data: any) => {
-      console.log("onMessage event received!");
-      console.log(data);
-      setMessages((prev) => [...prev, data.content]);
-    });
-    socket.on("", () => {});
+    const handleStart = (url: string) =>
+      url !== router.asPath && setIsShowChildren(false);
+    const handleComplete = (url: string) =>
+      url === router.asPath && setIsShowChildren(true);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
 
     return () => {
-      console.log("Unregistering events...");
-      socket.off(EVENTS.CONNECTION);
-      socket.off(EVENTS.ON_MESSAGE);
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
     };
-  }, []);
-
-  const handleSubmit = () => {
-    if (input) {
-      socket.emit(MESSAGES.NEW_MESSAGE, input);
-      setInput("");
-    }
-  };
+  });
 
   return (
-    <div className="layout">
-      <div className="layout__background" />
-      <Menu />
-      <Main />
-    </div>
+    <NotificationProvider>
+      <div className="layout">
+        <div className="layout__background" />
+        {isShowChildren && <div className="layout__content">{children}</div>}
+        <Menu />
+      </div>
+    </NotificationProvider>
   );
 };

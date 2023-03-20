@@ -8,7 +8,7 @@ import {
   RankingResultWithInfoType,
 } from "@src/utils/types";
 import React, { FC, useEffect, useState } from "react";
-import { Cubes } from "@src/components/Main/Game/Desk/Cubes/Cubes";
+import { Cubes } from "@src/components/Game/Desk/Cubes/Cubes";
 import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
