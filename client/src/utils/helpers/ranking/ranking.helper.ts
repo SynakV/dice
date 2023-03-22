@@ -148,3 +148,33 @@ const getOfAKindWinner = <T extends AppearesAndRestsType>(
     ? USER.FIRST
     : USER.SECOND;
 };
+
+export const getReRollIndexes = (
+  cubes: number[],
+  ranking: RankingResultType
+) => {
+  if (!ranking.result.rest) {
+    return [];
+  }
+
+  if (ranking.key === RANKING_OF_HANDS_KEYS.NOTHING) {
+    return new Array(DICE.COUNT).fill(null).map((_, index) => index);
+  }
+
+  const rest = ranking.result.rest;
+
+  if (rest) {
+    const restNumbers = rest.map((number) => +number[0]);
+    const indexes = [];
+
+    for (let i = 0; i < cubes.length; i++) {
+      if (restNumbers.includes(cubes[i])) {
+        indexes.push(i);
+      }
+    }
+
+    return indexes;
+  } else {
+    return [];
+  }
+};

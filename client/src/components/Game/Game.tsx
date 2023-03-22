@@ -7,9 +7,9 @@ import {
   HistoryType,
   ConclusionType,
 } from "@src/utils/types";
-import { playAudio } from "@src/utils/helpers/audio.helper";
-import { History } from "@src/components/Game/History/History";
-import { Conclusion } from "@src/components/Game/Conclusion/Conclusion";
+import { playAudio } from "@utils/helpers/audio.helper";
+import { History } from "@components/Game/History/History";
+import { Conclusion } from "@components/Game/Conclusion/Conclusion";
 
 export const Game = () => {
   const [isGameEnd, setIsGameEnd] = useState(false);

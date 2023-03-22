@@ -5,6 +5,7 @@ import {
   USER,
   RoundType,
   ROUND_STAGE,
+  RankingResultType,
   RankingResultWithInfoType,
 } from "@src/utils/types";
 import {
@@ -12,7 +13,10 @@ import {
   getRandomIntsFromInterval,
 } from "@src/utils/helpers/randomizer.helper";
 import { playAudio } from "@src/utils/helpers/audio.helper";
-import { getRankingResult } from "@src/utils/helpers/ranking/ranking.helper";
+import {
+  getRankingResult,
+  getReRollIndexes,
+} from "@src/utils/helpers/ranking/ranking.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
@@ -29,7 +33,7 @@ export const Cubes: FC<Props> = ({
   forceRefresh,
   setRankingResult,
 }) => {
-  const [ranking, setRanking] = useState<any>(null);
+  const [ranking, setRanking] = useState<RankingResultType | null>(null);
   const [cubes, setCubes] = useState<number[] | null>(null);
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
@@ -65,15 +69,20 @@ export const Cubes: FC<Props> = ({
     };
   };
 
-  const handleReRollDice = (round: RoundType) => {
+  const handleReRollDice = (
+    round: RoundType,
+    computerCubesReloll?: (number | null)[]
+  ) => {
     if (!cubes) {
       return;
     }
 
+    const cubersForReroll = computerCubesReloll || cubesReroll;
+
     const newCubes: number[] = [];
 
-    for (let i = 0; i < cubesReroll.length; i++) {
-      newCubes.push(cubesReroll[i] ? cubesReroll[i]! : cubes[i]);
+    for (let i = 0; i < cubersForReroll.length; i++) {
+      newCubes.push(cubersForReroll[i] ? cubersForReroll[i]! : cubes[i]);
     }
 
     playAudio("handMixDice").onended = () => {
@@ -82,15 +91,26 @@ export const Cubes: FC<Props> = ({
     };
   };
 
-  const handleSetDieForReRoll = (index: number) => {
+  const handleSetDieForReRoll = (index: number | number[]) => {
     if (round?.stage?.isCompleted?.[ROUND_STAGE.START]) {
       const copy = [...cubesReroll];
-      if (copy[index]) {
-        copy.splice(index, 1, null);
+
+      if (Array.isArray(index)) {
+        // Computer
+        for (let i = 0; i < index.length; i++) {
+          copy.splice(index[i], 1, getRandomInt());
+        }
+        setCubesReroll(copy);
+        return copy;
       } else {
-        copy[index] = getRandomInt();
+        // User
+        if (copy[index]) {
+          copy.splice(index, 1, null);
+        } else {
+          copy[index] = getRandomInt();
+        }
+        setCubesReroll(copy);
       }
-      setCubesReroll(copy);
       playAudio("selectDieForReroll");
     }
   };
@@ -126,7 +146,13 @@ export const Cubes: FC<Props> = ({
       }
 
       if (user === USER.SECOND && round.stage?.threw?.[USER.FIRST]) {
-        return handleRollDice(round);
+        // If you want to disable decision-making algorithm, comment out condition below
+        if (cubes && ranking) {
+          const reRollIndexes = getReRollIndexes(cubes, ranking);
+          const cubesReroll = handleSetDieForReRoll(reRollIndexes);
+          return handleReRollDice(round, cubesReroll);
+        }
+        // return handleRollDice(round);
       }
     }
   }, [round]);

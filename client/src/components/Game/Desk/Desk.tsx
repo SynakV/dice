@@ -44,10 +44,10 @@ export const Desk: FC<Props> = ({
         isCompleted: true,
         winner: {
           ...prev?.winner,
-          ...(roundWinner
+          ...(roundWinner !== USER.NOBODY
             ? {
                 [roundWinner]: prev?.winner?.[roundWinner]
-                  ? prev.winner[roundWinner]!++
+                  ? ++prev.winner[roundWinner]!
                   : 1,
                 current: roundWinner,
               }
@@ -58,7 +58,7 @@ export const Desk: FC<Props> = ({
                 [USER.SECOND]: prev?.winner?.[USER.SECOND]
                   ? prev.winner[USER.SECOND]++
                   : 1,
-                current: 0,
+                current: USER.NOBODY,
               }),
         },
         stage: {
