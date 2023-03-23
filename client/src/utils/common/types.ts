@@ -1,16 +1,16 @@
 export const MESSAGES = {
-  MESSAGE: 'message',
-  GAME_START: 'gameStart',
-  JOIN_DESK: 'joinDesk',
-  LEAVE_DESK: 'leaveDesk',
+  MESSAGE: "message",
+  GAME_START: "gameStart",
+  JOIN_DESK: "joinDesk",
+  LEAVE_DESK: "leaveDesk",
 } as const;
 
 export const EVENTS = {
-  CONNECTION: 'connection',
-  ON_MESSAGE: 'onMessage',
-  ON_GAME_START: 'onGameStart',
-  ON_JOIN_DESK: 'onJoinDesk',
-  ON_LEAVE_DESK: 'onLeaveDesk',
+  CONNECTION: "connection",
+  ON_MESSAGE: "onMessage",
+  ON_GAME_START: "onGameStart",
+  ON_JOIN_DESK: "onJoinDesk",
+  ON_LEAVE_DESK: "onLeaveDesk",
 } as const;
 
 export type PlayersType = {
