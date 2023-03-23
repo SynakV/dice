@@ -9,6 +9,7 @@ import {
 } from "@src/utils/helpers/storage/storage.helper";
 import { Game } from "../Game/Game";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading/Loading";
 import { Players } from "../Game/Players/Players";
 import React, { FC, useEffect, useState } from "react";
 import { useNotification } from "../Notification/Notification";
@@ -81,15 +82,13 @@ export const Online: FC = () => {
   };
 
   useEffect(() => {
-    socket.on(EVENTS.ON_GAME_START, (desk: DeskType) => {
-      setDesk(desk);
-    });
-    socket.on(EVENTS.ON_JOIN_DESK, (desk: DeskType) => {
-      setDesk(desk);
-    });
-    socket.on(EVENTS.ON_LEAVE_DESK, (desk: DeskType) => {
-      setDesk(desk);
-    });
+    [EVENTS.ON_GAME_START, EVENTS.ON_JOIN_DESK, EVENTS.ON_LEAVE_DESK].forEach(
+      (event) => {
+        socket.on(event, (desk: DeskType) => {
+          setDesk(desk);
+        });
+      }
+    );
 
     return () => {
       socket.emit(MESSAGES.LEAVE_DESK);
@@ -111,11 +110,13 @@ export const Online: FC = () => {
 
   return (
     <>
-      {desk && (
+      {desk ? (
         <>
           <Game desk={desk} onGameStarted={handleGameStarted} />
           <Players />
         </>
+      ) : (
+        <Loading />
       )}
       <Credentials
         isOpen={isOpen}

@@ -46,15 +46,18 @@
 
 .list {
     &__desk {
+        gap: 0 15px;
         display: flex;
         padding: 0 10px;
         transition: 0.3s;
         min-height: 40px;
         max-height: 40px;
         align-items: center;
+        border: 1px solid transparent;
         justify-content: space-between;
 
         &:hover {
+            border: 1px solid rgba(255, 255, 255, 0.2);
             background-color: rgba(255, 255, 255, 0.05);
         }
     }
@@ -67,16 +70,20 @@
 
     &__players {
         margin-left: auto;
-        margin-right: 15px;
         color: rgba(255, 255, 255, 0.5);
     }
 
-    &__join {
+    &__join, &__share {
         cursor: pointer;
         transition: 0.3s;
         color: rgba(255, 255, 255, 0.5);
 
-        &:hover {
+        &--disabled {
+            cursor: default;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        &:hover:not(&--disabled) {
             color: rgba(255, 255, 255, 0.35);
         }
     }

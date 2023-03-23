@@ -32,7 +32,7 @@ export class GatewayService implements OnModuleInit {
 
   onModuleInit() {
     this.server.on(EVENTS.CONNECTION, (socket: Socket) => {
-      socket.on('disconnect', async () => {
+      socket.on('disconnect', () => {
         this.handleLeaveDesk(socket);
         console.log(`Disconected: ID: ${socket.id}; ROOM: ${socket.data.room}`);
       });
@@ -50,9 +50,7 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk },
-      {
-        $push: { 'players.players': { id: client.id, name: name, cubes: [] } },
-      },
+      { $push: { 'players.players': { id: client.id, name: name } } },
       { new: true },
     );
 
@@ -67,9 +65,7 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: room },
-      {
-        $pull: { 'players.players': { id: client.id } },
-      },
+      { $pull: { 'players.players': { id: client.id } } },
       { new: true },
     );
 
@@ -82,7 +78,7 @@ export class GatewayService implements OnModuleInit {
   ) {
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk },
-      { $set: { isGameStarted: true, 'players.sequence': sequence } },
+      { $set: { 'players.sequence': sequence, isGameStarted: true } },
       { new: true },
     );
 

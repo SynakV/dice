@@ -2,13 +2,12 @@ import React, { FC } from "react";
 import { Music } from "@components/Layout/Menu/Amulet/Music/Music";
 
 interface Props {
-  isOpen: boolean;
-  toggleMenuOpen: () => void;
+  toggleOpen: () => void;
 }
 
-export const Amulet: FC<Props> = ({ isOpen, toggleMenuOpen }) => {
+export const Amulet: FC<Props> = ({ toggleOpen }) => {
   return (
-    <div className="amulet" onClick={toggleMenuOpen}>
+    <div className="amulet" onClick={toggleOpen}>
       <Music />
     </div>
   );

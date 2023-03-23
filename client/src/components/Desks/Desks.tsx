@@ -1,14 +1,17 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
+import { Loading } from "../Loading/Loading";
 import { getRequest } from "@src/utils/api/api";
 import React, { useEffect, useState } from "react";
 import { DeskType } from "@src/utils/common/types";
 import { Create } from "@src/components/Desks/Create/Create";
 import { DesksModal } from "@src/components/Desks/utils/types";
+import { useNotification } from "../Notification/Notification";
 
 export const Desks = () => {
   const router = useRouter();
-  const { data } = useSWR<DeskType[]>("desk", getRequest);
+  const { notification } = useNotification();
+  const { data, isLoading } = useSWR<DeskType[]>("desk", getRequest);
 
   const [desks, setDesks] = useState<DeskType[]>([]);
 
@@ -39,6 +42,11 @@ export const Desks = () => {
     });
   };
 
+  const handleShare = (id?: string) => {
+    notification("Coppied to clipboard");
+    navigator.clipboard.writeText(`${window.origin}/online/desk?id=${id}`);
+  };
+
   return (
     <>
       <div className="desks">
@@ -53,22 +61,41 @@ export const Desks = () => {
         </div>
         {desks.length ? (
           <div className="desks__list">
-            {desks.map((desk, index) => (
-              <div key={index} className="list__desk">
-                <span className="list__title">{desk.name}</span>
-                <span className="list__players">
-                  Players: {desk.players?.players?.length}/{desk?.players?.max}
-                </span>
-                <span
-                  className="list__join"
-                  onClick={() => handleJoin(desk?._id)}
-                >
-                  Join
-                </span>
-              </div>
-            ))}
+            {desks.map((desk, index) => {
+              const players = {
+                max: desk?.players?.max,
+                current: desk.players?.players?.length,
+              };
+              const isFullOfPlayers = players.current === players.max;
+              return (
+                <div key={index} className="list__desk">
+                  <span className="list__title">{desk.name}</span>
+                  <span className="list__players">
+                    {players.current}/{players.max}
+                  </span>
+                  <span
+                    className="list__share"
+                    onClick={() => handleShare(desk?._id)}
+                  >
+                    Share
+                  </span>
+                  <span
+                    className={`list__join ${
+                      isFullOfPlayers ? "list__join--disabled" : ""
+                    }`}
+                    onClick={
+                      isFullOfPlayers ? () => {} : () => handleJoin(desk?._id)
+                    }
+                  >
+                    Join
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        ) : (
+        ) : null}
+        {isLoading && <Loading />}
+        {!isLoading && !desks.length && (
           <span className="desks__empty">No desks</span>
         )}
       </div>
