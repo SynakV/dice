@@ -1,21 +1,21 @@
 export const setStorageItem = (key: string, value: string) => {
-  if (isClientLocalStorage()) {
+  if (isClient()) {
     localStorage.setItem(key, value);
   }
 };
 
 export const getStorageItem = (key: string) => {
-  if (isClientLocalStorage()) {
+  if (isClient()) {
     return localStorage.getItem(key);
   }
 };
 
 export const getStorageObjectItem = (key: string) => {
-  if (isClientLocalStorage()) {
+  if (isClient()) {
     return JSON.parse(getStorageItem(key) || "{}");
   }
 };
 
-const isClientLocalStorage = () => {
+export const isClient = () => {
   return typeof localStorage !== "undefined";
 };

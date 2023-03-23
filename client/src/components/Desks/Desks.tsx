@@ -1,26 +1,16 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { EVENTS, MESSAGES } from "../../utils/common/types";
+import { getRequest } from "@src/utils/api/api";
+import React, { useEffect, useState } from "react";
+import { DeskType } from "@src/utils/common/types";
 import { Create } from "@src/components/Desks/Create/Create";
 import { DesksModal } from "@src/components/Desks/utils/types";
-import React, { useContext, useEffect, useState } from "react";
-import { WebsocketContext } from "@src/utils/contexts/WebsocketContext";
-
-interface Desk {
-  _id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const fetcher = (url: string) =>
-  fetch(`http://localhost:3001/${url}`).then((r) => r.json());
 
 export const Desks = () => {
   const router = useRouter();
-  const { data, error } = useSWR<Desk[]>("desk", fetcher);
+  const { data } = useSWR<DeskType[]>("desk", getRequest);
 
-  const [desks, setDesks] = useState<Desk[]>([]);
+  const [desks, setDesks] = useState<DeskType[]>([]);
 
   useEffect(() => {
     if (data?.length) {
@@ -40,43 +30,13 @@ export const Desks = () => {
     }));
   };
 
-  const handleJoin = (id: string) => {
+  const handleJoin = (id?: string) => {
     router.push({
       pathname: "online/desk",
       query: {
         id,
       },
     });
-  };
-
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
-
-  const socket = useContext(WebsocketContext);
-
-  useEffect(() => {
-    socket.on(EVENTS.CONNECTION, () => {
-      console.log("Connected!");
-    });
-    socket.on(EVENTS.ON_MESSAGE, (data: any) => {
-      console.log("onMessage event received!");
-      console.log(data);
-      setMessages((prev) => [...prev, data.content]);
-    });
-    socket.on("", () => {});
-
-    return () => {
-      console.log("Unregistering events...");
-      socket.off(EVENTS.CONNECTION);
-      socket.off(EVENTS.ON_MESSAGE);
-    };
-  }, []);
-
-  const handleSubmit = () => {
-    if (input) {
-      socket.emit(MESSAGES.NEW_MESSAGE, input);
-      setInput("");
-    }
   };
 
   return (
@@ -96,9 +56,12 @@ export const Desks = () => {
             {desks.map((desk, index) => (
               <div key={index} className="list__desk">
                 <span className="list__title">{desk.name}</span>
+                <span className="list__players">
+                  Players: {desk.players?.players?.length}/{desk?.players?.max}
+                </span>
                 <span
                   className="list__join"
-                  onClick={() => handleJoin(desk._id)}
+                  onClick={() => handleJoin(desk?._id)}
                 >
                   Join
                 </span>

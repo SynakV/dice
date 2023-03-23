@@ -12,7 +12,7 @@ interface Props {
 }
 
 interface INotification {
-  notification: Function;
+  notification: (text: string, delay?: number) => void;
 }
 
 const DEFAULT_VALUES = {
@@ -31,7 +31,7 @@ export const NotificationContext = createContext<INotification>(DEFAULT_VALUES);
 export const NotificationProvider: FC<Props> = ({ children }) => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
 
-  const notification = (text: string, delay: number) => {
+  const notification = (text: string, delay: number = 3000) => {
     const key = Math.random().toString();
     setNotifications((prev) => [
       {
@@ -44,7 +44,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
     ]);
     setTimeout(() => {
       handleClose(key);
-    }, delay || 3000);
+    }, delay);
   };
 
   const handleClose = (key: string) => {

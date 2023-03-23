@@ -16,19 +16,14 @@ export enum USER {
   SECOND,
 }
 
-// export enum OPPONENT {
-//   COMPUTER = "Computer",
-//   ANOTHER_USER = "Another user",
-// }
-
-export const OPPONENT = {
+export const MODE = {
   online: {
     url: "online",
-    title: "Another user",
+    title: "Online",
   },
   offline: {
     url: "offline",
-    title: "Computer",
+    title: "Offline",
   },
 };
 

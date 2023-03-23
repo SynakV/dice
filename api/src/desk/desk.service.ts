@@ -11,6 +11,16 @@ export class DeskService {
     return this.deskModel.find().exec();
   }
 
+  async findOne(id: string): Promise<Desk> {
+    const desk = await this.deskModel.findById(id);
+
+    if (desk) {
+      return desk;
+    } else {
+      return {};
+    }
+  }
+
   async createDesk(body: any): Promise<Desk> {
     const { name, creator, players } = body;
 
@@ -22,21 +32,15 @@ export class DeskService {
       const createdDesk = new this.deskModel({
         name: name,
         creator,
+        isGameStarted: false,
         players: {
           max: players,
-          players: [
-            {
-              index: 0,
-              isCreator: true,
-              name: creator.name,
-            },
-          ],
         },
       });
 
       createdDesk.save();
 
-      return { id: createdDesk._id.toString() };
+      return createdDesk;
     }
   }
 }

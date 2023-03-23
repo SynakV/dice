@@ -153,12 +153,12 @@ export const getReRollIndexes = (
   cubes: number[],
   ranking: RankingResultType
 ) => {
-  if (!ranking.result.rest) {
-    return [];
-  }
-
   if (ranking.key === RANKING_OF_HANDS_KEYS.NOTHING) {
     return new Array(DICE.COUNT).fill(null).map((_, index) => index);
+  }
+
+  if (!ranking.result.rest) {
+    return [];
   }
 
   const rest = ranking.result.rest;

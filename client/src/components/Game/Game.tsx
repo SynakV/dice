@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { Desk } from "@src/components/Game/Desk/Desk";
 import {
   DiceType,
   RoundType,
@@ -7,11 +5,19 @@ import {
   HistoryType,
   ConclusionType,
 } from "@src/utils/types";
+import React, { FC, useState } from "react";
+import { DeskType } from "@src/utils/common/types";
+import { Desk } from "@src/components/Game/Desk/Desk";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { History } from "@components/Game/History/History";
 import { Conclusion } from "@components/Game/Conclusion/Conclusion";
 
-export const Game = () => {
+interface Props {
+  desk: DeskType;
+  onGameStarted: () => void;
+}
+
+export const Game: FC<Props> = ({ desk, onGameStarted }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [update, setUpdate] = useState<UpdateType | null>(null);
@@ -50,8 +56,19 @@ export const Game = () => {
     }
   };
 
+  const isAllPlayersPresent =
+    desk?.players?.players?.length === desk?.players?.max;
+
   return (
     <div className="game">
+      <span
+        className={`game__start ${
+          isAllPlayersPresent ? "" : "game__start--disabled"
+        }`}
+        onClick={isAllPlayersPresent ? () => onGameStarted() : () => {}}
+      >
+        Start game
+      </span>
       {conclusion && (
         <Conclusion
           update={update}

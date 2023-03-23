@@ -13,19 +13,24 @@ export const Layout: FC<Props> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleStart = (url: string) =>
-      url !== router.asPath && setIsShowChildren(false);
-    const handleComplete = (url: string) =>
-      url === router.asPath && setIsShowChildren(true);
+    const handleStart = (url: string) => {
+      console.log("CHANGE START!");
+      return url !== router.asPath && setIsShowChildren(false);
+    };
 
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
+    const handleComplete = (url: string) => {
+      console.log("CHANGE END!");
+      return url === router.asPath && setIsShowChildren(true);
+    };
+
+    // router.events.on("routeChangeStart", handleStart);
+    // router.events.on("routeChangeComplete", handleComplete);
+    // router.events.on("routeChangeError", handleComplete);
 
     return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleComplete);
-      router.events.off("routeChangeError", handleComplete);
+      // router.events.off("routeChangeStart", handleStart);
+      // router.events.off("routeChangeComplete", handleComplete);
+      // router.events.off("routeChangeError", handleComplete);
     };
   });
 

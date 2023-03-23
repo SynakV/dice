@@ -1,5 +1,7 @@
 import React, { FC, useRef } from "react";
 import { Modal } from "@components/Modal/Modal";
+import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
+import { getStorageObjectItem } from "@src/utils/helpers/storage/storage.helper";
 import { CredentialsType } from "@src/components/Selector/Credentials/utils/types";
 
 interface Props {
@@ -23,11 +25,18 @@ export const Credentials: FC<Props> = ({
     }
   };
 
+  const defaultValue = getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
+
   return (
     <Modal isOpen={isOpen} title="Enter your name">
       <div className="credentials__main">
         <span className="credentials__name">Name:</span>
-        <input type="text" ref={name} className="credentials__input" />
+        <input
+          type="text"
+          ref={name}
+          defaultValue={defaultValue}
+          className="credentials__input"
+        />
       </div>
       <div className="credentials__footer">
         <span className="credentials__close" onClick={toggleIsOpen}>

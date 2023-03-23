@@ -2,10 +2,12 @@ import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import React, { FC, useReducer } from "react";
 import { Modal } from "@components/Modal/Modal";
+import { postRequest } from "@src/utils/api/api";
+import { DeskType } from "@src/utils/common/types";
 import { DesksModal } from "@src/components/Desks/utils/types";
 import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@src/utils/helpers/storage/storage.helper";
 import { useNotification } from "@src/components/Notification/Notification";
+import { getStorageObjectItem } from "@src/utils/helpers/storage/storage.helper";
 
 interface Props {
   isOpen: boolean;
@@ -20,17 +22,6 @@ interface Desk {
   };
 }
 
-async function sendRequest(url: string, { arg }: { arg: Desk }) {
-  return fetch(`http://localhost:3001/${url}`, {
-    method: "POST",
-    body: JSON.stringify(arg),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  }).then((res) => res.json());
-}
-
 export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const [desk, updateDesk] = useReducer(
     (prev: Desk, next: Partial<Desk>) => {
@@ -42,7 +33,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const { notification } = useNotification();
 
-  const { trigger, isMutating } = useSWRMutation("desk", sendRequest);
+  const { trigger, isMutating } = useSWRMutation("desk", postRequest);
 
   const handleClose = () => {
     setIsOpen("create");
@@ -50,7 +41,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
 
   const handleCreateNewDesk = async () => {
     if (isValid()) {
-      const newDesk = await trigger(
+      const newDesk: DeskType = await trigger(
         {
           name: desk.name,
           players: desk.players,
@@ -61,13 +52,13 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
         { revalidate: false }
       );
 
-      if (newDesk.id) {
+      if (newDesk._id) {
         handleClose();
         setTimeout(() => {
           router.push({
             pathname: "online/desk",
             query: {
-              id: newDesk.id,
+              id: newDesk._id,
             },
           });
         }, 300);

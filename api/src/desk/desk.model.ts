@@ -1,36 +1,22 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { PlayerType, PlayersType } from 'src/utils/common/types';
 
 export type DeskDocument = Desk & Document;
-
-interface Players {
-  max?: number;
-  players?: Player[];
-}
-
-interface Player {
-  name?: string;
-  index?: number;
-  cubes?: number[];
-  isCreator?: boolean;
-}
 
 @Schema({ timestamps: true })
 export class Desk {
   @Prop()
-  id?: string;
-
-  @Prop()
   name?: string;
 
   @Prop()
-  index?: number;
+  isGameStarted?: boolean;
 
   @Prop({ type: Object })
-  creator?: Player;
+  creator?: PlayerType;
 
   @Prop({ type: Object })
-  players?: Players;
+  players?: PlayersType;
 }
 
 export const DeskSchema = SchemaFactory.createForClass(Desk);
