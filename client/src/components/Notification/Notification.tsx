@@ -20,7 +20,6 @@ const DEFAULT_VALUES = {
 };
 
 type NotificationType = {
-  top: number;
   key: string;
   text: string;
   isShow: boolean;
@@ -37,10 +36,8 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
       {
         key,
         text,
-        top: 15,
         isShow: true,
       },
-      ...prev,
     ]);
     setTimeout(() => {
       handleClose(key);
@@ -77,15 +74,12 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
       {notifications.length
         ? createPortal(
             <div className="notifications">
-              {notifications.map(({ key, text, isShow, top }, index) => (
+              {notifications.map(({ key, text, isShow }) => (
                 <div
                   key={key}
                   className={`notifications__notification ${
                     isShow ? "opened" : "closed"
                   }`}
-                  style={{
-                    marginTop: `${top}px`,
-                  }}
                 >
                   {text}
                   <span

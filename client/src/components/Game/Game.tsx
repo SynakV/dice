@@ -13,8 +13,8 @@ import { History } from "@components/Game/History/History";
 import { Conclusion } from "@components/Game/Conclusion/Conclusion";
 
 interface Props {
-  desk: DeskType;
-  onGameStarted: () => void;
+  desk?: DeskType;
+  onGameStarted?: () => void;
 }
 
 export const Game: FC<Props> = ({ desk, onGameStarted }) => {
@@ -65,7 +65,11 @@ export const Game: FC<Props> = ({ desk, onGameStarted }) => {
         className={`game__start ${
           isAllPlayersPresent ? "" : "game__start--disabled"
         }`}
-        onClick={isAllPlayersPresent ? () => onGameStarted() : () => {}}
+        onClick={
+          isAllPlayersPresent
+            ? () => onGameStarted && onGameStarted()
+            : () => {}
+        }
       >
         Start game
       </span>
