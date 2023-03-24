@@ -1,21 +1,21 @@
 import Image from "next/image";
-import { Modal } from "@src/components/Modal/Modal";
 import React, { FC, useEffect, useState } from "react";
+import { useGame } from "@src/utils/contexts/GameContext";
+import { Modal } from "@src/components/Shared/Modal/Modal";
 import { playAudio } from "@src/utils/helpers/audio.helper";
 import { USER, ROUND_STAGE, GameplayType } from "@utils/common/types";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
   gameplay: GameplayType;
-  toggleHistoryOpen: () => void;
   setGameplay: (gameplay: React.SetStateAction<GameplayType>) => void;
 }
 
 export const Conclusion: FC<Props> = ({
   setGameplay,
-  toggleHistoryOpen,
   gameplay: { round, history },
 }) => {
+  const { toggleHistoryOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 

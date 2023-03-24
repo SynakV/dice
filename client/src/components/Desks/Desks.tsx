@@ -1,12 +1,12 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading/Loading";
 import { getRequest } from "@src/utils/api/api";
 import React, { useEffect, useState } from "react";
 import { DeskType } from "@src/utils/common/types";
+import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@src/components/Desks/Create/Create";
 import { DesksModal } from "@src/components/Desks/utils/types";
-import { useNotification } from "../Notification/Notification";
+import { useNotification } from "../Shared/Notification/Notification";
 
 export const Desks = () => {
   const router = useRouter();

@@ -1,5 +1,5 @@
-@import './Menu/Menu.scss', '../Notification/Notification.scss', '../Loading/Loading.scss';
-@import '../Desks/Desks.scss', '../Game/Game.scss', '../Selector/Selector.scss';
+@import './Menu/Menu.scss';
+@import '../../Desks/Desks.scss', '../../Game/Game.scss', '../../Mode/Mode.scss';
 
 .layout {
     width: 100vw;
@@ -18,7 +18,7 @@
         position: absolute;
         transform: scaleX(-1);
         background-size: cover;
-        background-image: url('../../../public/images/striga.jpeg');
+        background-image: url('../../../../public/images/striga.jpeg');
     }
 
     &__content {

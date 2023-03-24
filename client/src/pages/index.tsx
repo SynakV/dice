@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Selector } from "@src/components/Selector/Selector";
+import { Mode } from "@src/components/Mode/Mode";
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
       <Head>
         <title>Dice</title>
       </Head>
-      <Selector />
+      <Mode />
     </>
   );
 }

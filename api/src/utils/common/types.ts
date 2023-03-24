@@ -30,7 +30,7 @@ export type DeskType = {
   name?: string;
   creator?: PlayerType;
   players?: PlayersType;
-  gameplay: GameplayType;
+  gameplay?: GameplayType;
 };
 
 export type PlayersType = {

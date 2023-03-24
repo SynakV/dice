@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import React, { FC, useReducer } from "react";
-import { Modal } from "@components/Modal/Modal";
 import { postRequest } from "@src/utils/api/api";
 import { DeskType } from "@src/utils/common/types";
+import { Modal } from "@src/components/Shared/Modal/Modal";
 import { DesksModal } from "@src/components/Desks/utils/types";
 import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { useNotification } from "@src/components/Notification/Notification";
 import { getStorageObjectItem } from "@src/utils/helpers/storage/storage.helper";
+import { useNotification } from "@src/components/Shared/Notification/Notification";
 
 interface Props {
   isOpen: boolean;

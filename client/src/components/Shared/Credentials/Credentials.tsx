@@ -1,8 +1,8 @@
 import React, { FC, useRef } from "react";
-import { Modal } from "@components/Modal/Modal";
+import { Modal } from "@src/components/Shared/Modal/Modal";
 import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@src/utils/helpers/storage/storage.helper";
-import { CredentialsType } from "@src/components/Selector/Credentials/utils/types";
+import { CredentialsType } from "@src/components/Shared/Credentials/utils/types";
 
 interface Props {
   isOpen: boolean;

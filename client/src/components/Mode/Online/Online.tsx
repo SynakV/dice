@@ -1,25 +1,25 @@
 import { useDesk } from "@src/utils/contexts/DeskContext";
-import { useWebsocket } from "@src/utils/contexts/WebsocketContext";
-import { shuffleArray } from "@src/utils/helpers/randomizer.helper";
+import { useSocket } from "@src/utils/contexts/WebsocketContext";
 import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
 import { EVENTS, MESSAGES, DeskType } from "@src/utils/common/types";
 import {
   getStorageObjectItem,
   setStorageItem,
 } from "@src/utils/helpers/storage/storage.helper";
-import { Game } from "../Game/Game";
 import { useRouter } from "next/router";
-import { Loading } from "../Loading/Loading";
-import { Players } from "../Game/Players/Players";
+import { Game } from "@src/components/Game/Game";
+import { Players } from "../../Game/Players/Players";
 import React, { FC, useEffect, useState } from "react";
-import { useNotification } from "../Notification/Notification";
-import { Credentials } from "../Selector/Credentials/Credentials";
-import { CredentialsType } from "../Selector/Credentials/utils/types";
+import { Loading } from "../../Shared/Loading/Loading";
+import { Credentials } from "../../Shared/Credentials/Credentials";
+import { CredentialsType } from "../../Shared/Credentials/utils/types";
+import { Navigator } from "@src/components/Shared/Navigator/Navigator";
+import { useNotification } from "../../Shared/Notification/Notification";
 
 export const Online: FC = () => {
-  const socket = useWebsocket();
-  const { desk, setDesk } = useDesk();
+  const socket = useSocket();
   const { push, query } = useRouter();
+  const { desk, setDesk } = useDesk();
   const { notification } = useNotification();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -61,13 +61,7 @@ export const Online: FC = () => {
       return;
     }
 
-    if (!credentials.name) {
-      return setIsOpen(true);
-    }
-
-    const isSameName = handleSameNameNotification(desk, credentials);
-
-    if (isSameName) {
+    if (!credentials.name || handleSameNameNotification(desk, credentials)) {
       return setIsOpen(true);
     }
 
@@ -99,20 +93,11 @@ export const Online: FC = () => {
     push("/online");
   };
 
-  const handleGameStarted = () => {
-    if (desk?.players?.players) {
-      socket.emit(MESSAGES.GAME_START, {
-        id: query.id,
-        sequence: shuffleArray(desk.players.players),
-      });
-    }
-  };
-
   return (
     <>
       {desk ? (
         <>
-          <Game desk={desk} onGameStarted={handleGameStarted} />
+          <Game />
           <Players />
         </>
       ) : (
@@ -123,6 +108,7 @@ export const Online: FC = () => {
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />
+      <Navigator text="Desks" url="/online" />
     </>
   );
 };

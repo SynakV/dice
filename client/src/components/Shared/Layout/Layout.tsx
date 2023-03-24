@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { Menu } from "@components/Layout/Menu/Menu";
+import { Menu } from "@src/components/Shared/Layout/Menu/Menu";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { NotificationProvider } from "@components/Notification/Notification";
+import { NotificationProvider } from "@src/components/Shared/Notification/Notification";
 
 interface Props {
   children: ReactNode;
@@ -40,6 +40,7 @@ export const Layout: FC<Props> = ({ children }) => {
         <div className="layout__background" />
         {isShowChildren && <div className="layout__content">{children}</div>}
         <Menu />
+        <span className="layout__home">Home</span>
       </div>
     </NotificationProvider>
   );

@@ -5,16 +5,17 @@ import {
   RankingResultWithInfoType,
 } from "@utils/common/types";
 import React, { FC, useEffect, useState } from "react";
+import { useGame } from "@src/utils/contexts/GameContext";
 import { Cubes } from "@src/components/Game/Desk/Cubes/Cubes";
 import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
   gameplay: GameplayType;
-  toggleHistory: () => void;
   setGameplay: (gameplay: React.SetStateAction<GameplayType>) => void;
 }
 
-export const Desk: FC<Props> = ({ gameplay, setGameplay, toggleHistory }) => {
+export const Desk: FC<Props> = ({ gameplay, setGameplay }) => {
+  const { toggleHistoryOpen } = useGame();
   const [forceRefresh, setForceRefresh] = useState<{} | null>(null);
 
   useEffect(() => {
@@ -203,7 +204,7 @@ export const Desk: FC<Props> = ({ gameplay, setGameplay, toggleHistory }) => {
         <span className="desk__status">
           {status ? status : 'Click "Roll dice"'}
         </span>
-        <span className="desk__history" onClick={toggleHistory}>
+        <span className="desk__history" onClick={toggleHistoryOpen}>
           History
         </span>
       </div>

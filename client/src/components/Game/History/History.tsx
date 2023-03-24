@@ -1,16 +1,17 @@
 import React, { FC, Fragment } from "react";
-import { Modal } from "@src/components/Modal/Modal";
+import { useGame } from "@src/utils/contexts/GameContext";
+import { Modal } from "@src/components/Shared/Modal/Modal";
 import { HistoryType, ROUND_STAGE, USER } from "@utils/common/types";
 
 interface Props {
-  isOpen: boolean;
-  toggleHistory: () => void;
   history?: HistoryType | null;
 }
 
-export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
+export const History: FC<Props> = ({ history }) => {
+  const { isHistoryOpen, toggleHistoryOpen } = useGame();
+
   return (
-    <Modal className="history" title="History" isOpen={isOpen}>
+    <Modal className="history" title="History" isOpen={isHistoryOpen}>
       {history ? (
         <ul>
           {Object.entries(history).map(([round, result]) => {
@@ -50,7 +51,7 @@ export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
         <span className="history__no-data">No data</span>
       )}
 
-      <div onClick={toggleHistory} className="history__button">
+      <div onClick={toggleHistoryOpen} className="history__button">
         Close
       </div>
     </Modal>

@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PlayerType, PlayersType } from 'src/utils/common/types';
+import { PlayerType, PlayersType, GameplayType } from 'src/utils/common/types';
 
 export type DeskDocument = Desk & Document;
 
@@ -17,6 +17,9 @@ export class Desk {
 
   @Prop({ type: Object })
   players?: PlayersType;
+
+  @Prop({ type: Object })
+  gameplay?: GameplayType;
 }
 
 export const DeskSchema = SchemaFactory.createForClass(Desk);

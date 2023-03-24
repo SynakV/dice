@@ -6,43 +6,41 @@ import {
 } from "@src/utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
 import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { Credentials } from "@src/components/Selector/Credentials/Credentials";
-import { CredentialsType } from "@src/components/Selector/Credentials/utils/types";
+import { Credentials } from "@src/components/Shared/Credentials/Credentials";
+import { CredentialsType } from "@src/components/Shared/Credentials/utils/types";
 
-export const Selector = () => {
+export const Mode = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [localSelectedMode, setLocalSelectedMode] = useState<
-    keyof typeof MODE | null
-  >(null);
+  const [localMode, setLocalMode] = useState<keyof typeof MODE | null>(null);
 
-  const handleSelectedOpponent = (selectedOpponent: keyof typeof MODE) => {
+  const handleMode = (mode: keyof typeof MODE) => {
     const credentials = getStorageItem(STORAGE_ITEMS.CREDENTIALS);
 
     if (!credentials) {
       setIsOpen(true);
-      setLocalSelectedMode(selectedOpponent);
+      setLocalMode(mode);
     } else {
-      router.push(MODE[selectedOpponent!].url);
+      router.push(MODE[mode!].url);
     }
   };
 
   const handleSetCredentials = (credentials: CredentialsType) => {
     setIsOpen(false);
-    router.push(MODE[localSelectedMode!].url);
+    router.push(MODE[localMode!].url);
     setStorageItem(STORAGE_ITEMS.CREDENTIALS, JSON.stringify(credentials));
   };
 
   return (
     <>
-      <div className="selector">
-        <span className="selector__head-text">Select mode</span>
-        <div className="selector__selector">
+      <div className="mode">
+        <span className="mode__head-text">Select mode</span>
+        <div className="mode__selector">
           {Object.entries(MODE).map(([key, { title }]) => (
             <span
               key={key}
-              className="selector__option"
-              onClick={() => handleSelectedOpponent(key as keyof typeof MODE)}
+              className="mode__option"
+              onClick={() => handleMode(key as keyof typeof MODE)}
             >
               {title}
             </span>

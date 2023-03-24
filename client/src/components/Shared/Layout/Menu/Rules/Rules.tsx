@@ -1,5 +1,5 @@
-import { RANKING_OF_HANDS } from "@src/utils/constants";
 import React from "react";
+import { RANKING_OF_HANDS } from "@src/utils/constants";
 
 export const Rules = () => {
   return (

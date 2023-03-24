@@ -1,15 +1,16 @@
+import { server } from "../api/api";
 import { EVENTS } from "../common/types";
 import { io, Socket } from "socket.io-client";
 import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 
-export const socket = io("http://localhost:3001");
-export const WebsocketContext = createContext<Socket>(socket);
+export const socket = io(server);
+export const SocketContext = createContext<Socket>(socket);
 
 interface Props {
   children: ReactNode;
 }
 
-export const WebsocketProvider: FC<Props> = ({ children }) => {
+export const SocketProvider: FC<Props> = ({ children }) => {
   useEffect(() => {
     return () => {
       console.log("Unregistering events...");
@@ -22,10 +23,8 @@ export const WebsocketProvider: FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <WebsocketContext.Provider value={socket}>
-      {children}
-    </WebsocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
-export const useWebsocket = () => useContext(WebsocketContext);
+export const useSocket = () => useContext(SocketContext);

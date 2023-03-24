@@ -1,7 +1,6 @@
 import Head from "next/head";
-import { Online } from "@src/components/Online/Online";
-import { DeskProvider } from "@src/utils/contexts/DeskContext";
-import { WebsocketProvider } from "@src/utils/contexts/WebsocketContext";
+import { Online } from "@src/components/Mode/Online/Online";
+import { DeskOnlineProvider } from "@src/utils/contexts/DeskContext";
 
 export default function Page() {
   return (
@@ -9,11 +8,9 @@ export default function Page() {
       <Head>
         <title>Dice | Online | Desk</title>
       </Head>
-      <WebsocketProvider>
-        <DeskProvider>
-          <Online />
-        </DeskProvider>
-      </WebsocketProvider>
+      <DeskOnlineProvider>
+        <Online />
+      </DeskOnlineProvider>
     </>
   );
 }

@@ -1,0 +1,14 @@
+.navigator {
+    opacity: 0;
+    left: 15px;
+    bottom: 15px;
+    font-size: 30px;
+    position: fixed;
+    cursor: pointer;
+    transition: 0.3s;
+    color: rgba(255, 255, 255, 0.5);
+
+    &:hover {
+        opacity: 1;
+    }
+}
