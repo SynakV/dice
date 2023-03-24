@@ -1,4 +1,3 @@
-import { RankingOfHandsType, RANKING_OF_HANDS_KEYS } from "./types";
 import {
   isNothing,
   isPair,
@@ -10,6 +9,7 @@ import {
   isFourOfAKind,
   isFiveOfAKind,
 } from "@src/utils/helpers/ranking/calculations.helper";
+import { RankingOfHandsType, RANKING_OF_HANDS_KEYS } from "@utils/common/types";
 
 export const RANKING_OF_HANDS: RankingOfHandsType = {
   [RANKING_OF_HANDS_KEYS.NOTHING]: {
@@ -74,5 +74,16 @@ export const DICE = {
   RANGE: {
     MIN: 1,
     MAX: 6,
+  },
+};
+
+export const MODE = {
+  online: {
+    url: "online",
+    title: "Online",
+  },
+  offline: {
+    url: "offline",
+    title: "Offline",
   },
 };

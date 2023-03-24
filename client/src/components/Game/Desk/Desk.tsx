@@ -1,122 +1,109 @@
 import {
   USER,
-  DiceType,
-  RoundType,
-  UpdateType,
   ROUND_STAGE,
-  ConclusionType,
+  GameplayType,
   RankingResultWithInfoType,
-} from "@src/utils/types";
+} from "@utils/common/types";
 import React, { FC, useEffect, useState } from "react";
 import { Cubes } from "@src/components/Game/Desk/Cubes/Cubes";
 import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
-  isGameEnd: boolean;
-  update: UpdateType | null;
+  gameplay: GameplayType;
   toggleHistory: () => void;
-  setIsGameEnd: (isGameEnd: boolean) => void;
-  setConclusion: (result: ConclusionType) => void;
-  setHistory: (history: DiceType | null, round: RoundType | null) => void;
+  setGameplay: (gameplay: React.SetStateAction<GameplayType>) => void;
 }
 
-export const Desk: FC<Props> = ({
-  update,
-  isGameEnd,
-  setHistory,
-  setIsGameEnd,
-  setConclusion,
-  toggleHistory,
-}) => {
-  const [round, setRound] = useState<RoundType | null>(null);
-  const [result, setResult] = useState<DiceType | null>(null);
+export const Desk: FC<Props> = ({ gameplay, setGameplay, toggleHistory }) => {
   const [forceRefresh, setForceRefresh] = useState<{} | null>(null);
 
   useEffect(() => {
     if (
-      result?.[USER.FIRST]?.stage === ROUND_STAGE.END &&
-      result?.[USER.SECOND]?.stage === ROUND_STAGE.END
+      gameplay?.result?.[USER.FIRST]?.stage === ROUND_STAGE.END &&
+      gameplay?.result?.[USER.SECOND]?.stage === ROUND_STAGE.END
     ) {
-      const roundWinner = getComparisonResult(result);
+      const roundWinner = getComparisonResult(gameplay?.result);
 
-      setRound((prev: RoundType | null) => ({
+      setGameplay((prev) => ({
         ...prev,
-        isCompleted: true,
-        winner: {
-          ...prev?.winner,
-          ...(roundWinner !== USER.NOBODY
-            ? {
-                [roundWinner]: prev?.winner?.[roundWinner]
-                  ? ++prev.winner[roundWinner]!
-                  : 1,
-                current: roundWinner,
-              }
-            : {
-                [USER.FIRST]: prev?.winner?.[USER.FIRST]
-                  ? prev.winner[USER.FIRST]++
-                  : 1,
-                [USER.SECOND]: prev?.winner?.[USER.SECOND]
-                  ? prev.winner[USER.SECOND]++
-                  : 1,
-                current: USER.NOBODY,
-              }),
-        },
-        stage: {
-          ...prev?.stage,
-          [ROUND_STAGE.START]: true,
-          [ROUND_STAGE.END]: true,
-          value: 1,
-          threw: {
-            [USER.FIRST]: true,
-            [USER.SECOND]: true,
+        result: null,
+        round: {
+          ...prev?.round,
+          isCompleted: true,
+          winner: {
+            ...prev?.round?.winner,
+            ...(roundWinner !== USER.NOBODY
+              ? {
+                  [roundWinner]: prev?.round?.winner?.[roundWinner]
+                    ? ++prev.round.winner[roundWinner]!
+                    : 1,
+                  current: roundWinner,
+                }
+              : {
+                  [USER.FIRST]: prev?.round?.winner?.[USER.FIRST]
+                    ? prev.round.winner[USER.FIRST]++
+                    : 1,
+                  [USER.SECOND]: prev?.round?.winner?.[USER.SECOND]
+                    ? prev.round.winner[USER.SECOND]++
+                    : 1,
+                  current: USER.NOBODY,
+                }),
           },
+          stage: {
+            ...prev?.round?.stage,
+            [ROUND_STAGE.START]: true,
+            [ROUND_STAGE.END]: true,
+            value: 1,
+            threw: {
+              [USER.FIRST]: true,
+              [USER.SECOND]: true,
+            },
+            isStart: false,
+          },
+          status: "Results",
         },
-        status: "Results",
       }));
-
-      setResult(null);
-      setConclusion({ result });
     }
-  }, [result, round]);
+  }, [gameplay?.result, gameplay?.round]);
 
   useEffect(() => {
-    if (round?.isCompleted) {
-      setConclusion({ round });
-    }
-  }, [round]);
-
-  useEffect(() => {
-    if (update) {
-      setRound(update.round);
-    }
-  }, [update]);
-
-  useEffect(() => {
-    if (!result) {
+    if (!gameplay?.result) {
       return;
     }
 
-    if (result?.[USER.FIRST]?.stage === result?.[USER.SECOND]?.stage) {
-      const stageWinner = getComparisonResult(result);
-      setHistory(result, {
-        ...round,
-        stage: {
-          ...round?.stage,
-          winner: stageWinner,
+    if (
+      gameplay?.result?.[USER.FIRST]?.stage ===
+      gameplay?.result?.[USER.SECOND]?.stage
+    ) {
+      const stageWinner = getComparisonResult(gameplay?.result);
+      setGameplay((prev) => ({
+        ...prev,
+        history: {
+          ...prev.history,
+          [prev?.round?.value || 0]: {
+            ...prev?.history?.[prev?.round?.value || 0],
+            [prev?.round?.stage?.value || 0]: {
+              result: gameplay.result,
+              round: {
+                ...gameplay.round,
+                stage: {
+                  ...gameplay.round?.stage,
+                  winner: stageWinner,
+                },
+              },
+            },
+          },
         },
-      });
+      }));
     }
-  }, [result]);
+  }, [gameplay?.result]);
 
   useEffect(() => {
-    if (isGameEnd) {
-      setRound(null);
-      setResult(null);
+    if (gameplay.isGameEnded) {
       setForceRefresh({});
-      setIsGameEnd(false);
-      setHistory(null, null);
+      setGameplay({ isGameEnded: false });
     }
-  }, [isGameEnd]);
+  }, [gameplay.isGameEnded]);
 
   const handleResult = (result: RankingResultWithInfoType | null) => {
     if (!result) {
@@ -124,76 +111,85 @@ export const Desk: FC<Props> = ({
     }
 
     if (result?.user === USER.FIRST) {
-      setResult((prev) => ({
-        ...prev!,
-        [result.user]: {
-          ...result,
-          stage:
-            prev?.[result?.user]?.stage === ROUND_STAGE.START
-              ? ROUND_STAGE.END
-              : ROUND_STAGE.START,
-        },
-      }));
-
-      setRound((prev: RoundType | null) => ({
+      setGameplay((prev) => ({
         ...prev,
-        stage: {
-          ...prev?.stage,
-          threw: {
-            ...prev?.stage?.threw,
-            [USER.FIRST]: true,
+        result: {
+          ...prev?.result!,
+          [result.user]: {
+            ...result,
+            stage:
+              prev?.result?.[result?.user]?.stage === ROUND_STAGE.START
+                ? ROUND_STAGE.END
+                : ROUND_STAGE.START,
           },
         },
-        isCompleted: false,
-        status: "Opponent rolling...",
+        round: {
+          ...prev?.round,
+          stage: {
+            ...prev?.round?.stage,
+            threw: {
+              ...prev?.round?.stage?.threw,
+              [USER.FIRST]: true,
+            },
+          },
+          isCompleted: false,
+          status: "Opponent rolling...",
+        },
       }));
     } else {
-      setResult((prev) => ({
-        ...prev!,
-        [result.user]: {
-          ...result,
-        },
-      }));
-      setRound((prev) => ({
+      setGameplay((prev) => ({
         ...prev,
-        stage: {
-          ...prev?.stage,
-          isCompleted: {
-            ...prev?.stage?.isCompleted,
-            [+(prev?.stage?.isCompleted?.[ROUND_STAGE.START] || 0)]: true,
+        result: {
+          ...prev?.result!,
+          [result.user]: {
+            ...result,
           },
-          threw: {
-            ...prev?.stage?.threw,
-            [USER.SECOND]: true,
-          },
-          isStart: false,
         },
-        status: "Select dice to roll again",
+        round: {
+          ...prev?.round,
+          stage: {
+            ...prev?.round?.stage,
+            isCompleted: {
+              ...prev?.round?.stage?.isCompleted,
+              [+(prev?.round?.stage?.isCompleted?.[ROUND_STAGE.START] || 0)]:
+                true,
+            },
+            threw: {
+              ...prev?.round?.stage?.threw,
+              [USER.SECOND]: true,
+            },
+            isStart: false,
+          },
+          status: "Select dice to roll again",
+        },
       }));
     }
   };
 
   const handleRollDice = () => {
-    setRound((prev) => {
+    setGameplay((prev) => {
       const isFirstStageCompleted =
-        prev?.stage?.isCompleted?.[ROUND_STAGE.START];
+        prev?.round?.stage?.isCompleted?.[ROUND_STAGE.START];
       return {
         ...prev,
-        stage: {
-          ...prev?.stage,
-          isStart: true,
-          threw: {},
-          value: isFirstStageCompleted ? ROUND_STAGE.END : ROUND_STAGE.START,
+        round: {
+          ...prev?.round,
+          stage: {
+            ...prev?.round?.stage,
+            isStart: true,
+            threw: {},
+            value: isFirstStageCompleted ? ROUND_STAGE.END : ROUND_STAGE.START,
+          },
+          status: "Rolling...",
         },
-        status: "Rolling...",
       };
     });
   };
 
-  const status = round?.status;
-  const isNotStart = !round?.stage?.isStart;
+  const status = gameplay?.round?.status;
+  const isNotStart = !gameplay?.round?.stage?.isStart;
   const isFirstStageNotCompleted =
-    !round?.stage?.isCompleted?.[ROUND_STAGE.START];
+    !gameplay?.round?.stage?.isCompleted?.[ROUND_STAGE.START];
 
   return (
     <div className="desk">
@@ -213,16 +209,16 @@ export const Desk: FC<Props> = ({
       </div>
       <div className="desk__cubes">
         <Cubes
-          round={round}
           user={USER.FIRST}
           forceRefresh={forceRefresh}
           setRankingResult={handleResult}
+          round={gameplay?.round || null}
         />
         <Cubes
-          round={round}
           user={USER.SECOND}
           forceRefresh={forceRefresh}
           setRankingResult={handleResult}
+          round={gameplay?.round || null}
         />
       </div>
     </div>

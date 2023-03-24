@@ -7,7 +7,7 @@ import {
   ROUND_STAGE,
   RankingResultType,
   RankingResultWithInfoType,
-} from "@src/utils/types";
+} from "@utils/common/types";
 import {
   getRandomInt,
   getRandomIntsFromInterval,

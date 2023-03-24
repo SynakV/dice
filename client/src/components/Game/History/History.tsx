@@ -1,11 +1,11 @@
 import React, { FC, Fragment } from "react";
 import { Modal } from "@src/components/Modal/Modal";
-import { HistoryType, ROUND_STAGE, USER } from "@src/utils/types";
+import { HistoryType, ROUND_STAGE, USER } from "@utils/common/types";
 
 interface Props {
   isOpen: boolean;
   toggleHistory: () => void;
-  history: HistoryType | null;
+  history?: HistoryType | null;
 }
 
 export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
@@ -32,10 +32,10 @@ export const History: FC<Props> = ({ isOpen, history, toggleHistory }) => {
                         </li>
                         <ul>
                           <li>
-                            {user?.result?.[USER.FIRST].value.name} [
-                            {user?.result?.[USER.FIRST].cubes?.toString()}] -{" "}
-                            {user?.result?.[USER.SECOND].value.name} [
-                            {user?.result?.[USER.SECOND].cubes?.toString()}]
+                            {user?.result?.[USER.FIRST]?.value.name} [
+                            {user?.result?.[USER.FIRST]?.cubes?.toString()}] -{" "}
+                            {user?.result?.[USER.SECOND]?.value.name} [
+                            {user?.result?.[USER.SECOND]?.cubes?.toString()}]
                           </li>
                         </ul>
                       </Fragment>

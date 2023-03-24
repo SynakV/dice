@@ -3,7 +3,7 @@ import {
   AppearedType,
   StructuredType,
   WinnerResultValueType,
-} from "@src/utils/types";
+} from "@utils/common/types";
 import { DICE } from "@src/utils/constants";
 
 export const getAppearedNumbers = (numbers: number[]) => {

@@ -2,28 +2,19 @@ import Image from "next/image";
 import { Modal } from "@src/components/Modal/Modal";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@src/utils/helpers/audio.helper";
-import {
-  USER,
-  UpdateType,
-  ROUND_STAGE,
-  ConclusionType,
-} from "@src/utils/types";
+import { USER, ROUND_STAGE, GameplayType } from "@utils/common/types";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
 interface Props {
-  update: UpdateType | null;
-  conclusion: ConclusionType;
+  gameplay: GameplayType;
   toggleHistoryOpen: () => void;
-  setUpdate: (update: UpdateType) => void;
-  setIsClearOnEnd: (isGameEnd: boolean) => void;
+  setGameplay: (gameplay: React.SetStateAction<GameplayType>) => void;
 }
 
 export const Conclusion: FC<Props> = ({
-  update,
-  setUpdate,
-  setIsClearOnEnd,
+  setGameplay,
   toggleHistoryOpen,
-  conclusion: { result, round },
+  gameplay: { round, history },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
@@ -62,17 +53,17 @@ export const Conclusion: FC<Props> = ({
     );
   };
 
-  const handleSetUpdate = () => {
-    setUpdate({
-      ...update,
+  const handleUpdateGameplay = () => {
+    setGameplay((prev) => ({
+      ...prev,
       round: {
-        ...round,
+        ...prev?.round,
         value: (round?.value || 0) + 1,
         isCompleted: false,
         stage: {},
         status: "",
       },
-    });
+    }));
   };
 
   useEffect(() => {
@@ -87,7 +78,11 @@ export const Conclusion: FC<Props> = ({
         playWinnerSound("round");
       }
 
-      setIsOpen(round?.stage?.value === ROUND_STAGE.END);
+      const isRoundNotNull = !!round;
+      const isNextRoundDidntStartYet = !round?.stage?.isStart;
+      const isLastRoundStage = round?.stage?.value === ROUND_STAGE.END;
+
+      setIsOpen(isLastRoundStage && isNextRoundDidntStartYet && isRoundNotNull);
     }
   }, [round]);
 
@@ -107,26 +102,34 @@ export const Conclusion: FC<Props> = ({
 
   const handleClick = () => {
     setIsOpen(false);
-    handleSetUpdate();
     playAudio("hover");
-    setIsClearOnEnd(isLastRound);
+
+    setTimeout(() => {
+      handleUpdateGameplay();
+      setGameplay((prev) => ({
+        ...prev,
+        isGameEnded: isLastRound,
+      }));
+    }, 300);
   };
 
-  const isShow = !!(isOpen && round);
+  const getRankingName = (user: USER.FIRST | USER.SECOND) =>
+    history?.[round?.value || 0]?.[round?.stage?.value || 0]?.result?.[user]
+      ?.value.name;
 
   return (
-    <Modal title={getTitle()} isOpen={isShow}>
+    <Modal title={getTitle()} isOpen={isOpen}>
       <span className="conclusion__round">
         Round: {(round?.value || 0) + 1}
       </span>
 
       <div className="conclusion__pool">
         <div className="conclusion__pool-ranking">
-          {result?.[USER.FIRST].value.name}
+          {getRankingName(USER.FIRST)}
         </div>
         <span className="conclusion__pool-header"></span>
         <div className="conclusion__pool-ranking">
-          {result?.[USER.SECOND].value.name}
+          {getRankingName(USER.SECOND)}
         </div>
       </div>
       <div className="conclusion__wins">

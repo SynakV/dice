@@ -1,5 +1,5 @@
 import { DICE } from "@utils/constants";
-import { RANKING_OF_HANDS_KEYS } from "../types";
+import { RANKING_OF_HANDS_KEYS } from "@utils/common/types";
 
 export const getRandomIntsFromInterval = (
   randomNumbersCount: number = DICE.COUNT,

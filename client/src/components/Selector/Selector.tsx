@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MODE } from "@src/utils/types";
+import { MODE } from "@src/utils/constants";
 import {
   getStorageItem,
   setStorageItem,

@@ -1,11 +1,5 @@
-import {
-  DiceType,
-  RoundType,
-  UpdateType,
-  HistoryType,
-  ConclusionType,
-} from "@src/utils/types";
 import React, { FC, useState } from "react";
+import { GameplayType } from "@utils/common/types";
 import { DeskType } from "@src/utils/common/types";
 import { Desk } from "@src/components/Game/Desk/Desk";
 import { playAudio } from "@utils/helpers/audio.helper";
@@ -18,42 +12,12 @@ interface Props {
 }
 
 export const Game: FC<Props> = ({ desk, onGameStarted }) => {
-  const [isGameEnd, setIsGameEnd] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [update, setUpdate] = useState<UpdateType | null>(null);
-  const [history, setHistory] = useState<HistoryType | null>(null);
-  const [conclusion, setConclusion] = useState<ConclusionType | null>(null);
-
-  const handleSetConclusion = (conclusion: ConclusionType) => {
-    setConclusion((prev) => ({
-      ...prev,
-      ...conclusion,
-    }));
-  };
+  const [gameplay, setGamaplay] = useState<GameplayType>({});
 
   const handleToggleHistory = () => {
     playAudio("hover");
     setIsHistoryOpen((prev) => !prev);
-  };
-
-  const handleSetHistory = (
-    result: DiceType | null,
-    round: RoundType | null
-  ) => {
-    if (result === null && round === null) {
-      setHistory(null);
-    } else {
-      setHistory((prev) => ({
-        ...prev,
-        [round?.value || 0]: {
-          ...prev?.[round?.value || 0],
-          [round?.stage?.value || 0]: {
-            round,
-            result,
-          },
-        },
-      }));
-    }
   };
 
   const isAllPlayersPresent =
@@ -73,26 +37,19 @@ export const Game: FC<Props> = ({ desk, onGameStarted }) => {
       >
         Start game
       </span>
-      {conclusion && (
-        <Conclusion
-          update={update}
-          setUpdate={setUpdate}
-          conclusion={conclusion}
-          setIsClearOnEnd={setIsGameEnd}
-          toggleHistoryOpen={handleToggleHistory}
-        />
-      )}
+      <Conclusion
+        gameplay={gameplay}
+        setGameplay={setGamaplay}
+        toggleHistoryOpen={handleToggleHistory}
+      />
       <History
-        history={history}
         isOpen={isHistoryOpen}
+        history={gameplay.history}
         toggleHistory={handleToggleHistory}
       />
       <Desk
-        update={update}
-        isGameEnd={isGameEnd}
-        setIsGameEnd={setIsGameEnd}
-        setHistory={handleSetHistory}
-        setConclusion={handleSetConclusion}
+        gameplay={gameplay}
+        setGameplay={setGamaplay}
         toggleHistory={handleToggleHistory}
       />
     </div>

@@ -6,7 +6,7 @@ import {
   RankingResultType,
   AppearesAndRestsType,
   RANKING_OF_HANDS_KEYS,
-} from "@src/utils/types";
+} from "@utils/common/types";
 import {
   getHighestRest,
   getAppearedNumbers,
