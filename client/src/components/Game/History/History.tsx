@@ -1,20 +1,18 @@
-import React, { FC, Fragment } from "react";
+import React, { Fragment } from "react";
+import { ROUND_STAGE, USER } from "@utils/common/types";
 import { useGame } from "@src/utils/contexts/GameContext";
+import { useDesk } from "@src/utils/contexts/DeskContext";
 import { Modal } from "@src/components/Shared/Modal/Modal";
-import { HistoryType, ROUND_STAGE, USER } from "@utils/common/types";
 
-interface Props {
-  history?: HistoryType | null;
-}
-
-export const History: FC<Props> = ({ history }) => {
+export const History = () => {
+  const { desk } = useDesk();
   const { isHistoryOpen, toggleHistoryOpen } = useGame();
 
   return (
     <Modal className="history" title="History" isOpen={isHistoryOpen}>
-      {history ? (
+      {desk?.gameplay?.history ? (
         <ul>
-          {Object.entries(history).map(([round, result]) => {
+          {Object.entries(desk.gameplay.history).map(([round, result]) => {
             const roundWinner =
               result?.[ROUND_STAGE.END]?.round?.stage?.winner?.toString();
             return (

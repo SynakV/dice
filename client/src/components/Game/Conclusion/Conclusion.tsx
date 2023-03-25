@@ -1,26 +1,20 @@
 import Image from "next/image";
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { USER, ROUND_STAGE } from "@utils/common/types";
 import { useGame } from "@src/utils/contexts/GameContext";
+import { useDesk } from "@src/utils/contexts/DeskContext";
 import { Modal } from "@src/components/Shared/Modal/Modal";
 import { playAudio } from "@src/utils/helpers/audio.helper";
-import { USER, ROUND_STAGE, GameplayType } from "@utils/common/types";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
 
-interface Props {
-  gameplay: GameplayType;
-  setGameplay: (gameplay: React.SetStateAction<GameplayType>) => void;
-}
-
-export const Conclusion: FC<Props> = ({
-  setGameplay,
-  gameplay: { round, history },
-}) => {
+export const Conclusion = () => {
+  const { desk, setDesk } = useDesk();
   const { toggleHistoryOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 
   const getTitle = () => {
-    switch (round?.winner?.current) {
+    switch (desk?.gameplay?.round?.winner?.current) {
       case USER.FIRST:
         return "You win!";
       case USER.SECOND:
@@ -54,21 +48,24 @@ export const Conclusion: FC<Props> = ({
   };
 
   const handleUpdateGameplay = () => {
-    setGameplay((prev) => ({
+    setDesk((prev) => ({
       ...prev,
-      round: {
-        ...prev?.round,
-        value: (round?.value || 0) + 1,
-        isCompleted: false,
-        stage: {},
-        status: "",
+      gameplay: {
+        ...prev?.gameplay,
+        round: {
+          ...prev?.gameplay?.round,
+          value: (prev?.gameplay?.round?.value || 0) + 1,
+          isCompleted: false,
+          stage: {},
+          status: "",
+        },
       },
     }));
   };
 
   useEffect(() => {
-    if (round) {
-      const gameWinner = getGameWinner(round);
+    if (desk?.gameplay?.round) {
+      const gameWinner = getGameWinner(desk?.gameplay?.round);
 
       if (gameWinner !== false) {
         setIsLastRound(true);
@@ -78,22 +75,26 @@ export const Conclusion: FC<Props> = ({
         playWinnerSound("round");
       }
 
-      const isRoundNotNull = !!round;
-      const isNextRoundDidntStartYet = !round?.stage?.isStart;
-      const isLastRoundStage = round?.stage?.value === ROUND_STAGE.END;
+      const isRoundNotNull = !!desk?.gameplay?.round;
+      const isNextRoundDidntStartYet = !desk?.gameplay?.round?.stage?.isStart;
+      const isLastRoundStage =
+        desk?.gameplay?.round?.stage?.value === ROUND_STAGE.END;
 
       setIsOpen(isLastRoundStage && isNextRoundDidntStartYet && isRoundNotNull);
     }
-  }, [round]);
+  }, [desk?.gameplay?.round]);
 
   const playWinnerSound = (phase: "round" | "game") => {
-    if (!round?.winner?.current || !round?.isCompleted) {
+    if (
+      !desk?.gameplay?.round?.winner?.current ||
+      !desk?.gameplay?.round?.isCompleted
+    ) {
       return;
     }
 
     const isGameWinner = phase === "game";
 
-    if (round?.winner?.current === USER.FIRST) {
+    if (desk?.gameplay?.round?.winner?.current === USER.FIRST) {
       playAudio(isGameWinner ? "gameWin" : "roundWin");
     } else {
       playAudio(isGameWinner ? "gameLoose" : "roundLoose");
@@ -106,21 +107,25 @@ export const Conclusion: FC<Props> = ({
 
     setTimeout(() => {
       handleUpdateGameplay();
-      setGameplay((prev) => ({
+      setDesk((prev) => ({
         ...prev,
-        isGameEnded: isLastRound,
+        gameplay: {
+          ...prev?.gameplay,
+          isGameEnded: isLastRound,
+        },
       }));
     }, 300);
   };
 
   const getRankingName = (user: USER.FIRST | USER.SECOND) =>
-    history?.[round?.value || 0]?.[round?.stage?.value || 0]?.result?.[user]
-      ?.value.name;
+    desk?.gameplay?.history?.[desk?.gameplay?.round?.value || 0]?.[
+      desk?.gameplay?.round?.stage?.value || 0
+    ]?.result?.[user]?.value.name;
 
   return (
     <Modal title={getTitle()} isOpen={isOpen}>
       <span className="conclusion__round">
-        Round: {(round?.value || 0) + 1}
+        Round: {(desk?.gameplay?.round?.value || 0) + 1}
       </span>
 
       <div className="conclusion__pool">
@@ -133,8 +138,8 @@ export const Conclusion: FC<Props> = ({
         </div>
       </div>
       <div className="conclusion__wins">
-        {getWinnerIcons(round?.winner?.[USER.FIRST])}
-        {getWinnerIcons(round?.winner?.[USER.SECOND])}
+        {getWinnerIcons(desk?.gameplay?.round?.winner?.[USER.FIRST])}
+        {getWinnerIcons(desk?.gameplay?.round?.winner?.[USER.SECOND])}
       </div>
       <span onClick={handleClick} className="conclusion__button">
         {isLastRound ? "Close" : "Continue"}

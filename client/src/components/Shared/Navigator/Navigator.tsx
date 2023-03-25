@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { createPortal } from "react-dom";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
+import { usePortal } from "@src/utils/hooks/usePortal";
 
 interface Props {
   url?: string;
@@ -8,18 +8,11 @@ interface Props {
 }
 
 export const Navigator: FC<Props> = ({ url, text }) => {
-  const [isShow, setIsShow] = useState(false);
+  const portal = usePortal();
 
-  useEffect(() => {
-    setIsShow(true);
-  }, []);
-
-  return isShow
-    ? createPortal(
-        <Link href={url || "/"}>
-          <div className="navigator">{text}</div>
-        </Link>,
-        document.getElementsByTagName("body")[0]
-      )
-    : null;
+  return portal(
+    <Link href={url || "/"}>
+      <div className="navigator">{text}</div>
+    </Link>
+  );
 };

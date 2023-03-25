@@ -7,6 +7,8 @@ import {
   useEffect,
   useContext,
   createContext,
+  SetStateAction,
+  Dispatch,
 } from "react";
 import { getRequest } from "../api/api";
 import { useRouter } from "next/router";
@@ -15,7 +17,7 @@ import { SocketProvider } from "./WebsocketContext";
 
 interface DeskContext {
   desk: DeskType | null;
-  setDesk: (desk: DeskType | null) => void;
+  setDesk: Dispatch<SetStateAction<DeskType | null>>;
 }
 
 const DEFAULT_VALUES = {

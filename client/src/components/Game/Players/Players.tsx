@@ -1,14 +1,15 @@
 import React from "react";
-import { createPortal } from "react-dom";
+import { usePortal } from "@src/utils/hooks/usePortal";
 import { useDesk } from "@src/utils/contexts/DeskContext";
 
 export const Players = () => {
   const { desk } = useDesk();
+  const portal = usePortal();
 
   const max = desk?.players?.max;
   const players = desk?.players?.players;
 
-  return createPortal(
+  return portal(
     <div className="players">
       <div className="players__list">
         {players?.length
@@ -27,7 +28,6 @@ export const Players = () => {
               {index}
             </div>
           ))} */}
-    </div>,
-    document.getElementsByTagName("body")[0]
+    </div>
   );
 };

@@ -5,7 +5,7 @@ import React, {
   useContext,
   createContext,
 } from "react";
-import { createPortal } from "react-dom";
+import { usePortal } from "@src/utils/hooks/usePortal";
 
 interface Props {
   children: ReactNode;
@@ -28,6 +28,7 @@ type NotificationType = {
 export const NotificationContext = createContext<INotification>(DEFAULT_VALUES);
 
 export const NotificationProvider: FC<Props> = ({ children }) => {
+  const portal = usePortal();
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
 
   const notification = (text: string, delay: number = 3000) => {
@@ -72,7 +73,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
     >
       {children}
       {notifications.length
-        ? createPortal(
+        ? portal(
             <div className="notifications">
               {notifications.map(({ key, text, isShow }) => (
                 <div
@@ -88,8 +89,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
                   />
                 </div>
               ))}
-            </div>,
-            document.getElementsByTagName("body")[0]
+            </div>
           )
         : null}
     </NotificationContext.Provider>

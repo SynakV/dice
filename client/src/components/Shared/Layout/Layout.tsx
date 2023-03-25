@@ -40,7 +40,6 @@ export const Layout: FC<Props> = ({ children }) => {
         <div className="layout__background" />
         {isShowChildren && <div className="layout__content">{children}</div>}
         <Menu />
-        <span className="layout__home">Home</span>
       </div>
     </NotificationProvider>
   );
