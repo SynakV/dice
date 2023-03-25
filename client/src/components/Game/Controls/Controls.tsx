@@ -5,6 +5,7 @@ import { useGame } from "@src/utils/contexts/GameContext";
 import { MESSAGES, ROUND_STAGE } from "@src/utils/common/types";
 import { useSocket } from "@src/utils/contexts/WebsocketContext";
 import { shuffleArray } from "@src/utils/helpers/randomizer.helper";
+import { afterTriggerStageStart } from "@src/utils/helpers/gameplay/gameplay.helper";
 
 export const Controls = () => {
   const socket = useSocket();
@@ -22,28 +23,7 @@ export const Controls = () => {
   };
 
   const handleRollDice = () => {
-    setDesk((prev) => {
-      const isFirstStageCompleted =
-        prev?.gameplay?.round?.stage?.isCompleted?.[ROUND_STAGE.START];
-      return {
-        ...prev,
-        gameplay: {
-          ...prev?.gameplay,
-          round: {
-            ...prev?.gameplay?.round,
-            stage: {
-              ...prev?.gameplay?.round?.stage,
-              isStart: true,
-              threw: {},
-              value: isFirstStageCompleted
-                ? ROUND_STAGE.END
-                : ROUND_STAGE.START,
-            },
-            status: "Rolling...",
-          },
-        },
-      };
-    });
+    setDesk(afterTriggerStageStart);
   };
 
   const isAllPlayersPresent =

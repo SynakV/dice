@@ -6,6 +6,7 @@ import { useDesk } from "@src/utils/contexts/DeskContext";
 import { Modal } from "@src/components/Shared/Modal/Modal";
 import { playAudio } from "@src/utils/helpers/audio.helper";
 import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
+import { afterConclusionClose } from "@src/utils/helpers/gameplay/gameplay.helper";
 
 export const Conclusion = () => {
   const { desk, setDesk } = useDesk();
@@ -45,22 +46,6 @@ export const Conclusion = () => {
         ))}
       </div>
     );
-  };
-
-  const handleUpdateGameplay = () => {
-    setDesk((prev) => ({
-      ...prev,
-      gameplay: {
-        ...prev?.gameplay,
-        round: {
-          ...prev?.gameplay?.round,
-          value: (prev?.gameplay?.round?.value || 0) + 1,
-          isCompleted: false,
-          stage: {},
-          status: "",
-        },
-      },
-    }));
   };
 
   useEffect(() => {
@@ -106,14 +91,7 @@ export const Conclusion = () => {
     playAudio("hover");
 
     setTimeout(() => {
-      handleUpdateGameplay();
-      setDesk((prev) => ({
-        ...prev,
-        gameplay: {
-          ...prev?.gameplay,
-          isGameEnded: isLastRound,
-        },
-      }));
+      setDesk((prev) => afterConclusionClose(prev, isLastRound));
     }, 300);
   };
 

@@ -14,12 +14,12 @@ export const Layout: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const handleStart = (url: string) => {
-      console.log("CHANGE START!");
+      console.warn("CHANGE START!");
       return url !== router.asPath && setIsShowChildren(false);
     };
 
     const handleComplete = (url: string) => {
-      console.log("CHANGE END!");
+      console.warn("CHANGE END!");
       return url === router.asPath && setIsShowChildren(true);
     };
 

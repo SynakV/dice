@@ -1,11 +1,16 @@
 .status {
+    left: 50%;
     top: 100px;
-    width: 100%;
+    width: 550px;
+    padding: 5px 0;
     cursor: default;
     font-size: 50px;
     transition: 0.3s;
     position: absolute;
     position: absolute;
     text-align: center;
-    color: rgba(255, 255, 255, 0.5);
+    transform: translateX(-50%);
+    color: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.3);
 }

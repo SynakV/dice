@@ -5,10 +5,9 @@ import {
   RANKING_OF_HANDS_KEYS,
   RankingOfTypeValueType,
   RankingResultWithInfoType,
-} from "@utils/types";
+} from "@utils/common/types";
 import {
   permute,
-  getRepeatedInts,
   getAllPossibleRepeatedInts,
 } from "@utils/helpers/randomizer.helper";
 import {

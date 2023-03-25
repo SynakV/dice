@@ -3,11 +3,15 @@ import { createContext, FC, ReactNode, useContext, useState } from "react";
 
 interface GameContextType {
   isHistoryOpen: boolean;
+  refreshGame: () => void;
+  onRefreshGame: {} | null;
   toggleHistoryOpen: () => void;
 }
 
 const DEFAULT_VALUES = {
+  onRefreshGame: null,
   isHistoryOpen: false,
+  refreshGame: () => {},
   toggleHistoryOpen: () => {},
 };
 
@@ -19,10 +23,15 @@ interface Props {
 
 export const GameProvider: FC<Props> = ({ children }) => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [refreshGame, setRefreshGame] = useState<{} | null>(null);
 
   const toggleHistoryOpen = () => {
     playAudio("hover");
     setIsHistoryOpen((prev) => !prev);
+  };
+
+  const handleRefreshGame = () => {
+    setRefreshGame({});
   };
 
   return (
@@ -30,6 +39,8 @@ export const GameProvider: FC<Props> = ({ children }) => {
       value={{
         isHistoryOpen,
         toggleHistoryOpen,
+        onRefreshGame: refreshGame,
+        refreshGame: handleRefreshGame,
       }}
     >
       {children}

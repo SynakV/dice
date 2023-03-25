@@ -13,7 +13,7 @@ interface Props {
 export const SocketProvider: FC<Props> = ({ children }) => {
   useEffect(() => {
     return () => {
-      console.log("Unregistering events...");
+      console.warn("Unregistering events...");
       socket.off(EVENTS.CONNECTION);
       socket.off(EVENTS.ON_MESSAGE);
       socket.off(EVENTS.ON_JOIN_DESK);

@@ -1,12 +1,29 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { ROUND_STAGE, USER } from "@utils/common/types";
 import { useGame } from "@src/utils/contexts/GameContext";
 import { useDesk } from "@src/utils/contexts/DeskContext";
 import { Modal } from "@src/components/Shared/Modal/Modal";
+import { afterSaveHistory } from "@src/utils/helpers/gameplay/gameplay.helper";
+import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
 
 export const History = () => {
-  const { desk } = useDesk();
+  const { desk, setDesk } = useDesk();
   const { isHistoryOpen, toggleHistoryOpen } = useGame();
+
+  useEffect(() => {
+    // Don't save histoty until second user throw
+    if (!desk?.gameplay?.result?.[USER.SECOND]) {
+      return;
+    }
+
+    if (
+      desk.gameplay.result[USER.FIRST].stage ===
+      desk.gameplay.result[USER.SECOND].stage
+    ) {
+      const stageWinner = getComparisonResult(desk.gameplay.result);
+      setDesk((prev) => afterSaveHistory(prev, desk, stageWinner));
+    }
+  }, [desk?.gameplay?.result]);
 
   return (
     <Modal className="history" title="History" isOpen={isHistoryOpen}>

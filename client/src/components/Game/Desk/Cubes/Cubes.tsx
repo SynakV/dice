@@ -8,37 +8,54 @@ import {
   RankingResultType,
   RankingResultWithInfoType,
 } from "@utils/common/types";
-import {
-  getRandomInt,
-  getRandomIntsFromInterval,
-} from "@src/utils/helpers/randomizer.helper";
+import { getRandomIntsFromInterval } from "@src/utils/helpers/randomizer.helper";
 import { playAudio } from "@src/utils/helpers/audio.helper";
 import {
   getRankingResult,
   getReRollIndexes,
 } from "@src/utils/helpers/ranking/ranking.helper";
+import { useDesk } from "@src/utils/contexts/DeskContext";
+import {
+  afterFirstThrew,
+  afterSecondThrew,
+} from "@src/utils/helpers/gameplay/gameplay.helper";
+import { useGame } from "@src/utils/contexts/GameContext";
+import {
+  getCubesReroll,
+  getDiceForReroll,
+} from "@src/utils/helpers/gameplay/cubes.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
 interface Props {
-  forceRefresh: {} | null;
-  round: RoundType | null;
   user: USER.FIRST | USER.SECOND;
-  setRankingResult: (result: RankingResultWithInfoType | null) => void;
 }
 
-export const Cubes: FC<Props> = ({
-  user,
-  round,
-  forceRefresh,
-  setRankingResult,
-}) => {
+export const Cubes: FC<Props> = ({ user }) => {
+  const { desk, setDesk } = useDesk();
+  const { onRefreshGame } = useGame();
   const [ranking, setRanking] = useState<RankingResultType | null>(null);
   const [cubes, setCubes] = useState<number[] | null>(null);
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
+  const round = desk?.gameplay?.round;
+
   const isOtherUser = user !== USER.FIRST;
+
+  const handleThrow = (result: RankingResultWithInfoType | null) => {
+    if (!result) {
+      return;
+    }
+
+    if (result.user === USER.FIRST) {
+      setDesk((prev) => afterFirstThrew(prev, result));
+    }
+
+    if (result.user === USER.SECOND) {
+      setDesk((prev) => afterSecondThrew(prev, result));
+    }
+  };
 
   const handleSetCubes = ({
     round,
@@ -54,7 +71,7 @@ export const Cubes: FC<Props> = ({
     setRanking(ranking);
 
     playAudio("handThrowDice").onended = () => {
-      setRankingResult({
+      handleThrow({
         ...ranking,
         user,
         cubes: newCubes,
@@ -77,51 +94,29 @@ export const Cubes: FC<Props> = ({
       return;
     }
 
-    const cubersForReroll = computerCubesReloll || cubesReroll;
-
-    const newCubes: number[] = [];
-
-    for (let i = 0; i < cubersForReroll.length; i++) {
-      newCubes.push(cubersForReroll[i] ? cubersForReroll[i]! : cubes[i]);
-    }
-
     playAudio("handMixDice").onended = () => {
       setCubesReroll(DEFAULT_CUBES);
+      const newCubes = getDiceForReroll(
+        cubes,
+        cubesReroll,
+        computerCubesReloll
+      );
       handleSetCubes({ cubes: newCubes, round });
     };
   };
 
   const handleSetDieForReRoll = (index: number | number[]) => {
     if (round?.stage?.isCompleted?.[ROUND_STAGE.START]) {
-      const copy = [...cubesReroll];
+      const cubesForReroll = getCubesReroll(index, cubesReroll);
+      setCubesReroll(cubesForReroll);
 
-      if (Array.isArray(index)) {
-        // Computer
-        for (let i = 0; i < index.length; i++) {
-          copy.splice(index[i], 1, getRandomInt());
-        }
-        setCubesReroll(copy);
-        return copy;
-      } else {
-        // User
-        if (copy[index]) {
-          copy.splice(index, 1, null);
-        } else {
-          copy[index] = getRandomInt();
-        }
-        setCubesReroll(copy);
-      }
-      playAudio("selectDieForReroll");
+      return cubesForReroll;
     }
   };
 
   // Round flow
   useEffect(() => {
-    if (!round) {
-      return;
-    }
-
-    if (!round.stage?.isStart) {
+    if (!round?.stage?.isStart) {
       return;
     }
 
@@ -158,12 +153,12 @@ export const Cubes: FC<Props> = ({
   }, [round]);
 
   useEffect(() => {
-    if (forceRefresh) {
+    if (onRefreshGame) {
       setCubes(null);
       setRanking(null);
       setCubesReroll(DEFAULT_CUBES);
     }
-  }, [forceRefresh]);
+  }, [onRefreshGame]);
 
   const text = ranking?.value?.name || <>&nbsp;</>;
 
