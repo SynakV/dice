@@ -1,12 +1,18 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { USER, ROUND_STAGE } from "@utils/common/types";
-import { useGame } from "@src/utils/contexts/GameContext";
-import { useDesk } from "@src/utils/contexts/DeskContext";
-import { Modal } from "@src/components/Shared/Modal/Modal";
-import { playAudio } from "@src/utils/helpers/audio.helper";
-import { getGameWinner } from "@src/utils/helpers/ranking/ranking.helper";
-import { afterConclusionClose } from "@src/utils/helpers/gameplay/gameplay.helper";
+import { useGame } from "@utils/contexts/GameContext";
+import { useDesk } from "@utils/contexts/DeskContext";
+import { Modal } from "@components/Shared/Modal/Modal";
+import { playAudio } from "@utils/helpers/audio.helper";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { afterConclusionClose } from "@utils/helpers/gameplay/gameplay.helper";
+import {
+  getWinTotals,
+  getGameWinner,
+  getWinnersNamesArray,
+  getWinnersNamesString,
+} from "@utils/helpers/ranking/ranking.helper";
 
 export const Conclusion = () => {
   const { desk, setDesk } = useDesk();
@@ -14,26 +20,15 @@ export const Conclusion = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 
-  const getTitle = () => {
-    switch (desk?.gameplay?.round?.winner?.current) {
-      case USER.FIRST:
-        return "You win!";
-      case USER.SECOND:
-        return "You loose!";
-      case USER.NOBODY:
-        return "Draw!";
-      default:
-        return "";
-    }
-  };
+  const rounds = desk.gameplay.rounds;
 
-  const getWinnerIcons = (winns: number = 0) => {
+  const getWinnerIcons = (wins: number = 0) => {
     return (
       <div
-        className={`conclusion__wins-count
-           conclusion__wins-count--${winns > 1 ? "two" : ""}`}
+        className={`conclusion__wins
+           ${wins > 1 ? "conclusion__wins--two" : ""}`}
       >
-        {new Array(winns).fill(null).map((_, index) => (
+        {new Array(wins).fill(null).map((_, index) => (
           <Image
             key={index}
             width={100}
@@ -48,9 +43,30 @@ export const Conclusion = () => {
     );
   };
 
+  const playWinnerSound = (phase: "round" | "game") => {
+    const isGameWinner = phase === "game";
+
+    const winnersNames = getWinnersNamesArray(
+      desk.gameplay.rounds[desk.gameplay.status.round].winners
+    );
+
+    const isYouAmongWinners = winnersNames?.includes(
+      getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name
+    );
+
+    if (isYouAmongWinners) {
+      playAudio(isGameWinner ? "gameWin" : "roundWin");
+    } else {
+      playAudio(isGameWinner ? "gameLoose" : "roundLoose");
+    }
+  };
+
   useEffect(() => {
-    if (desk?.gameplay?.round) {
-      const gameWinner = getGameWinner(desk?.gameplay?.round);
+    const isRoundComplete =
+      desk.gameplay.rounds[desk.gameplay.status.round].isCompleted;
+
+    if (isRoundComplete) {
+      const gameWinner = getGameWinner(desk.gameplay.rounds);
 
       if (gameWinner !== false) {
         setIsLastRound(true);
@@ -60,31 +76,9 @@ export const Conclusion = () => {
         playWinnerSound("round");
       }
 
-      const isRoundNotNull = !!desk?.gameplay?.round;
-      const isNextRoundDidntStartYet = !desk?.gameplay?.round?.stage?.isStart;
-      const isLastRoundStage =
-        desk?.gameplay?.round?.stage?.value === ROUND_STAGE.END;
-
-      setIsOpen(isLastRoundStage && isNextRoundDidntStartYet && isRoundNotNull);
+      setIsOpen(true);
     }
-  }, [desk?.gameplay?.round]);
-
-  const playWinnerSound = (phase: "round" | "game") => {
-    if (
-      !desk?.gameplay?.round?.winner?.current ||
-      !desk?.gameplay?.round?.isCompleted
-    ) {
-      return;
-    }
-
-    const isGameWinner = phase === "game";
-
-    if (desk?.gameplay?.round?.winner?.current === USER.FIRST) {
-      playAudio(isGameWinner ? "gameWin" : "roundWin");
-    } else {
-      playAudio(isGameWinner ? "gameLoose" : "roundLoose");
-    }
-  };
+  }, [desk]);
 
   const handleClick = () => {
     setIsOpen(false);
@@ -95,29 +89,32 @@ export const Conclusion = () => {
     }, 300);
   };
 
-  const getRankingName = (user: USER.FIRST | USER.SECOND) =>
-    desk?.gameplay?.history?.[desk?.gameplay?.round?.value || 0]?.[
-      desk?.gameplay?.round?.stage?.value || 0
-    ]?.result?.[user]?.value.name;
+  const winTotals = getWinTotals(rounds);
+
+  const winnersNames = getWinnersNamesString(
+    rounds[desk.gameplay.status.round].winners
+  );
 
   return (
-    <Modal title={getTitle()} isOpen={isOpen}>
+    <Modal title={winnersNames} isOpen={isOpen}>
       <span className="conclusion__round">
-        Round: {(desk?.gameplay?.round?.value || 0) + 1}
+        Round: {desk.gameplay.status.round + 1}
       </span>
 
       <div className="conclusion__pool">
-        <div className="conclusion__pool-ranking">
-          {getRankingName(USER.FIRST)}
-        </div>
-        <span className="conclusion__pool-header"></span>
-        <div className="conclusion__pool-ranking">
-          {getRankingName(USER.SECOND)}
-        </div>
-      </div>
-      <div className="conclusion__wins">
-        {getWinnerIcons(desk?.gameplay?.round?.winner?.[USER.FIRST])}
-        {getWinnerIcons(desk?.gameplay?.round?.winner?.[USER.SECOND])}
+        {rounds[desk.gameplay.status.round].stages[
+          desk.gameplay.status.stage
+        ].rankings.map((ranking, index) => (
+          <div key={index} className="conclusion__pool-ranking">
+            <span className="conclusion__pool-player">
+              {ranking.player.name}
+            </span>
+            <span className="conclusion__pool-name">{ranking.value.name}</span>
+            <span className="conclusion__pool-wins">
+              {getWinnerIcons(winTotals[ranking.player.name])}
+            </span>
+          </div>
+        ))}
       </div>
       <span onClick={handleClick} className="conclusion__button">
         {isLastRound ? "Close" : "Continue"}

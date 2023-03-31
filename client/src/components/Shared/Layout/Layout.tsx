@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { Menu } from "@src/components/Shared/Layout/Menu/Menu";
+import { Menu } from "@components/Shared/Layout/Menu/Menu";
 import React, { FC, ReactNode, useEffect, useState } from "react";
-import { NotificationProvider } from "@src/components/Shared/Notification/Notification";
+import { NotificationProvider } from "@components/Shared/Notification/Notification";
 
 interface Props {
   children: ReactNode;

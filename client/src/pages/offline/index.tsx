@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { Offline } from "@src/components/Mode/Offline/Offline";
-import { DeskOfflineProvider } from "@src/utils/contexts/DeskContext";
+import { Offline } from "@components/Mode/Offline/Offline";
+import { DeskOfflineProvider } from "@utils/contexts/DeskContext";
 
 export default function Page() {
   return (

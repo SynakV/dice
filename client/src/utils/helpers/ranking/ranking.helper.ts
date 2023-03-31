@@ -1,19 +1,15 @@
 import {
-  USER,
-  DiceType,
   RoundType,
+  PlayerType,
   StructuredType,
   RankingResultType,
-  AppearesAndRestsType,
   RANKING_OF_HANDS_KEYS,
+  RankingResultWithInfoType,
 } from "@utils/common/types";
-import {
-  getHighestRest,
-  getAppearedNumbers,
-} from "@src/utils/helpers/ranking/calculations.helper";
 import { DICE, RANKING_OF_HANDS } from "@utils/constants";
+import { getAppearedNumbers } from "@utils/helpers/ranking/calculations.helper";
 
-export const getRankingResult = (numbers: number[]): RankingResultType => {
+export const getRanking = (numbers: number[]): RankingResultType => {
   const appeared = getAppearedNumbers(numbers);
 
   let ranking: any;
@@ -39,114 +35,198 @@ export const getRankingResult = (numbers: number[]): RankingResultType => {
   );
 };
 
-export const getComparisonResult = (dice: DiceType) => {
-  const value = {
-    [USER.FIRST]: dice[USER.FIRST].value.value,
-    [USER.SECOND]: dice[USER.SECOND].value.value,
-  };
+export const getRankingsComparisonWinner = (
+  rankings: RankingResultWithInfoType[]
+): PlayerType[] => {
+  const maxPlayersRankings = findMaxPlayersRankings(rankings);
 
-  if (value[USER.FIRST] === value[USER.SECOND]) {
-    const appeares = {
-      [USER.FIRST]: dice[USER.FIRST].result?.appeared,
-      [USER.SECOND]: dice[USER.SECOND].result?.appeared,
-    };
-
-    const rests = {
-      [USER.FIRST]: dice[USER.FIRST].result?.rest,
-      [USER.SECOND]: dice[USER.SECOND].result?.rest,
-    };
+  if (maxPlayersRankings.length > 1) {
+    const ranking = maxPlayersRankings[0];
 
     if (
-      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.PAIR ||
-      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND ||
-      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND ||
-      dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND
+      ranking.key === RANKING_OF_HANDS_KEYS.PAIR ||
+      ranking.key === RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND ||
+      ranking.key === RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND ||
+      ranking.key === RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND
     ) {
-      return getOfAKindWinner(appeares, rests);
+      return getOfAKindWinners(maxPlayersRankings);
     }
 
-    if (dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.TWO_PAIRS) {
-      return getTwoPairsWinner(appeares, rests);
+    if (ranking.key === RANKING_OF_HANDS_KEYS.TWO_PAIRS) {
+      return getTwoPairsWinners(maxPlayersRankings);
     }
 
-    if (dice[USER.FIRST].key === RANKING_OF_HANDS_KEYS.FULL_HOUSE) {
-      return getFullHouseWinner(appeares);
+    if (ranking.key === RANKING_OF_HANDS_KEYS.FULL_HOUSE) {
+      return getFullHouseWinners(maxPlayersRankings);
     }
 
-    return USER.NOBODY;
+    return maxPlayersRankings.map(({ player }) => player);
   }
 
-  return value[USER.FIRST] > value[USER.SECOND] ? USER.FIRST : USER.SECOND;
+  return maxPlayersRankings.map(({ player }) => player);
 };
 
-export const getGameWinner = (round: RoundType) => {
-  if (
-    round.winner?.[USER.FIRST] === DICE.MAX_WINS ||
-    round.winner?.[USER.SECOND] === DICE.MAX_WINS
-  ) {
-    if (round.winner?.[USER.FIRST] === round.winner?.[USER.SECOND]) {
-      return USER.NOBODY;
+export const getGameWinner = (rounds: RoundType[]) => {
+  const winners = Object.entries(getWinTotals(rounds)).filter(
+    ([_, total]) => total === 2
+  );
+
+  return winners.length ? winners : false;
+};
+
+export const getWinTotals = (rounds: RoundType[]) => {
+  const totals: { [name: string]: number } = {};
+
+  for (let i = 0; i < rounds.length; i++) {
+    if (!rounds[i].isCompleted) {
+      continue;
     }
 
-    return (round.winner[USER.FIRST] || 0) > (round.winner[USER.SECOND] || 0)
-      ? USER.FIRST
-      : USER.SECOND;
+    rounds[i].winners?.forEach(({ name }) => {
+      if (!(name in totals)) {
+        totals[name] = 1;
+      } else {
+        totals[name]++;
+      }
+    });
   }
 
-  return false;
+  return totals;
 };
 
-const getFullHouseWinner = (appeares: AppearesAndRestsType) => {
-  const triples = {
-    [USER.FIRST]: +(appeares[USER.FIRST] as any).triple.appeared[0][0],
-    [USER.SECOND]: +(appeares[USER.SECOND] as any).triple.appeared[0][0],
-  };
+export const getWinnersNamesArray = (winners?: PlayerType[]) =>
+  winners?.map(({ name }) => name);
 
-  const pairs = {
-    [USER.FIRST]: +(appeares[USER.FIRST] as any).pair.appeared[0][0],
-    [USER.SECOND]: +(appeares[USER.SECOND] as any).pair.appeared[0][0],
-  };
+export const getWinnersNamesString = (winners?: PlayerType[]) =>
+  getWinnersNamesArray(winners)?.join(", ") || "";
 
-  if (triples[USER.FIRST] === triples[USER.SECOND]) {
-    if (pairs[USER.FIRST] === pairs[USER.SECOND]) {
-      return USER.NOBODY;
+const getFullHouseWinners = (
+  maxPlayersRankings: RankingResultWithInfoType[]
+): PlayerType[] => {
+  const appeares: [PlayerType, [string, number][]][] = [];
+  const triples: [PlayerType, number][] = [];
+  const pairs: [PlayerType, number][] = [];
+
+  maxPlayersRankings.forEach((ranking) => {
+    appeares.push([ranking.player, ranking.result.appeared]);
+  });
+
+  appeares.forEach(([player, appeared]) => {
+    triples.push([player, +(appeared as any).triple.appeared[0][0]]);
+    pairs.push([player, +(appeared as any).pair.appeared[0][0]]);
+  });
+
+  const isAllTriplesSame = appeares.every(
+    ([_, appeared]) =>
+      +(appeared as any).triple.appeared[0][0] ===
+      +(appeares[0][1] as any).triple.appeared[0][0]
+  );
+
+  const isAllPairsSame = appeares.every(
+    ([_, appeared]) =>
+      +(appeared as any).pair.appeared[0][0] ===
+      +(appeares[0][1] as any).pair.appeared[0][0]
+  );
+
+  if (isAllTriplesSame) {
+    if (isAllPairsSame) {
+      return maxPlayersRankings.map((ranking) => ranking.player);
     }
 
-    return pairs[USER.FIRST] > pairs[USER.SECOND] ? USER.FIRST : USER.SECOND;
+    return getMaxAppeared(pairs).map(([player]) => player);
   }
 
-  return triples[USER.FIRST] > triples[USER.SECOND] ? USER.FIRST : USER.SECOND;
+  return getMaxAppeared(triples).map(([player]) => player);
 };
 
-const getTwoPairsWinner = <T extends AppearesAndRestsType>(
-  appeares: T,
-  rests: T
+const getTwoPairsWinners = (
+  maxPlayersRankings: RankingResultWithInfoType[]
 ) => {
-  const hightAmongAppeared = getHighestRest(appeares);
+  const appeares: [PlayerType, [string, number][]][] = [];
+  const rests: [PlayerType, [string, number][]][] = [];
 
-  if (hightAmongAppeared) {
-    return hightAmongAppeared;
-  }
+  maxPlayersRankings.forEach((ranking) => {
+    appeares.push([ranking.player, ranking.result.appeared]);
+    rests.push([ranking.player, ranking.result.rest]);
+  });
 
-  return getHighestRest(rests);
+  const hightAmongAppeared = getHighestRestPlayers(appeares);
+
+  return hightAmongAppeared.length === maxPlayersRankings.length
+    ? getHighestRestPlayers(rests)
+    : hightAmongAppeared;
 };
 
-const getOfAKindWinner = <T extends AppearesAndRestsType>(
-  appeares: T,
-  rests: T
-) => {
-  const firstValues = {
-    [USER.FIRST]: appeares[USER.FIRST][0][0],
-    [USER.SECOND]: appeares[USER.SECOND][0][0],
-  };
+const getOfAKindWinners = (maxPlayersRankings: RankingResultWithInfoType[]) => {
+  const ofAKindValues: [PlayerType, number][] = [];
+  const rest: [PlayerType, [string, number][]][] = [];
 
-  if (firstValues[USER.FIRST] === firstValues[USER.SECOND]) {
-    return getHighestRest(rests);
+  maxPlayersRankings.forEach((ranking) => {
+    ofAKindValues.push([ranking.player, +ranking.result.appeared[0][0]]);
+    rest.push([ranking.player, ranking.result.rest]);
+  });
+
+  const isAllValuesSame = ofAKindValues.every(
+    ([_, value]) => value === ofAKindValues[0][1]
+  );
+
+  return isAllValuesSame
+    ? getHighestRestPlayers(rest)
+    : getMaxAppeared(ofAKindValues).map(([player]) => player);
+};
+
+const getHighestRestPlayers = (
+  playersWithRests: [PlayerType, [string, number][]][]
+) => {
+  const playersRestsLength = playersWithRests[0][1].length;
+
+  let max = 0;
+
+  for (let i = 0; i < playersRestsLength; i++) {
+    for (let j = 0; j < playersWithRests[0][1].length; j++) {
+      for (let k = 0; k < playersWithRests.length; k++) {
+        const value = +playersWithRests[k][1][j]?.[0];
+
+        if (value > max) {
+          max = value;
+        }
+      }
+    }
+
+    playersWithRests = playersWithRests.filter((playerWithRest) => {
+      if (playerWithRest[1].some(([key]) => +key === max)) {
+        playerWithRest[1] = playerWithRest[1].filter(([key]) => +key !== max);
+        return true;
+      }
+    });
+
+    if (playersWithRests.length === 1) {
+      break;
+    }
+
+    max = 0;
   }
 
-  return firstValues[USER.FIRST] > firstValues[USER.SECOND]
-    ? USER.FIRST
-    : USER.SECOND;
+  return playersWithRests.map(([player]) => player);
+};
+
+const getMaxAppeared = (appeares: [PlayerType, number][]) => {
+  let maxAppeared = appeares[0][1];
+
+  appeares.forEach((appeared) => {
+    if (appeared[1] > maxAppeared) {
+      maxAppeared = appeared[1];
+    }
+  });
+
+  return appeares.filter((appeared) => appeared[1] === maxAppeared);
+};
+
+export const findMaxPlayersRankings = (
+  rankings: RankingResultWithInfoType[]
+) => {
+  const max = Math.max(...rankings.map((ranking) => ranking.value.value));
+  return rankings.filter((ranking) => ranking.value.value === max);
 };
 
 export const getReRollIndexes = (

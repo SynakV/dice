@@ -5,7 +5,7 @@ import React, {
   useContext,
   createContext,
 } from "react";
-import { usePortal } from "@src/utils/hooks/usePortal";
+import { usePortal } from "@utils/hooks/usePortal";
 
 interface Props {
   children: ReactNode;

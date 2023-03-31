@@ -1,19 +1,19 @@
-import { useDesk } from "@src/utils/contexts/DeskContext";
-import { useSocket } from "@src/utils/contexts/WebsocketContext";
-import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { EVENTS, MESSAGES, DeskType } from "@src/utils/common/types";
+import { useDesk } from "@utils/contexts/DeskContext";
+import { useSocket } from "@utils/contexts/WebsocketContext";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { EVENTS, MESSAGES, DeskType } from "@utils/common/types";
 import {
   getStorageObjectItem,
   setStorageItem,
-} from "@src/utils/helpers/storage/storage.helper";
+} from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
-import { Game } from "@src/components/Game/Game";
+import { Game } from "@components/Game/Game";
 import { Players } from "../../Game/Players/Players";
 import React, { FC, useEffect, useState } from "react";
 import { Loading } from "../../Shared/Loading/Loading";
 import { Credentials } from "../../Shared/Credentials/Credentials";
+import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { CredentialsType } from "../../Shared/Credentials/utils/types";
-import { Navigator } from "@src/components/Shared/Navigator/Navigator";
 import { useNotification } from "../../Shared/Notification/Notification";
 
 export const Online: FC = () => {
@@ -30,7 +30,7 @@ export const Online: FC = () => {
     data: DeskType,
     credentials: CredentialsType
   ) => {
-    const playersNames = data?.players?.players?.map((player) => player.name);
+    const playersNames = data.gameplay.players.map((player) => player.name);
 
     if (playersNames?.includes(credentials.name)) {
       notification(`Name ${credentials.name} already present in the desk`);

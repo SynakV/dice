@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
-import { useFadeIn } from "@src/utils/hooks/useFadeIn";
-import { usePortal } from "@src/utils/hooks/usePortal";
+import { useFadeIn } from "@utils/hooks/useFadeIn";
+import { usePortal } from "@utils/hooks/usePortal";
 
 interface Props {
   title: string;

@@ -1,11 +1,11 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { getRequest } from "@src/utils/api/api";
+import { getRequest } from "@utils/api/api";
+import { DeskType } from "@utils/common/types";
 import React, { useEffect, useState } from "react";
-import { DeskType } from "@src/utils/common/types";
 import { Loading } from "../Shared/Loading/Loading";
-import { Create } from "@src/components/Desks/Create/Create";
-import { DesksModal } from "@src/components/Desks/utils/types";
+import { Create } from "@components/Desks/Create/Create";
+import { DesksModal } from "@components/Desks/utils/types";
 import { useNotification } from "../Shared/Notification/Notification";
 
 export const Desks = () => {
@@ -63,8 +63,8 @@ export const Desks = () => {
           <div className="desks__list">
             {desks.map((desk, index) => {
               const players = {
-                max: desk?.players?.max,
-                current: desk.players?.players?.length,
+                max: desk.gameplay.max.players,
+                current: desk.gameplay.players.length,
               };
               const isFullOfPlayers = players.current === players.max;
               return (

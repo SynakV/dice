@@ -34,9 +34,11 @@ export class GatewayService implements OnModuleInit {
     this.server.on(EVENTS.CONNECTION, (socket: Socket) => {
       socket.on('disconnect', () => {
         this.handleLeaveDesk(socket);
-        console.log(`Disconected: ID: ${socket.id}; ROOM: ${socket.data.room}`);
+        console.warn(
+          `Disconected: ID: ${socket.id}; ROOM: ${socket.data.room}`,
+        );
       });
-      console.log('Connected', socket.id);
+      console.warn('Connected', socket.id);
     });
   }
 

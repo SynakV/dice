@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Mode } from "@src/components/Mode/Mode";
+import { Mode } from "@components/Mode/Mode";
 
 export default function Home() {
   return (

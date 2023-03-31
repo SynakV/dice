@@ -12,44 +12,37 @@
         justify-content: space-between;
 
         &-ranking {
+            gap: 10px 0;
             width: 150px;
-            height: 50px;
             display: flex;
             font-size: 25px;
             text-align: center;
             align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            align-self: flex-start;
             color: rgba(255, 255, 255, 0.5);
         }
     }
 
     &__wins {
-        width: 100%;
+        width: 150px;
+        height: 75px;
         display: flex;
-        margin-top: 10px;
+        font-size: 25px;
+        text-align: center;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.5);
 
-        &-count {
-            width: 150px;
-            height: 75px;
-            display: flex;
-            font-size: 25px;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.5);
+        &--two {
+            .conclusion__wins-img--1 {
+                top: -8px;
+                left: calc(50% - 37px);
+            }
 
-            &--two {
-                .conclusion__wins-img--1 {
-                    top: -8px;
-                    left: calc(50% - 37px);
-                }
-
-                .conclusion__wins-img--2 {
-                    bottom: -8px;
-                    right: calc(50% - 37px);
-                }
+            .conclusion__wins-img--2 {
+                bottom: -8px;
+                right: calc(50% - 37px);
             }
         }
 

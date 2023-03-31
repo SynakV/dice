@@ -1,196 +1,147 @@
 import {
-  USER,
-  DeskType,
-  ROUND_STAGE,
-  WinnerResultValueType,
-  RankingResultWithInfoType,
-} from "@src/utils/common/types";
+  DEFAULT_ROUND,
+  DEFAULT_STAGE,
+  DEFAULT_STATUS,
+} from "@utils/contexts/DeskContext";
+import { deepClone } from "../common.helper";
+import { STORAGE_ITEMS } from "../storage/constants";
+import { getStorageObjectItem } from "../storage/storage.helper";
+import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
+import { DeskType, RankingResultWithInfoType } from "@utils/common/types";
 
-export const afterTriggerStageStart = (prev: DeskType | null) => {
-  const isFirstStageCompleted =
-    prev?.gameplay?.round?.stage?.isCompleted?.[ROUND_STAGE.START];
+export const afterTriggerStageStart = (prev: DeskType): DeskType => {
+  const isNowFirstStage = prev.gameplay.status.stage !== 0;
+
   return {
     ...prev,
     gameplay: {
       ...prev?.gameplay,
-      round: {
-        ...prev?.gameplay?.round,
-        stage: {
-          ...prev?.gameplay?.round?.stage,
-          isStart: true,
-          threw: {},
-          value: isFirstStageCompleted ? ROUND_STAGE.END : ROUND_STAGE.START,
-        },
-        status: "Rolling...",
+      rounds: prev.gameplay.rounds.map((round) => {
+        round.stages.map((stage, index) => {
+          if (prev.gameplay.status.stage === index) {
+            stage.isStarted = true;
+          }
+        });
+        return round;
+      }),
+      status: {
+        ...prev.gameplay.status,
+        text:
+          prev.gameplay.status.player.name +
+          " " +
+          (!isNowFirstStage ? "rolling" : "re-rolling") +
+          "...",
       },
     },
   };
 };
 
-export const afterSaveHistory = (
-  prev: DeskType | null,
-  desk: DeskType,
-  stageWinner: WinnerResultValueType
-) => {
-  return {
-    ...prev,
-    gameplay: {
-      ...prev?.gameplay,
-      history: {
-        ...prev?.gameplay?.history,
-        [prev?.gameplay?.round?.value || 0]: {
-          ...prev?.gameplay?.history?.[prev?.gameplay?.round?.value || 0],
-          [prev?.gameplay?.round?.stage?.value || 0]: {
-            result: desk?.gameplay?.result,
-            round: {
-              ...desk?.gameplay?.round,
-              stage: {
-                ...desk?.gameplay?.round?.stage,
-                winner: stageWinner,
-              },
-            },
-          },
-        },
-      },
-    },
-  };
-};
-
-export const afterEndRound = (
-  prev: DeskType | null,
-  roundWinner: WinnerResultValueType
-) => {
-  return {
-    ...prev,
-    gameplay: {
-      ...prev?.gameplay,
-      result: null,
-      round: {
-        ...prev?.gameplay?.round,
-        isCompleted: true,
-        winner: {
-          ...prev?.gameplay?.round?.winner,
-          ...(roundWinner !== USER.NOBODY
-            ? {
-                [roundWinner]: prev?.gameplay?.round?.winner?.[roundWinner]
-                  ? ++prev.gameplay.round.winner[roundWinner]!
-                  : 1,
-                current: roundWinner,
-              }
-            : {
-                [USER.FIRST]: prev?.gameplay?.round?.winner?.[USER.FIRST]
-                  ? prev.gameplay.round.winner[USER.FIRST]++
-                  : 1,
-                [USER.SECOND]: prev?.gameplay?.round?.winner?.[USER.SECOND]
-                  ? prev.gameplay.round.winner[USER.SECOND]++
-                  : 1,
-                current: USER.NOBODY,
-              }),
-        },
-        stage: {
-          ...prev?.gameplay?.round?.stage,
-          [ROUND_STAGE.START]: true,
-          [ROUND_STAGE.END]: true,
-          value: 1,
-          threw: {
-            [USER.FIRST]: true,
-            [USER.SECOND]: true,
-          },
-          isStart: false,
-        },
-        status: "Results",
-      },
-    },
-  };
-};
-
-export const afterEndGame = (prev: DeskType | null) => ({
+export const afterEndGame = (prev: DeskType): DeskType => ({
   ...prev,
   gameplay: {
+    ...prev.gameplay,
     isGameEnded: false,
+    rounds: [deepClone(DEFAULT_ROUND)],
+    status: {
+      ...deepClone(DEFAULT_STATUS),
+      player: {
+        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      },
+    },
   },
 });
 
-export const afterFirstThrew = (
-  prev: DeskType | null,
-  result: RankingResultWithInfoType
-) => ({
-  ...prev,
-  gameplay: {
-    ...prev?.gameplay,
-    result: {
-      ...prev?.gameplay?.result!,
-      [result.user]: {
-        ...result,
+export const afterThrow = (
+  prev: DeskType,
+  ranking: RankingResultWithInfoType
+): DeskType => {
+  const isLastStage =
+    prev.gameplay.status.stage === prev.gameplay.max.stages - 1;
+  const isLastPlayerDidntThrowYet =
+    prev.gameplay.status.player.name !== prev.gameplay.players.at(-1)?.name;
+  const stageThroughText =
+    getNextPlayer(prev).name + (!isLastStage ? " rolling..." : " re-rolling");
+  const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
+
+  return {
+    ...prev,
+    gameplay: {
+      ...prev?.gameplay,
+      rounds: prev.gameplay.rounds.map((round, index) => {
+        const isCurrentRound = prev.gameplay.status.round === index;
+
+        if (!isCurrentRound) {
+          return round;
+        }
+
+        round.stages.map((stage, index) => {
+          const isCurrentStage = prev.gameplay.status.stage === index;
+
+          if (isCurrentStage) {
+            stage.rankings.push(ranking);
+          }
+
+          if (isLastPlayerDidntThrowYet) {
+            return stage;
+          }
+
+          stage.isStarted = false;
+          stage.isCompleted = true;
+          stage.winners = getRankingsComparisonWinner(stage.rankings);
+
+          if (!isLastStage) {
+            round.stages.push(deepClone(DEFAULT_STAGE));
+          }
+
+          return stage;
+        });
+
+        if (isLastStage && !isLastPlayerDidntThrowYet) {
+          round.isCompleted = true;
+          round.winners = getRankingsComparisonWinner(
+            round.stages[prev.gameplay.status.stage].rankings
+          );
+        }
+
+        return round;
+      }),
+      status: {
+        ...prev.gameplay.status,
+        player: getNextPlayer(prev),
+        text: isLastPlayerDidntThrowYet ? stageThroughText : stageFinishText,
         stage:
-          prev?.gameplay?.result?.[result?.user]?.stage === ROUND_STAGE.START
-            ? ROUND_STAGE.END
-            : ROUND_STAGE.START,
+          !isLastStage && !isLastPlayerDidntThrowYet
+            ? ++prev.gameplay.status.stage
+            : prev.gameplay.status.stage,
       },
     },
-    round: {
-      ...prev?.gameplay?.round,
-      stage: {
-        ...prev?.gameplay?.round?.stage,
-        threw: {
-          ...prev?.gameplay?.round?.stage?.threw,
-          [USER.FIRST]: true,
-        },
-      },
-      isCompleted: false,
-      status: "Opponent rolling...",
-    },
-  },
-});
-
-export const afterSecondThrew = (
-  prev: DeskType | null,
-  result: RankingResultWithInfoType
-) => ({
-  ...prev,
-  gameplay: {
-    ...prev?.gameplay,
-    result: {
-      ...prev?.gameplay?.result!,
-      [result.user]: {
-        ...result,
-      },
-    },
-    round: {
-      ...prev?.gameplay?.round,
-      stage: {
-        ...prev?.gameplay?.round?.stage,
-        isCompleted: {
-          ...prev?.gameplay?.round?.stage?.isCompleted,
-          [+(
-            prev?.gameplay?.round?.stage?.isCompleted?.[ROUND_STAGE.START] || 0
-          )]: true,
-        },
-        threw: {
-          ...prev?.gameplay?.round?.stage?.threw,
-          [USER.SECOND]: true,
-        },
-        isStart: false,
-      },
-      status: "Select dice to roll again",
-    },
-  },
-});
+  };
+};
 
 export const afterConclusionClose = (
-  prev: DeskType | null,
+  prev: DeskType,
   isLastRound: boolean
-) => ({
+): DeskType => ({
   ...prev,
   gameplay: {
     ...prev?.gameplay,
     isGameEnded: isLastRound,
-    round: {
-      ...prev?.gameplay?.round,
-      value: (prev?.gameplay?.round?.value || 0) + 1,
-      isCompleted: false,
-      stage: {},
-      status: "",
+    rounds: [...prev.gameplay.rounds, deepClone(DEFAULT_ROUND)],
+    status: {
+      ...prev.gameplay.status,
+      round: ++prev.gameplay.status.round,
+      stage: 0,
+      text: "",
     },
   },
 });
+
+const getNextPlayer = (desk: DeskType) => {
+  const currentPlayerIndex = desk.gameplay.players.findIndex(
+    (player) => player.name === desk.gameplay.status.player.name
+  );
+
+  const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];
+
+  return nextPlayer ? nextPlayer : desk.gameplay.players[0];
+};

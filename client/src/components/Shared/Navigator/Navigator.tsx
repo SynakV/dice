@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { FC } from "react";
-import { usePortal } from "@src/utils/hooks/usePortal";
+import { usePortal } from "@utils/hooks/usePortal";
 
 interface Props {
   url?: string;

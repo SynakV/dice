@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Music } from "@src/components/Shared/Layout/Menu/Amulet/Music/Music";
+import { Music } from "@components/Shared/Layout/Menu/Amulet/Music/Music";
 
 interface Props {
   toggleOpen: () => void;

@@ -3,20 +3,20 @@ import React, { FC } from "react";
 interface Props {
   value: number;
   isSelected: boolean;
-  isOtherUser: boolean;
-  setDieForReRoll: () => void;
+  selectDie: () => void;
+  isOtherPlayer: boolean;
 }
 
 export const Cube: FC<Props> = ({
   value,
+  selectDie,
   isSelected,
-  isOtherUser,
-  setDieForReRoll,
+  isOtherPlayer,
 }) => {
   return (
     <div
       className={`cube ${isSelected ? "selected" : ""}`}
-      onClick={isOtherUser ? () => {} : () => setDieForReRoll()}
+      onClick={isOtherPlayer ? () => {} : () => selectDie()}
     >
       {value}
     </div>

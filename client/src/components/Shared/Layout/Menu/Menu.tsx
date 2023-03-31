@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useFadeIn } from "@src/utils/hooks/useFadeIn";
-import { playAudio } from "@src/utils/helpers/audio.helper";
-import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { Rules } from "@src/components/Shared/Layout/Menu/Rules/Rules";
-import { Amulet } from "@src/components/Shared/Layout/Menu/Amulet/Amulet";
-import { Credentials } from "@src/components/Shared/Credentials/Credentials";
+import { useFadeIn } from "@utils/hooks/useFadeIn";
+import { playAudio } from "@utils/helpers/audio.helper";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { Rules } from "@components/Shared/Layout/Menu/Rules/Rules";
+import { Amulet } from "@components/Shared/Layout/Menu/Amulet/Amulet";
+import { Credentials } from "@components/Shared/Credentials/Credentials";
 import {
-  getStorageObjectItem,
   setStorageItem,
-} from "@src/utils/helpers/storage/storage.helper";
-import { CredentialsType } from "@src/components/Shared/Credentials/utils/types";
+  getStorageObjectItem,
+} from "@utils/helpers/storage/storage.helper";
+import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState({

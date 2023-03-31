@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { MODE } from "@src/utils/constants";
+import { MODE } from "@utils/constants";
 import {
   getStorageItem,
   setStorageItem,
-} from "@src/utils/helpers/storage/storage.helper";
+} from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
-import { STORAGE_ITEMS } from "@src/utils/helpers/storage/constants";
-import { Credentials } from "@src/components/Shared/Credentials/Credentials";
-import { CredentialsType } from "@src/components/Shared/Credentials/utils/types";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { Credentials } from "@components/Shared/Credentials/Credentials";
+import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 
 export const Mode = () => {
   const router = useRouter();

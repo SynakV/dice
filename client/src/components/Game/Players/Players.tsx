@@ -1,13 +1,13 @@
 import React from "react";
-import { usePortal } from "@src/utils/hooks/usePortal";
-import { useDesk } from "@src/utils/contexts/DeskContext";
+import { usePortal } from "@utils/hooks/usePortal";
+import { useDesk } from "@utils/contexts/DeskContext";
 
 export const Players = () => {
   const { desk } = useDesk();
   const portal = usePortal();
 
-  const max = desk?.players?.max;
-  const players = desk?.players?.players;
+  const max = desk.gameplay.max.players;
+  const players = desk.gameplay.players;
 
   return portal(
     <div className="players">

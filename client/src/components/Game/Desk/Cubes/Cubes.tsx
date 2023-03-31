@@ -1,37 +1,31 @@
-import { DICE } from "@src/utils/constants";
+import { DICE } from "@utils/constants";
 import React, { FC, useEffect, useState } from "react";
-import { Cube } from "@src/components/Game/Desk/Cubes/Cube/Cube";
+import { playAudio } from "@utils/helpers/audio.helper";
+import { Cube } from "@components/Game/Desk/Cubes/Cube/Cube";
+import { RankingResultType, PlayerType } from "@utils/common/types";
+import { getRandomIntsFromInterval } from "@utils/helpers/randomizer.helper";
 import {
-  USER,
-  RoundType,
-  ROUND_STAGE,
-  RankingResultType,
-  RankingResultWithInfoType,
-} from "@utils/common/types";
-import { getRandomIntsFromInterval } from "@src/utils/helpers/randomizer.helper";
-import { playAudio } from "@src/utils/helpers/audio.helper";
-import {
-  getRankingResult,
+  getRanking,
   getReRollIndexes,
-} from "@src/utils/helpers/ranking/ranking.helper";
-import { useDesk } from "@src/utils/contexts/DeskContext";
-import {
-  afterFirstThrew,
-  afterSecondThrew,
-} from "@src/utils/helpers/gameplay/gameplay.helper";
-import { useGame } from "@src/utils/contexts/GameContext";
+} from "@utils/helpers/ranking/ranking.helper";
+import { useDesk } from "@utils/contexts/DeskContext";
+import { useGame } from "@utils/contexts/GameContext";
+import { afterThrow } from "@utils/helpers/gameplay/gameplay.helper";
 import {
   getCubesReroll,
   getDiceForReroll,
-} from "@src/utils/helpers/gameplay/cubes.helper";
+} from "@utils/helpers/gameplay/cubes.helper";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
 interface Props {
-  user: USER.FIRST | USER.SECOND;
+  name?: string;
+  player: PlayerType;
 }
 
-export const Cubes: FC<Props> = ({ user }) => {
+export const Cubes: FC<Props> = ({ player, name }) => {
   const { desk, setDesk } = useDesk();
   const { onRefreshGame } = useGame();
   const [ranking, setRanking] = useState<RankingResultType | null>(null);
@@ -39,57 +33,38 @@ export const Cubes: FC<Props> = ({ user }) => {
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
-  const round = desk?.gameplay?.round;
+  const isOtherPlayer =
+    player.name !== getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
 
-  const isOtherUser = user !== USER.FIRST;
+  const round = desk.gameplay.rounds[desk.gameplay.status.round];
+  const stage = round.stages[desk.gameplay.status.stage];
 
-  const handleThrow = (result: RankingResultWithInfoType | null) => {
-    if (!result) {
-      return;
-    }
-
-    if (result.user === USER.FIRST) {
-      setDesk((prev) => afterFirstThrew(prev, result));
-    }
-
-    if (result.user === USER.SECOND) {
-      setDesk((prev) => afterSecondThrew(prev, result));
-    }
-  };
-
-  const handleSetCubes = ({
-    round,
-    cubes,
-  }: {
-    round: RoundType;
-    cubes?: number[];
-  }) => {
+  const handleSetCubes = (cubes?: number[]) => {
     const newCubes = cubes || getRandomIntsFromInterval();
-    const ranking = getRankingResult(newCubes);
+    const ranking = getRanking(newCubes);
 
     setCubes(newCubes);
     setRanking(ranking);
 
     playAudio("handThrowDice").onended = () => {
-      handleThrow({
-        ...ranking,
-        user,
-        cubes: newCubes,
-        stage: round?.stage?.value,
-      });
+      setDesk((prev) =>
+        afterThrow(prev, {
+          ...ranking,
+          player,
+          cubes: newCubes,
+          stage: desk.gameplay.status.stage,
+        })
+      );
     };
   };
 
-  const handleRollDice = (round: RoundType) => {
+  const handleRollDice = () => {
     playAudio("handMixDice").onended = () => {
-      handleSetCubes({ round });
+      handleSetCubes();
     };
   };
 
-  const handleReRollDice = (
-    round: RoundType,
-    computerCubesReloll?: (number | null)[]
-  ) => {
+  const handleReRollDice = (computerCubesReloll?: (number | null)[]) => {
     if (!cubes) {
       return;
     }
@@ -101,12 +76,12 @@ export const Cubes: FC<Props> = ({ user }) => {
         cubesReroll,
         computerCubesReloll
       );
-      handleSetCubes({ cubes: newCubes, round });
+      handleSetCubes(newCubes);
     };
   };
 
-  const handleSetDieForReRoll = (index: number | number[]) => {
-    if (round?.stage?.isCompleted?.[ROUND_STAGE.START]) {
+  const handleSelectDie = (index: number | number[]) => {
+    if (round?.stages?.[0]?.isCompleted) {
       const cubesForReroll = getCubesReroll(index, cubesReroll);
       setCubesReroll(cubesForReroll);
 
@@ -116,41 +91,26 @@ export const Cubes: FC<Props> = ({ user }) => {
 
   // Round flow
   useEffect(() => {
-    if (!round?.stage?.isStart) {
+    const isCurrentPlayerTurn =
+      desk.gameplay.status.player.name === player.name;
+
+    if (!stage.isStarted || stage.isCompleted || !isCurrentPlayerTurn) {
       return;
     }
 
-    // STAGE 1 (Roll)
-    if (!round.stage?.isCompleted?.[ROUND_STAGE.START]) {
-      if (user === USER.FIRST && !round.stage?.threw?.[USER.FIRST]) {
-        return handleRollDice(round);
+    // FIRST STAGE (Roll)
+    if (desk.gameplay.status.stage === 0) {
+      handleRollDice();
+    } else {
+      if (isOtherPlayer && cubes && ranking) {
+        const reRollIndexes = getReRollIndexes(cubes, ranking);
+        const cubesReroll = handleSelectDie(reRollIndexes);
+        return handleReRollDice(cubesReroll);
       }
 
-      if (user === USER.SECOND && round.stage?.threw?.[USER.FIRST]) {
-        return handleRollDice(round);
-      }
+      handleReRollDice();
     }
-
-    // STAGE 2 (Re-roll)
-    if (
-      round.stage?.value === ROUND_STAGE.END &&
-      !round.stage.isCompleted?.[ROUND_STAGE.END]
-    ) {
-      if (user === USER.FIRST && !round.stage?.threw?.[USER.FIRST]) {
-        return handleReRollDice(round);
-      }
-
-      if (user === USER.SECOND && round.stage?.threw?.[USER.FIRST]) {
-        // If you want to disable decision-making algorithm, comment out condition below
-        if (cubes && ranking) {
-          const reRollIndexes = getReRollIndexes(cubes, ranking);
-          const cubesReroll = handleSetDieForReRoll(reRollIndexes);
-          return handleReRollDice(round, cubesReroll);
-        }
-        // return handleRollDice(round);
-      }
-    }
-  }, [round]);
+  }, [desk]);
 
   useEffect(() => {
     if (onRefreshGame) {
@@ -160,18 +120,20 @@ export const Cubes: FC<Props> = ({ user }) => {
     }
   }, [onRefreshGame]);
 
-  const text = ranking?.value?.name || <>&nbsp;</>;
-
   return (
     <div className="cubes">
+      <span className="cubes__name">
+        <span>{name}</span>
+        <span>{ranking?.value?.name}</span>
+      </span>
       <div className="cubes__container">
         {(cubes || DEFAULT_CUBES).map((cube, index) => (
           <Cube
             key={index}
             value={cube}
-            isOtherUser={isOtherUser}
+            isOtherPlayer={isOtherPlayer}
             isSelected={!!cubesReroll[index]}
-            setDieForReRoll={() => handleSetDieForReRoll(index)}
+            selectDie={() => handleSelectDie(index)}
           />
         ))}
       </div>

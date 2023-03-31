@@ -1,64 +1,57 @@
-import React, { Fragment, useEffect } from "react";
-import { ROUND_STAGE, USER } from "@utils/common/types";
-import { useGame } from "@src/utils/contexts/GameContext";
-import { useDesk } from "@src/utils/contexts/DeskContext";
-import { Modal } from "@src/components/Shared/Modal/Modal";
-import { afterSaveHistory } from "@src/utils/helpers/gameplay/gameplay.helper";
-import { getComparisonResult } from "@src/utils/helpers/ranking/ranking.helper";
+import React, { Fragment } from "react";
+import { useGame } from "@utils/contexts/GameContext";
+import { useDesk } from "@utils/contexts/DeskContext";
+import { Modal } from "@components/Shared/Modal/Modal";
+import { getWinnersNamesString } from "@utils/helpers/ranking/ranking.helper";
 
 export const History = () => {
-  const { desk, setDesk } = useDesk();
+  const { desk } = useDesk();
   const { isHistoryOpen, toggleHistoryOpen } = useGame();
 
-  useEffect(() => {
-    // Don't save histoty until second user throw
-    if (!desk?.gameplay?.result?.[USER.SECOND]) {
-      return;
-    }
+  const rounds = desk.gameplay.rounds;
 
-    if (
-      desk.gameplay.result[USER.FIRST].stage ===
-      desk.gameplay.result[USER.SECOND].stage
-    ) {
-      const stageWinner = getComparisonResult(desk.gameplay.result);
-      setDesk((prev) => afterSaveHistory(prev, desk, stageWinner));
-    }
-  }, [desk?.gameplay?.result]);
+  const isAtLeastFirstRoundStageCompleted = rounds[0].stages[0].isCompleted;
 
   return (
     <Modal className="history" title="History" isOpen={isHistoryOpen}>
-      {desk?.gameplay?.history ? (
+      {isAtLeastFirstRoundStageCompleted ? (
         <ul>
-          {Object.entries(desk.gameplay.history).map(([round, result]) => {
-            const roundWinner =
-              result?.[ROUND_STAGE.END]?.round?.stage?.winner?.toString();
+          {rounds.map((round, index) => {
+            const roundWinner = getWinnersNamesString(round.winners);
+            const isAtLeastFirstRoundStageCompleted =
+              round.stages[0].isCompleted;
             return (
-              <Fragment key={round}>
-                <li>
-                  Round: {+round + 1}{" "}
-                  {roundWinner ? `(Winner: ${+roundWinner})` : ""}
-                </li>
-                <ul>
-                  {Object.entries(result).map(([stage, user]) => {
-                    return (
-                      <Fragment key={stage}>
-                        <li>
-                          {+stage === 0 ? `Roll` : "Re-roll"} (Winner:{" "}
-                          {user.round?.stage?.winner})
-                        </li>
-                        <ul>
-                          <li>
-                            {user?.result?.[USER.FIRST]?.value.name} [
-                            {user?.result?.[USER.FIRST]?.cubes?.toString()}] -{" "}
-                            {user?.result?.[USER.SECOND]?.value.name} [
-                            {user?.result?.[USER.SECOND]?.cubes?.toString()}]
-                          </li>
-                        </ul>
-                      </Fragment>
-                    );
-                  })}
-                </ul>
-              </Fragment>
+              isAtLeastFirstRoundStageCompleted && (
+                <Fragment key={index}>
+                  <li>
+                    Round: {index + 1}{" "}
+                    {roundWinner ? `(Winner: ${roundWinner})` : ""}
+                  </li>
+                  <ul>
+                    {round.stages.map((stage, index) => {
+                      const isStageFinished = stage.isCompleted;
+                      return (
+                        isStageFinished && (
+                          <Fragment key={index}>
+                            <li>
+                              {index === 0 ? `Roll` : "Re-roll"} (Winner:{" "}
+                              {getWinnersNamesString(stage.winners)})
+                            </li>
+                            <ul>
+                              {stage.rankings.map((ranking, index) => (
+                                <li key={index}>
+                                  {ranking.player.name}: {ranking.value.name} -{" "}
+                                  {ranking.cubes?.toString()}
+                                </li>
+                              ))}
+                            </ul>
+                          </Fragment>
+                        )
+                      );
+                    })}
+                  </ul>
+                </Fragment>
+              )
             );
           })}
         </ul>

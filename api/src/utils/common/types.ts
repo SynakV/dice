@@ -15,42 +15,40 @@ export const EVENTS = {
   ON_LEAVE_DESK: 'onLeaveDesk',
 } as const;
 
-// COMMON //
-
-export enum USER {
-  NOBODY,
-  FIRST,
-  SECOND,
-}
-
 // DESK //
 
 export type DeskType = {
   _id?: string;
   name?: string;
   creator?: PlayerType;
-  players?: PlayersType;
-  gameplay?: GameplayType;
-};
-
-export type PlayersType = {
-  max?: number;
-  players?: PlayerType[];
-  sequence?: PlayerType[];
+  gameplay: GameplayType;
 };
 
 export type PlayerType = {
   id?: string;
-  name?: string;
-  cubes?: number[];
+  name: string;
   isCreator?: boolean;
 };
 
 export type GameplayType = {
+  max: MaxType;
+  status: StatusType;
+  rounds: RoundType[];
   isGameEnded?: boolean;
-  round?: RoundType | null;
-  result?: DiceType | null;
-  history?: HistoryType | null;
+  players: PlayerType[];
+};
+
+export type StatusType = {
+  text?: string;
+  round: number;
+  stage: number;
+  player: PlayerType;
+};
+
+export type MaxType = {
+  rounds: number;
+  stages: number;
+  players: number;
 };
 
 // RANKING //
@@ -67,11 +65,6 @@ export enum RANKING_OF_HANDS_KEYS {
   FIVE_OF_A_KIND = 'fiveOfAKind',
 }
 
-export type DiceType = {
-  [USER.FIRST]?: RankingResultWithInfoType;
-  [USER.SECOND]?: RankingResultWithInfoType;
-};
-
 export type RankingResultType = {
   key: RANKING_OF_HANDS_KEYS;
   value: RankingOfTypeValueType;
@@ -79,9 +72,9 @@ export type RankingResultType = {
 };
 
 export type RankingResultWithInfoType = RankingResultType & {
+  stage?: number;
   cubes?: number[];
-  stage?: ROUND_STAGE;
-  user: Exclude<USER, USER.NOBODY>;
+  player: PlayerType;
 };
 
 export type RankingOfHandsType = {
@@ -98,8 +91,7 @@ export type RankingOfTypeValueType = {
 export type AppearedType = ReturnType<typeof Object.entries>;
 
 export type AppearesAndRestsType = {
-  [USER.FIRST]: AppearedType;
-  [USER.SECOND]: AppearedType;
+  [key: number]: AppearedType;
 };
 
 export type StructuredType = {
@@ -109,49 +101,15 @@ export type StructuredType = {
 
 // ROUND //
 
-export enum ROUND {
-  FIRST,
-  SECOND,
-  THIRD,
-}
-
-export enum ROUND_STAGE {
-  START,
-  END,
-}
-
-export type HistoryType = {
-  [key in ROUND]?: {
-    [key in ROUND_STAGE]?: {
-      round?: RoundType;
-      result?: DiceType;
-    };
-  };
-};
-
 export type RoundType = {
-  value?: ROUND;
-  stage?: {
-    value?: ROUND_STAGE;
-    threw?: {
-      [key in USER]?: boolean;
-    };
-    isCompleted?: {
-      [ROUND_STAGE.START]?: boolean;
-      [ROUND_STAGE.END]?: boolean;
-    };
-    isStart?: boolean;
-    winner?: USER;
-  };
-  status?: string;
-  winner?: WinnerType;
+  stages: StageType[];
+  winners?: PlayerType[];
   isCompleted?: boolean;
 };
 
-export type WinnerType = {
-  [USER.FIRST]?: USER;
-  [USER.SECOND]?: USER;
-  current?: WinnerResultValueType;
+export type StageType = {
+  isStarted: boolean;
+  isCompleted: boolean;
+  winners?: PlayerType[];
+  rankings: RankingResultWithInfoType[];
 };
-
-export type WinnerResultValueType = USER.NOBODY | USER.FIRST | USER.SECOND;

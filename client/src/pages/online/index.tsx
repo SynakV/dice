@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { Desks } from "@src/components/Desks/Desks";
-import { Navigator } from "@src/components/Shared/Navigator/Navigator";
+import { Desks } from "@components/Desks/Desks";
+import { Navigator } from "@components/Shared/Navigator/Navigator";
 
 export default function Page() {
   return (

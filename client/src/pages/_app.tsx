@@ -1,7 +1,7 @@
 import Head from "next/head";
-import "@src/styles/styles.scss";
+import "@styles/styles.scss";
 import type { AppProps } from "next/app";
-import { Layout } from "@src/components/Shared/Layout/Layout";
+import { Layout } from "@components/Shared/Layout/Layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
