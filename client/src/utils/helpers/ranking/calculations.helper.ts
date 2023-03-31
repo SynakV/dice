@@ -1,10 +1,5 @@
-import {
-  USER,
-  AppearedType,
-  StructuredType,
-  WinnerResultValueType,
-} from "@src/utils/types";
-import { DICE } from "@src/utils/constants";
+import { DICE } from "@utils/constants";
+import { AppearedType, StructuredType } from "@utils/common/types";
 
 export const getAppearedNumbers = (numbers: number[]) => {
   const appeared: { [key: number]: number } = {};
@@ -107,75 +102,4 @@ export const isFiveOfAKind = (appeared: AppearedType) => {
   const quintetOccurrences = getFilteredOccurrences(appeared, 5);
   const isFound = quintetOccurrences.appeared.length === 1;
   return isFound ? quintetOccurrences : false;
-};
-
-export const getHighestRest = <
-  T extends [key: string, value: number][]
->(rests: {
-  [USER.FIRST]: T;
-  [USER.SECOND]: T;
-}): WinnerResultValueType => {
-  const length = rests[USER.FIRST].length;
-
-  let maxes = {
-    [USER.FIRST]: {
-      index: 0,
-      value: rests[USER.FIRST][0]?.[1] || 0,
-    },
-    [USER.SECOND]: {
-      index: 0,
-      value: rests[USER.SECOND][0]?.[1] || 0,
-    },
-  };
-
-  return calculateHighestRest(rests, maxes, length);
-};
-
-const calculateHighestRest = <
-  T extends [key: string, value: number][],
-  U extends {
-    [USER.FIRST]: {
-      index: number;
-      value: number;
-    };
-    [USER.SECOND]: {
-      index: number;
-      value: number;
-    };
-  }
->(
-  rests: { [USER.FIRST]: T; [USER.SECOND]: T },
-  maxes: U,
-  length: number
-) => {
-  let result: WinnerResultValueType = 0;
-
-  for (let i = 0; i < length; i++) {
-    for (let j = 0; j < rests[USER.FIRST].length; j++) {
-      if (+rests[USER.FIRST][j][0] > maxes[USER.FIRST].value) {
-        maxes[USER.FIRST].index = j;
-        maxes[USER.FIRST].value = +rests[USER.FIRST][j][0];
-      }
-      if (+rests[USER.SECOND][j][0] > maxes[USER.SECOND].value) {
-        maxes[USER.SECOND].index = j;
-        maxes[USER.SECOND].value = +rests[USER.SECOND][j][0];
-      }
-    }
-
-    if (maxes[USER.FIRST].value !== maxes[USER.SECOND].value) {
-      result =
-        maxes[USER.FIRST].value > maxes[USER.SECOND].value
-          ? USER.FIRST
-          : USER.SECOND;
-      break;
-    }
-
-    rests[USER.FIRST].splice(maxes[USER.FIRST].index, 1);
-    rests[USER.SECOND].splice(maxes[USER.SECOND].index, 1);
-
-    maxes[USER.FIRST].value = 0;
-    maxes[USER.SECOND].value = 0;
-  }
-
-  return result;
 };

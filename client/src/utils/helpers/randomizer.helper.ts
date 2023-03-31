@@ -1,5 +1,5 @@
-import { DICE } from "@utils/constants";
-import { RANKING_OF_HANDS_KEYS } from "../types";
+import { DICE, NAMES } from "@utils/constants";
+import { RANKING_OF_HANDS_KEYS } from "@utils/common/types";
 
 export const getRandomIntsFromInterval = (
   randomNumbersCount: number = DICE.COUNT,
@@ -92,4 +92,27 @@ export const getAllPossibleRepeatedInts = (options: {
   }
 
   return arrays;
+};
+
+export const shuffleArray = (arr: any[]) => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
+};
+
+export const getRandomNames = (count: number = 1) => {
+  const names: string[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const name = NAMES[getRandomInt(0, NAMES.length - 1)];
+
+    if (!names.includes(name)) {
+      names.push(name);
+    }
+  }
+
+  return names;
 };

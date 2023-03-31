@@ -1,0 +1,44 @@
+.players {
+    &__list {
+        top: 15px;
+        left: 15px;
+        opacity: 1;
+        gap: 0 2px;
+        padding: 2px;
+        display: flex;
+        overflow-x: auto;
+        position: absolute;
+        animation: fadeIn 0.3s;
+        width: calc(100% - 120px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    &__player {
+        width: 200px;
+        height: 50px;
+        flex-grow: 1;
+        display: flex;
+        cursor: pointer;
+        font-size: 20px;
+        transition: 0.3s;
+        min-width: 100px;
+        max-width: 200px;
+        align-items: center;
+        justify-content: center;
+        color: rgba(0, 0, 0, 0.5);
+        background: rgba(255, 255, 255, 0.2);
+
+        &:hover {
+            color: rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    &__counter {
+        top: 85px;
+        left: 25px;
+        font-size: 25px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.5);
+    }
+}

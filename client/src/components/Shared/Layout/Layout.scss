@@ -1,0 +1,85 @@
+@import './Menu/Menu.scss';
+@import '../../Desks/Desks.scss', '../../Game/Game.scss', '../../Mode/Mode.scss';
+
+.layout {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    &__background {
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        transform: scaleX(-1);
+        background-size: cover;
+        background-image: url('../../../../public/images/striga.jpeg');
+    }
+
+    &__content {
+        gap: 40px 0;
+        height: auto;
+        display: flex;
+        padding: 50px;
+        max-width: 50%;
+        position: absolute;
+        border-radius: 15px;
+        align-items: center;
+        animation: fadeIn 0.5s;
+        min-width: fit-content;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 1200px) or (max-width: 1400px) {
+    .layout__content {
+        transform: scale(1.5);
+    }
+}
+
+@media (max-width: 1200px) {
+    .layout__content {
+        transform: scale(1.2);
+    }
+}
+
+@media (max-width: 1000px) {
+    .layout__content {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 800px) {
+    .layout__content {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 650px) {
+    .layout__content {
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 500px) {
+    .layout__content {
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 390px) {
+    .layout__content {
+        transform: scale(0.4);
+    }
+}
+
+@media (max-width: 320px) {
+    .layout__content {
+        transform: scale(0.3);
+    }
+}

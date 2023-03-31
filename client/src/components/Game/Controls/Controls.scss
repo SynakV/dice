@@ -1,0 +1,32 @@
+.controls {
+    gap: 10px 0;
+    right: 15px;
+    bottom: 15px;
+    width: 200px;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+
+    &__start, &__roll, &__history {
+        width: 100%;
+        padding: 8px 0;
+        cursor: pointer;
+        font-size: 25px;
+        transition: 0.3s;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5);
+        color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+
+        &--disabled {
+            cursor: default;
+            color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        &:hover:not(&--disabled) {
+            color: rgba(0, 0, 0, 0.65);
+            background: rgba(255, 255, 255, 0.35);
+        }
+    }
+}

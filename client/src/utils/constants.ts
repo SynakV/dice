@@ -1,4 +1,3 @@
-import { RankingOfHandsType, RANKING_OF_HANDS_KEYS } from "./types";
 import {
   isNothing,
   isPair,
@@ -9,7 +8,8 @@ import {
   isFullHouse,
   isFourOfAKind,
   isFiveOfAKind,
-} from "@src/utils/helpers/ranking/calculations.helper";
+} from "@utils/helpers/ranking/calculations.helper";
+import { RankingOfHandsType, RANKING_OF_HANDS_KEYS } from "@utils/common/types";
 
 export const RANKING_OF_HANDS: RankingOfHandsType = {
   [RANKING_OF_HANDS_KEYS.NOTHING]: {
@@ -76,3 +76,27 @@ export const DICE = {
     MAX: 6,
   },
 };
+
+export const MODE = {
+  online: {
+    url: "online",
+    title: "Online",
+  },
+  offline: {
+    url: "offline",
+    title: "Offline",
+  },
+};
+
+export const NAMES = [
+  "Martin Andrews",
+  "Destiny Perez",
+  "Adrienne Lee",
+  "Jamie Solis",
+  "Toni Evans",
+  "Teresa Williams",
+  "Colin Harris",
+  "Terry Edwards",
+  "Mr. Michael Perez",
+  "James Lewis",
+];
