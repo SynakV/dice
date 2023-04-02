@@ -35,7 +35,7 @@ export const DEFAULT_ROUND: RoundType = {
   stages: [deepClone(DEFAULT_STAGE)],
 };
 
-export const DEFAULT_STATUS = {
+export const DEFAULT_CURRENT = {
   round: 0,
   stage: 0,
   player: {},
@@ -51,7 +51,7 @@ const DEFAULT_DESK: DeskType = {
       stages: 2,
       players: 2,
     },
-    status: deepClone(DEFAULT_STATUS),
+    current: deepClone(DEFAULT_CURRENT),
   },
 };
 
@@ -103,8 +103,8 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
             name,
           })),
         ],
-        status: {
-          ...prev.gameplay.status,
+        current: {
+          ...prev.gameplay.current,
           player: {
             name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
           },

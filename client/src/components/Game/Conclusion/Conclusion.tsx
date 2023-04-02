@@ -47,7 +47,7 @@ export const Conclusion = () => {
     const isGameWinner = phase === "game";
 
     const winnersNames = getWinnersNamesArray(
-      desk.gameplay.rounds[desk.gameplay.status.round].winners
+      desk.gameplay.rounds[desk.gameplay.current.round].winners
     );
 
     const isYouAmongWinners = winnersNames?.includes(
@@ -63,7 +63,7 @@ export const Conclusion = () => {
 
   useEffect(() => {
     const isRoundComplete =
-      desk.gameplay.rounds[desk.gameplay.status.round].isCompleted;
+      desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
     if (isRoundComplete) {
       const gameWinner = getGameWinner(desk.gameplay.rounds);
@@ -92,19 +92,25 @@ export const Conclusion = () => {
   const winTotals = getWinTotals(rounds);
 
   const winnersNames = getWinnersNamesString(
-    rounds[desk.gameplay.status.round].winners
+    rounds[desk.gameplay.current.round].winners
   );
 
+  const title = `Winner${
+    winnersNames.includes(", ") ? "s" : ""
+  }: ${winnersNames}`;
+
+  const rankings =
+    rounds[desk.gameplay.current.round].stages[desk.gameplay.current.stage]
+      .rankings;
+
   return (
-    <Modal title={winnersNames} isOpen={isOpen}>
+    <Modal title={title} isOpen={isOpen}>
       <span className="conclusion__round">
-        Round: {desk.gameplay.status.round + 1}
+        Round: {desk.gameplay.current.round + 1}
       </span>
 
       <div className="conclusion__pool">
-        {rounds[desk.gameplay.status.round].stages[
-          desk.gameplay.status.stage
-        ].rankings.map((ranking, index) => (
+        {rankings.map((ranking, index) => (
           <div key={index} className="conclusion__pool-ranking">
             <span className="conclusion__pool-player">
               {ranking.player.name}

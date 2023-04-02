@@ -32,16 +32,16 @@ export type PlayerType = {
 
 export type GameplayType = {
   max: MaxType;
-  status: StatusType;
   rounds: RoundType[];
+  current: CurrentType;
   isGameEnded?: boolean;
   players: PlayerType[];
 };
 
-export type StatusType = {
-  text?: string;
+export type CurrentType = {
   round: number;
   stage: number;
+  status?: string;
   player: PlayerType;
 };
 

@@ -36,8 +36,8 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   const isOtherPlayer =
     player.name !== getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
 
-  const round = desk.gameplay.rounds[desk.gameplay.status.round];
-  const stage = round.stages[desk.gameplay.status.stage];
+  const round = desk.gameplay.rounds[desk.gameplay.current.round];
+  const stage = round.stages[desk.gameplay.current.stage];
 
   const handleSetCubes = (cubes?: number[]) => {
     const newCubes = cubes || getRandomIntsFromInterval();
@@ -52,7 +52,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
           ...ranking,
           player,
           cubes: newCubes,
-          stage: desk.gameplay.status.stage,
+          stage: desk.gameplay.current.stage,
         })
       );
     };
@@ -92,14 +92,14 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   // Round flow
   useEffect(() => {
     const isCurrentPlayerTurn =
-      desk.gameplay.status.player.name === player.name;
+      desk.gameplay.current.player.name === player.name;
 
     if (!stage.isStarted || stage.isCompleted || !isCurrentPlayerTurn) {
       return;
     }
 
     // FIRST STAGE (Roll)
-    if (desk.gameplay.status.stage === 0) {
+    if (desk.gameplay.current.stage === 0) {
       handleRollDice();
     } else {
       if (isOtherPlayer && cubes && ranking) {

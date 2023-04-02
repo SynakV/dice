@@ -27,8 +27,8 @@ export const Controls = () => {
   };
 
   const rounds = desk.gameplay.rounds;
-  const currentRound = rounds[desk.gameplay.status.round];
-  const currentStage = currentRound.stages[desk.gameplay.status.stage];
+  const currentRound = rounds[desk.gameplay.current.round];
+  const currentStage = currentRound.stages[desk.gameplay.current.stage];
   const isAllPlayersPresent =
     desk.gameplay.players.length === desk.gameplay.max.players;
 

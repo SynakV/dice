@@ -6,7 +6,7 @@ export const Status = () => {
   const { desk } = useDesk();
   const portal = usePortal();
 
-  const status = desk.gameplay.status.text;
+  const status = desk.gameplay.current.status;
 
   return portal(
     <div className="status">{status ? status : 'Click "Roll dice"'}</div>

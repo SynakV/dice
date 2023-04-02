@@ -30,11 +30,14 @@ export class DeskService {
       return {};
     } else {
       const createdDesk = new this.deskModel({
-        name: name,
+        name,
         creator,
         isGameStarted: false,
-        players: {
-          max: players,
+        gameplay: {
+          max: {
+            players,
+          },
+          players: [creator],
         },
       });
 
