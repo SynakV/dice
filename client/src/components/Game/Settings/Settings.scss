@@ -1,26 +1,23 @@
-.create {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+@import './Form/Form.scss';
 
+.settings {
     &__main {
         flex: 1;
         gap: 10px 0;
         display: flex;
+        align-items: center;
         flex-direction: column;
         justify-content: center;
     }
 
-    &__footer {
+    &__buttons {
         width: 100%;
         display: flex;
-        align-items: center;
         justify-content: space-around;
-        color: rgba(255, 255, 255, 0.5);
     }
 
-    &__create, &__close {
+    &__button {
+        display: flex;
         cursor: pointer;
         transition: 0.3s;
         color: rgba(255, 255, 255, 0.5);

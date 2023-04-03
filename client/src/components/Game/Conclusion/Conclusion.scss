@@ -29,25 +29,17 @@
         height: 75px;
         display: flex;
         font-size: 25px;
+        position: relative;
         text-align: center;
         align-items: center;
         justify-content: center;
         color: rgba(255, 255, 255, 0.5);
 
-        &--two {
-            .conclusion__wins-img--1 {
-                top: -8px;
-                left: calc(50% - 37px);
-            }
-
-            .conclusion__wins-img--2 {
-                bottom: -8px;
-                right: calc(50% - 37px);
-            }
-        }
-
-        &-img {
-            position: relative;
+        &-counter {
+            top: 20px;
+            font-size: 20px;
+            position: absolute;
+            left: calc(50% - 6px);
         }
     }
 

@@ -66,9 +66,9 @@ export const getRankingsComparisonWinner = (
   return maxPlayersRankings.map(({ player }) => player);
 };
 
-export const getGameWinner = (rounds: RoundType[]) => {
+export const getGameWinner = (rounds: RoundType[], wins: number) => {
   const winners = Object.entries(getWinTotals(rounds)).filter(
-    ([_, total]) => total === 2
+    ([_, total]) => total === wins
   );
 
   return winners.length ? winners : false;

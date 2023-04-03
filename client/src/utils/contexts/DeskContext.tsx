@@ -12,10 +12,8 @@ import { getRequest } from "../api/api";
 import { useRouter } from "next/router";
 import useSWRImmutable from "swr/immutable";
 import { GameProvider } from "./GameContext";
-import { SocketProvider } from "./WebsocketContext";
 import { deepClone } from "../helpers/common.helper";
 import { STORAGE_ITEMS } from "../helpers/storage/constants";
-import { getRandomNames } from "../helpers/randomizer.helper";
 import { DeskType, RoundType, StageType } from "../common/types";
 import { getStorageObjectItem } from "../helpers/storage/storage.helper";
 
@@ -45,9 +43,10 @@ const DEFAULT_DESK: DeskType = {
   gameplay: {
     players: [],
     isGameEnded: false,
+    isGameStarted: false,
     rounds: [deepClone(DEFAULT_ROUND)],
     max: {
-      rounds: 3,
+      wins: 2,
       stages: 2,
       players: 2,
     },
@@ -80,11 +79,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     }
   }, [data]);
 
-  return (
-    <SocketProvider>
-      <DeskProvider desk={desk} setDesk={setDesk} children={children} />
-    </SocketProvider>
-  );
+  return <DeskProvider desk={desk} setDesk={setDesk} children={children} />;
 };
 
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
@@ -95,14 +90,6 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
       ...prev,
       gameplay: {
         ...prev.gameplay,
-        players: [
-          {
-            name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
-          },
-          ...getRandomNames().map((name) => ({
-            name,
-          })),
-        ],
         current: {
           ...prev.gameplay.current,
           player: {

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useGame } from "@utils/contexts/GameContext";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { afterConclusionClose } from "@utils/helpers/gameplay/gameplay.helper";
 import {
@@ -16,31 +16,25 @@ import {
 
 export const Conclusion = () => {
   const { desk, setDesk } = useDesk();
-  const { toggleHistoryOpen } = useGame();
+  const { toggleGameOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 
   const rounds = desk.gameplay.rounds;
 
   const getWinnerIcons = (wins: number = 0) => {
-    return (
-      <div
-        className={`conclusion__wins
-           ${wins > 1 ? "conclusion__wins--two" : ""}`}
-      >
-        {new Array(wins).fill(null).map((_, index) => (
-          <Image
-            key={index}
-            width={100}
-            height={100}
-            alt="winner"
-            src="/icons/winner.webp"
-            className={`conclusion__wins-img 
-              conclusion__wins-img--${index + 1}`}
-          />
-        ))}
+    return wins > 0 ? (
+      <div className="conclusion__wins">
+        <span className="conclusion__wins-counter">{wins}</span>
+        <Image
+          width={125}
+          height={125}
+          alt="winner"
+          src="/icons/winner.webp"
+          className="conclusion__wins-img"
+        />
       </div>
-    );
+    ) : null;
   };
 
   const playWinnerSound = (phase: "round" | "game") => {
@@ -66,7 +60,10 @@ export const Conclusion = () => {
       desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
     if (isRoundComplete) {
-      const gameWinner = getGameWinner(desk.gameplay.rounds);
+      const gameWinner = getGameWinner(
+        desk.gameplay.rounds,
+        desk.gameplay.max.wins
+      );
 
       if (gameWinner !== false) {
         setIsLastRound(true);
@@ -125,7 +122,10 @@ export const Conclusion = () => {
       <span onClick={handleClick} className="conclusion__button">
         {isLastRound ? "Close" : "Continue"}
       </span>
-      <span className="conclusion__history" onClick={toggleHistoryOpen}>
+      <span
+        className="conclusion__history"
+        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
+      >
         History
       </span>
     </Modal>

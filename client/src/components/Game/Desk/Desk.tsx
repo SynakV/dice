@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
 import { Cubes } from "@components/Game/Desk/Cubes/Cubes";
-import { afterEndGame } from "@utils/helpers/gameplay/gameplay.helper";
 
 export const Desk = () => {
+  const { desk } = useDesk();
   const { refreshGame } = useGame();
-  const { desk, setDesk } = useDesk();
 
   const { players, isGameEnded } = desk.gameplay;
 
   useEffect(() => {
     if (isGameEnded) {
       refreshGame();
-      setDesk(afterEndGame);
     }
   }, [isGameEnded]);
 

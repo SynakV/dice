@@ -1,0 +1,20 @@
+.form {
+    &__field {
+        width: 200px;
+        display: flex;
+    }
+
+    &__label {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__input {
+        border: 0;
+        width: 115px;
+        outline: none;
+        margin-left: auto;
+        color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+}

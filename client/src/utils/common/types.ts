@@ -34,7 +34,8 @@ export type GameplayType = {
   max: MaxType;
   rounds: RoundType[];
   current: CurrentType;
-  isGameEnded?: boolean;
+  isGameEnded: boolean;
+  isGameStarted: boolean;
   players: PlayerType[];
 };
 
@@ -46,7 +47,7 @@ export type CurrentType = {
 };
 
 export type MaxType = {
-  rounds: number;
+  wins: number;
   stages: number;
   players: number;
 };
@@ -112,4 +113,13 @@ export type StageType = {
   isCompleted: boolean;
   winners?: PlayerType[];
   rankings: RankingResultWithInfoType[];
+};
+
+// SETTINGS //
+
+export type SettingsType = {
+  name: string;
+  wins: number;
+  stages: number;
+  players: number;
 };

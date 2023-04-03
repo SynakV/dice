@@ -7,10 +7,15 @@ import { deepClone } from "../common.helper";
 import { STORAGE_ITEMS } from "../storage/constants";
 import { getStorageObjectItem } from "../storage/storage.helper";
 import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
-import { DeskType, RankingResultWithInfoType } from "@utils/common/types";
+import {
+  DeskType,
+  SettingsType,
+  RankingResultWithInfoType,
+} from "@utils/common/types";
+import { getRandomNames } from "../randomizer.helper";
 
 export const afterTriggerStageStart = (prev: DeskType): DeskType => {
-  const isNowFirstStage = prev.gameplay.current.stage !== 0;
+  const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
   return {
     ...prev,
@@ -29,18 +34,27 @@ export const afterTriggerStageStart = (prev: DeskType): DeskType => {
         status:
           prev.gameplay.current.player.name +
           " " +
-          (!isNowFirstStage ? "rolling" : "re-rolling") +
+          (!isNotFirstStage ? "rolling" : "re-rolling") +
           "...",
       },
     },
   };
 };
 
+export const afterStartGame = (prev: DeskType): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    isGameStarted: true,
+  },
+});
+
 export const afterEndGame = (prev: DeskType): DeskType => ({
   ...prev,
   gameplay: {
     ...prev.gameplay,
     isGameEnded: false,
+    isGameStarted: false,
     rounds: [deepClone(DEFAULT_ROUND)],
     current: {
       ...deepClone(DEFAULT_CURRENT),
@@ -89,7 +103,7 @@ export const afterThrow = (
           stage.isCompleted = true;
           stage.winners = getRankingsComparisonWinner(stage.rankings);
 
-          if (!isLastStage) {
+          if (!isLastStage && isCurrentStage) {
             round.stages.push(deepClone(DEFAULT_STAGE));
           }
 
@@ -117,6 +131,37 @@ export const afterThrow = (
     },
   };
 };
+
+export const afterSettingsChange = (
+  prev: DeskType,
+  settings: SettingsType
+): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    isGameEnded: false,
+    rounds: [deepClone(DEFAULT_ROUND)],
+    max: {
+      wins: settings.wins,
+      stages: settings.stages,
+      players: settings.players,
+    },
+    players: [
+      {
+        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      },
+      ...getRandomNames(settings.players - 1).map((name) => ({
+        name,
+      })),
+    ],
+    current: {
+      ...deepClone(DEFAULT_CURRENT),
+      player: {
+        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      },
+    },
+  },
+});
 
 export const afterConclusionClose = (
   prev: DeskType,

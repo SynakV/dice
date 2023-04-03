@@ -1,19 +1,23 @@
 import React, { Fragment } from "react";
-import { useGame } from "@utils/contexts/GameContext";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { getWinnersNamesString } from "@utils/helpers/ranking/ranking.helper";
 
 export const History = () => {
   const { desk } = useDesk();
-  const { isHistoryOpen, toggleHistoryOpen } = useGame();
+  const { gameOpen, toggleGameOpen } = useGame();
 
   const rounds = desk.gameplay.rounds;
 
   const isAtLeastFirstRoundStageCompleted = rounds[0].stages[0].isCompleted;
 
   return (
-    <Modal className="history" title="History" isOpen={isHistoryOpen}>
+    <Modal
+      className="history"
+      title="History"
+      isOpen={gameOpen[GAME_OPEN.HISTORY]}
+    >
       {isAtLeastFirstRoundStageCompleted ? (
         <ul>
           {rounds.map((round, index) => {
@@ -59,7 +63,10 @@ export const History = () => {
         <span className="history__no-data">No data</span>
       )}
 
-      <div onClick={toggleHistoryOpen} className="history__button">
+      <div
+        className="history__button"
+        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
+      >
         Close
       </div>
     </Modal>

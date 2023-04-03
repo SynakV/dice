@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
+import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
-import React, { FC, useReducer } from "react";
-import { DeskType } from "@utils/common/types";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
+import { Form } from "@components/Game/Settings/Form/Form";
+import { DeskType, SettingsType } from "@utils/common/types";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { useNotification } from "@components/Shared/Notification/Notification";
@@ -14,37 +15,22 @@ interface Props {
   setIsOpen: (key: DesksModal) => void;
 }
 
-interface Desk {
-  name: string;
-  players: number;
-  creator?: {
-    name: string;
-  };
-}
-
 export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
-  const [desk, updateDesk] = useReducer(
-    (prev: Desk, next: Partial<Desk>) => {
-      return { ...prev, ...next };
-    },
-    { name: "", players: 2 }
-  );
-
   const router = useRouter();
   const { notification } = useNotification();
-
-  const { trigger, isMutating } = useSWRMutation("desk", postRequest);
+  const { trigger } = useSWRMutation("desk", postRequest);
+  const [settings, setSettings] = useState<SettingsType | null>(null);
 
   const handleClose = () => {
     setIsOpen("create");
   };
 
   const handleCreateNewDesk = async () => {
-    if (isValid()) {
+    if (isValid() && settings) {
       const newDesk: DeskType = await trigger(
         {
-          name: desk.name,
-          players: desk.players,
+          name: settings.name,
+          players: settings.players,
           creator: {
             name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS).name,
           },
@@ -65,36 +51,21 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       } else {
         notification("Desk with such name already exists");
       }
+    } else {
+      notification("Invalid number of players");
     }
   };
 
-  const isValid = () => {
-    return desk.name && desk.players! >= 2 && desk.players! <= 5;
-  };
+  const isValid = () =>
+    settings &&
+    settings.name &&
+    settings.players! >= 2 &&
+    settings.players! <= 5;
 
   return (
     <Modal isOpen={isOpen} title="Create new desk" className="create">
       <div className="create__main">
-        <div className="create__field">
-          <span className="create__name">Players:</span>
-          <input
-            type="number"
-            min={2}
-            max={5}
-            value={desk.players}
-            className="create__input"
-            onChange={(e) => updateDesk({ players: +e.target.value })}
-          />
-        </div>
-        <div className="create__field">
-          <span className="create__name">Name:</span>
-          <input
-            type="text"
-            value={desk.name}
-            className="create__input"
-            onChange={(e) => updateDesk({ name: e.target.value })}
-          />
-        </div>
+        <Form setForm={setSettings} />
       </div>
       <div className="create__footer">
         <span className="create__close" onClick={handleClose}>
