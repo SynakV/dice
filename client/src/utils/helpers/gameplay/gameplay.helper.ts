@@ -1,9 +1,3 @@
-import {
-  DEFAULT_ROUND,
-  DEFAULT_STAGE,
-  DEFAULT_CURRENT,
-} from "@utils/contexts/DeskContext";
-import { deepClone } from "../common.helper";
 import { STORAGE_ITEMS } from "../storage/constants";
 import { getStorageObjectItem } from "../storage/storage.helper";
 import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
@@ -13,6 +7,12 @@ import {
   RankingResultWithInfoType,
 } from "@utils/common/types";
 import { getRandomNames } from "../randomizer.helper";
+import {
+  DEFAULT_STAGE,
+  DEFAULT_ROUND,
+  DEFAULT_CURRENT,
+} from "@utils/common/constants";
+import { deepClone } from "@utils/common/helpers";
 
 export const afterTriggerStageStart = (prev: DeskType): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
@@ -32,7 +32,7 @@ export const afterTriggerStageStart = (prev: DeskType): DeskType => {
       current: {
         ...prev.gameplay.current,
         status:
-          prev.gameplay.current.player.name +
+          prev.gameplay.current.player?.name +
           " " +
           (!isNotFirstStage ? "rolling" : "re-rolling") +
           "...",
@@ -72,7 +72,7 @@ export const afterThrow = (
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
-    prev.gameplay.current.player.name !== prev.gameplay.players.at(-1)?.name;
+    prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
   const stageThroughText =
     getNextPlayer(prev).name + (!isLastStage ? " rolling..." : " re-rolling");
   const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
@@ -183,7 +183,7 @@ export const afterConclusionClose = (
 
 const getNextPlayer = (desk: DeskType) => {
   const currentPlayerIndex = desk.gameplay.players.findIndex(
-    (player) => player.name === desk.gameplay.current.player.name
+    (player) => player.name === desk.gameplay.current.player?.name
   );
 
   const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];

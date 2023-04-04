@@ -114,7 +114,7 @@ export const Conclusion = () => {
             </span>
             <span className="conclusion__pool-name">{ranking.value.name}</span>
             <span className="conclusion__pool-wins">
-              {getWinnerIcons(winTotals[ranking.player.name])}
+              {getWinnerIcons(winTotals[ranking.player.name || ""])}
             </span>
           </div>
         ))}

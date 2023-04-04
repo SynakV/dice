@@ -26,7 +26,7 @@ export type DeskType = {
 
 export type PlayerType = {
   id?: string;
-  name: string;
+  name?: string;
   isCreator?: boolean;
 };
 
@@ -43,7 +43,7 @@ export type CurrentType = {
   round: number;
   stage: number;
   status?: string;
-  player: PlayerType;
+  player: PlayerType | null;
 };
 
 export type MaxType = {

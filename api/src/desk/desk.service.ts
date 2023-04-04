@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { Desk } from './desk.model';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { DEFAULT_DESK } from 'src/utils/common/constants';
 
 @Injectable()
 export class DeskService {
@@ -11,39 +12,41 @@ export class DeskService {
     return this.deskModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Desk> {
+  async findOne(id: string): Promise<Desk | null> {
     const desk = await this.deskModel.findById(id);
 
     if (desk) {
       return desk;
     } else {
-      return {};
+      return null;
     }
   }
 
-  async createDesk(body: any): Promise<Desk> {
-    const { name, creator, players } = body;
+  async createDesk(body: any): Promise<Desk | null> {
+    const { name, creator, wins, players, stages } = body;
 
     const existedDesk = await this.deskModel.findOne({ name });
 
     if (existedDesk) {
-      return {};
+      return null;
     } else {
-      const createdDesk = new this.deskModel({
+      const createDesk = new this.deskModel({
+        ...DEFAULT_DESK,
         name,
         creator,
-        isGameStarted: false,
         gameplay: {
+          ...DEFAULT_DESK.gameplay,
           max: {
+            wins,
+            stages,
             players,
           },
-          players: [creator],
         },
       });
 
-      createdDesk.save();
+      createDesk.save();
 
-      return createdDesk;
+      return createDesk;
     }
   }
 }

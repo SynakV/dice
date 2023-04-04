@@ -83,10 +83,11 @@ export const getWinTotals = (rounds: RoundType[]) => {
     }
 
     rounds[i].winners?.forEach(({ name }) => {
-      if (!(name in totals)) {
-        totals[name] = 1;
+      const winnerName = name || "";
+      if (!(winnerName in totals)) {
+        totals[winnerName] = 1;
       } else {
-        totals[name]++;
+        totals[winnerName]++;
       }
     });
   }

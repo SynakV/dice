@@ -51,7 +51,7 @@ interface Props {
 }
 
 export const GameProvider: FC<Props> = ({ children }) => {
-  const { setDesk } = useDesk();
+  const { socket, setDesk } = useDesk();
   const [gameOpen, setGameOpen] = useState<GameOpenType>(DEFAULT_GAME_OPEN);
   const [isInitSettings, setIsInitSettings] = useState(
     DEFAULT_VALUES.isInitSettings
@@ -76,7 +76,9 @@ export const GameProvider: FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
-    toggleGameOpen(GAME_OPEN.SETTINGS);
+    if (!socket) {
+      toggleGameOpen(GAME_OPEN.SETTINGS);
+    }
   }, []);
 
   return (

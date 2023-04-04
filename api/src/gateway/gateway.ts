@@ -52,7 +52,7 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk },
-      { $push: { 'players.players': { id: client.id, name: name } } },
+      { $push: { 'gameplay.players': { id: client.id, name: name } } },
       { new: true },
     );
 
@@ -67,7 +67,7 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: room },
-      { $pull: { 'players.players': { id: client.id } } },
+      { $pull: { 'gameplay.players': { id: client.id } } },
       { new: true },
     );
 

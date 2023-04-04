@@ -1,7 +1,7 @@
 import { server } from "../api/api";
 import { EVENTS } from "../common/types";
 import { io, Socket } from "socket.io-client";
-import { DeskOnlineProvider } from "./DeskContext";
+import { DeskOnlineProvider } from "./DeskOnlineProvider";
 import { createContext, FC, ReactNode, useContext, useEffect } from "react";
 
 export const socket = io(server);

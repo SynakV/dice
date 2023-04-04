@@ -43,7 +43,7 @@ export type CurrentType = {
   round: number;
   stage: number;
   status?: string;
-  player: PlayerType;
+  player: PlayerType | null;
 };
 
 export type MaxType = {

@@ -30,6 +30,8 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       const newDesk: DeskType = await trigger(
         {
           name: settings.name,
+          wins: settings.wins,
+          stages: settings.stages,
           players: settings.players,
           creator: {
             name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS).name,
@@ -51,21 +53,41 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       } else {
         notification("Desk with such name already exists");
       }
-    } else {
-      notification("Invalid number of players");
     }
   };
 
-  const isValid = () =>
-    settings &&
-    settings.name &&
-    settings.players! >= 2 &&
-    settings.players! <= 5;
+  const isValid = () => {
+    if (!settings) {
+      return false;
+    }
+
+    if (!settings.name) {
+      notification("Name is missing");
+      return false;
+    }
+
+    if (!(settings.wins >= 2 && settings.wins <= 5)) {
+      notification("Invalid number of wins");
+      return false;
+    }
+
+    if (!(settings.stages >= 2 && settings.stages <= 5)) {
+      notification("Invalid number of stages");
+      return false;
+    }
+
+    if (!(settings.players >= 2 && settings.players <= 5)) {
+      notification("Invalid number of players");
+      return false;
+    }
+
+    return true;
+  };
 
   return (
     <Modal isOpen={isOpen} title="Create new desk" className="create">
       <div className="create__main">
-        <Form setForm={setSettings} />
+        <Form isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
         <span className="create__close" onClick={handleClose}>

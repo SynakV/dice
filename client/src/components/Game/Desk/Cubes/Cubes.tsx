@@ -92,7 +92,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   // Round flow
   useEffect(() => {
     const isCurrentPlayerTurn =
-      desk.gameplay.current.player.name === player.name;
+      desk.gameplay.current.player?.name === player.name;
 
     if (!stage.isStarted || stage.isCompleted || !isCurrentPlayerTurn) {
       return;

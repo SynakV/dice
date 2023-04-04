@@ -18,7 +18,7 @@ import { useNotification } from "../../Shared/Notification/Notification";
 
 export const Online: FC = () => {
   const socket = useSocket();
-  const { push, query } = useRouter();
+  const { push } = useRouter();
   const { desk, setDesk } = useDesk();
   const { notification } = useNotification();
 
@@ -70,7 +70,7 @@ export const Online: FC = () => {
 
   const handleInitializePlayer = () => {
     socket.emit(MESSAGES.JOIN_DESK, {
-      desk: desk?._id,
+      desk: desk._id,
       name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
     });
   };

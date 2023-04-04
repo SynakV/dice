@@ -7,16 +7,13 @@ export type DeskDocument = Desk & Document;
 @Schema({ timestamps: true })
 export class Desk {
   @Prop()
-  name?: string;
-
-  @Prop()
-  isGameStarted?: boolean;
+  name: string;
 
   @Prop({ type: Object })
-  creator?: PlayerType;
+  creator: PlayerType;
 
   @Prop({ type: Object })
-  gameplay?: GameplayType;
+  gameplay: GameplayType;
 }
 
 export const DeskSchema = SchemaFactory.createForClass(Desk);
