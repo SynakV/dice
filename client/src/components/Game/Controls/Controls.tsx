@@ -1,33 +1,19 @@
 import React from "react";
-import { MESSAGES } from "@utils/common/types";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { useSocket } from "@utils/contexts/WebsocketContext";
-import { shuffleArray } from "@utils/helpers/randomizer.helper";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import {
-  afterStartGame,
-  afterTriggerStageStart,
-} from "@utils/helpers/gameplay/gameplay.helper";
 
 export const Controls = () => {
-  // const socket = useSocket();
   const portal = usePortal();
-  const { desk, setDesk } = useDesk();
+  const { handle, desk } = useDesk();
   const { toggleGameOpen } = useGame();
 
   const handleGameStart = () => {
-    setDesk(afterStartGame);
-    // if (desk.gameplay.players) {
-    //   socket.emit(MESSAGES.GAME_START, {
-    //     id: desk._id,
-    //     sequence: shuffleArray(desk.gameplay.players),
-    //   });
-    // }
+    handle.startGame();
   };
 
   const handleRollDice = () => {
-    setDesk(afterTriggerStageStart);
+    handle.triggerStageStart();
   };
 
   const rounds = desk.gameplay.rounds;

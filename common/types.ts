@@ -5,6 +5,7 @@ export const MESSAGES = {
   GAME_START: "gameStart",
   JOIN_DESK: "joinDesk",
   LEAVE_DESK: "leaveDesk",
+  DESK_CHANGE: "deskChange",
 } as const;
 
 export const EVENTS = {
@@ -13,6 +14,7 @@ export const EVENTS = {
   ON_GAME_START: "onGameStart",
   ON_JOIN_DESK: "onJoinDesk",
   ON_LEAVE_DESK: "onLeaveDesk",
+  ON_DESK_CHANGE: "deskChange",
 } as const;
 
 // DESK //
@@ -26,7 +28,7 @@ export type DeskType = {
 
 export type PlayerType = {
   id?: string;
-  name?: string;
+  name: string;
   isCreator?: boolean;
 };
 

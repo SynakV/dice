@@ -10,7 +10,6 @@ import {
 } from "@utils/helpers/ranking/ranking.helper";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
-import { afterThrow } from "@utils/helpers/gameplay/gameplay.helper";
 import {
   getCubesReroll,
   getDiceForReroll,
@@ -26,7 +25,7 @@ interface Props {
 }
 
 export const Cubes: FC<Props> = ({ player, name }) => {
-  const { desk, setDesk } = useDesk();
+  const { handle, desk } = useDesk();
   const { onRefreshGame } = useGame();
   const [ranking, setRanking] = useState<RankingResultType | null>(null);
   const [cubes, setCubes] = useState<number[] | null>(null);
@@ -47,14 +46,12 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     setRanking(ranking);
 
     playAudio("handThrowDice").onended = () => {
-      setDesk((prev) =>
-        afterThrow(prev, {
-          ...ranking,
-          player,
-          cubes: newCubes,
-          stage: desk.gameplay.current.stage,
-        })
-      );
+      handle.throwDice({
+        ...ranking,
+        player,
+        cubes: newCubes,
+        stage: desk.gameplay.current.stage,
+      });
     };
   };
 

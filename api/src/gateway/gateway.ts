@@ -10,7 +10,7 @@ import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
-import { MESSAGES, EVENTS, PlayerType } from '../utils/common/types';
+import { MESSAGES, EVENTS, PlayerType, DeskType } from '../utils/common/types';
 
 @WebSocketGateway({
   cors: {
@@ -72,6 +72,19 @@ export class GatewayService implements OnModuleInit {
     );
 
     client.to(room).emit(EVENTS.ON_LEAVE_DESK, updatedDesk);
+  }
+
+  @SubscribeMessage(MESSAGES.DESK_CHANGE)
+  async handleDeskChange(_: Socket, desk: DeskType) {
+    const updatedDesk = await this.deskModel.findOneAndUpdate(
+      { _id: desk._id },
+      { $set: { gameplay: desk.gameplay } },
+      { new: true },
+    );
+
+    if (desk._id) {
+      this.server.to(desk._id).emit(EVENTS.ON_JOIN_DESK, updatedDesk);
+    }
   }
 
   @SubscribeMessage(MESSAGES.GAME_START)

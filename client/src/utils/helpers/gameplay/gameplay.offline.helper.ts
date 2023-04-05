@@ -65,16 +65,17 @@ export const afterEndGame = (prev: DeskType): DeskType => ({
   },
 });
 
-export const afterThrow = (
+export const afterThrowDice = (
   prev: DeskType,
   ranking: RankingResultWithInfoType
 ): DeskType => {
+  const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
     prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
   const stageThroughText =
-    getNextPlayer(prev).name + (!isLastStage ? " rolling..." : " re-rolling");
+    nextPlayer.name + (!isLastStage ? " rolling..." : " re-rolling");
   const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
 
   return {
@@ -121,7 +122,7 @@ export const afterThrow = (
       }),
       current: {
         ...prev.gameplay.current,
-        player: getNextPlayer(prev),
+        player: nextPlayer,
         status: isLastPlayerDidntThrowYet ? stageThroughText : stageFinishText,
         stage:
           !isLastStage && !isLastPlayerDidntThrowYet

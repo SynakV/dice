@@ -6,11 +6,10 @@ import { Modal } from "@components/Shared/Modal/Modal";
 import { Form } from "@components/Game/Settings/Form/Form";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { afterSettingsChange } from "@utils/helpers/gameplay/gameplay.helper";
 
 export const Settings = () => {
   const { replace } = useRouter();
-  const { desk, setDesk } = useDesk();
+  const { handle, desk } = useDesk();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [settings, setSettings] = useState<SettingsType | null>(null);
   const {
@@ -44,7 +43,7 @@ export const Settings = () => {
     if (isConfirmed && settings) {
       refreshGame();
       toggleGameOpen(GAME_OPEN.SETTINGS);
-      setDesk((prev) => afterSettingsChange(prev, settings));
+      handle.settingsChange(settings);
     }
     setIsConfirmOpen(false);
   };

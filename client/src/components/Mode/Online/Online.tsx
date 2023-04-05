@@ -1,7 +1,6 @@
 import { useDesk } from "@utils/contexts/DeskContext";
-import { useSocket } from "@utils/contexts/WebsocketContext";
+import { MESSAGES, DeskType } from "@utils/common/types";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { EVENTS, MESSAGES, DeskType } from "@utils/common/types";
 import {
   getStorageObjectItem,
   setStorageItem,
@@ -17,9 +16,8 @@ import { CredentialsType } from "../../Shared/Credentials/utils/types";
 import { useNotification } from "../../Shared/Notification/Notification";
 
 export const Online: FC = () => {
-  const socket = useSocket();
   const { push } = useRouter();
-  const { desk, setDesk } = useDesk();
+  const { desk, socket } = useDesk();
   const { notification } = useNotification();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -69,25 +67,11 @@ export const Online: FC = () => {
   }, []);
 
   const handleInitializePlayer = () => {
-    socket.emit(MESSAGES.JOIN_DESK, {
+    socket?.emit(MESSAGES.JOIN_DESK, {
       desk: desk._id,
       name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
     });
   };
-
-  useEffect(() => {
-    [EVENTS.ON_GAME_START, EVENTS.ON_JOIN_DESK, EVENTS.ON_LEAVE_DESK].forEach(
-      (event) => {
-        socket.on(event, (desk: DeskType) => {
-          setDesk(desk);
-        });
-      }
-    );
-
-    return () => {
-      socket.emit(MESSAGES.LEAVE_DESK);
-    };
-  }, []);
 
   const handleCloseCredentials = () => {
     push("/online");

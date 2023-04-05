@@ -10,7 +10,6 @@ import {
   SetStateAction,
 } from "react";
 import { useDesk } from "./DeskContext";
-import { afterEndGame } from "@utils/helpers/gameplay/gameplay.helper";
 
 export enum GAME_OPEN {
   HISTORY,
@@ -51,7 +50,7 @@ interface Props {
 }
 
 export const GameProvider: FC<Props> = ({ children }) => {
-  const { socket, setDesk } = useDesk();
+  const { socket, handle } = useDesk();
   const [gameOpen, setGameOpen] = useState<GameOpenType>(DEFAULT_GAME_OPEN);
   const [isInitSettings, setIsInitSettings] = useState(
     DEFAULT_VALUES.isInitSettings
@@ -72,7 +71,7 @@ export const GameProvider: FC<Props> = ({ children }) => {
 
   const handleRefreshGame = () => {
     setRefreshGame({});
-    setDesk(afterEndGame);
+    handle.endGame();
   };
 
   useEffect(() => {

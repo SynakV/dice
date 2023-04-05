@@ -1,8 +1,7 @@
 import { server } from "../api/api";
-import { EVENTS } from "../common/types";
 import { io, Socket } from "socket.io-client";
 import { DeskOnlineProvider } from "./DeskOnlineProvider";
-import { createContext, FC, ReactNode, useContext, useEffect } from "react";
+import { createContext, FC, ReactNode, useContext } from "react";
 
 export const socket = io(server);
 export const SocketContext = createContext<Socket>(socket);
@@ -11,23 +10,10 @@ interface Props {
   children: ReactNode;
 }
 
-export const SocketProvider: FC<Props> = ({ children }) => {
-  useEffect(() => {
-    return () => {
-      console.warn("Unregistering events...");
-      socket.off(EVENTS.CONNECTION);
-      socket.off(EVENTS.ON_MESSAGE);
-      socket.off(EVENTS.ON_JOIN_DESK);
-      socket.off(EVENTS.ON_LEAVE_DESK);
-      socket.off(EVENTS.ON_GAME_START);
-    };
-  }, []);
-
-  return (
-    <SocketContext.Provider value={socket}>
-      <DeskOnlineProvider>{children}</DeskOnlineProvider>
-    </SocketContext.Provider>
-  );
-};
+export const SocketProvider: FC<Props> = ({ children }) => (
+  <SocketContext.Provider value={socket}>
+    <DeskOnlineProvider>{children}</DeskOnlineProvider>
+  </SocketContext.Provider>
+);
 
 export const useSocket = () => useContext(SocketContext);

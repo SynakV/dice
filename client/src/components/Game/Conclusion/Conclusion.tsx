@@ -6,7 +6,6 @@ import { playAudio } from "@utils/helpers/audio.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
-import { afterConclusionClose } from "@utils/helpers/gameplay/gameplay.helper";
 import {
   getWinTotals,
   getGameWinner,
@@ -15,7 +14,7 @@ import {
 } from "@utils/helpers/ranking/ranking.helper";
 
 export const Conclusion = () => {
-  const { desk, setDesk } = useDesk();
+  const { handle, desk } = useDesk();
   const { toggleGameOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
@@ -82,7 +81,7 @@ export const Conclusion = () => {
     playAudio("hover");
 
     setTimeout(() => {
-      setDesk((prev) => afterConclusionClose(prev, isLastRound));
+      handle.conclusionClose(isLastRound);
     }, 300);
   };
 
