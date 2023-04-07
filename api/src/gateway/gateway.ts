@@ -14,7 +14,11 @@ import { MESSAGES, EVENTS, PlayerType, DeskType } from '../utils/common/types';
 
 @WebSocketGateway({
   cors: {
-    origin: ['http://localhost:3000', 'https://admin.socket.io/'],
+    origin: [
+      'http://localhost:3000',
+      'https://admin.socket.io/',
+      'https://dice-production.up.railway.app',
+    ],
   },
 })
 export class GatewayService implements OnModuleInit {
