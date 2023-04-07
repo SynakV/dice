@@ -1,6 +1,6 @@
 export const server =
   process.env.NODE_ENV === "production"
-    ? "dice-production.up.railway.app"
+    ? "https://dice-production.up.railway.app"
     : "http://localhost:3001";
 
 export const getRequest = <T>(url: string): Promise<T> =>
