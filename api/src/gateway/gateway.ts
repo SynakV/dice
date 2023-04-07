@@ -17,7 +17,7 @@ import { MESSAGES, EVENTS, PlayerType, DeskType } from '../utils/common/types';
     origin: [
       'http://localhost:3000',
       'https://admin.socket.io/',
-      'https://dice-production.up.railway.app',
+      'https://dice-tan.vercel.app',
     ],
   },
 })
