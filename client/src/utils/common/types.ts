@@ -10,11 +10,10 @@ export const MESSAGES = {
 
 export const EVENTS = {
   CONNECTION: "connection",
-  ON_MESSAGE: "onMessage",
   ON_GAME_START: "onGameStart",
   ON_JOIN_DESK: "onJoinDesk",
   ON_LEAVE_DESK: "onLeaveDesk",
-  ON_DESK_CHANGE: "deskChange",
+  ON_DESK_CHANGE: "onDeskChange",
 } as const;
 
 // DESK //

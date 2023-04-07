@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
-import { Cubes } from "@components/Game/Desk/Cubes/Cubes";
+import { Cubes } from "@components/Mode/Online/Game/Desk/Cubes/Cubes";
 
 export const Desk = () => {
   const { desk } = useDesk();

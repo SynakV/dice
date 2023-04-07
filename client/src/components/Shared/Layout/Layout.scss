@@ -1,5 +1,5 @@
 @import './Menu/Menu.scss';
-@import '../../Desks/Desks.scss', '../../Game/Game.scss', '../../Mode/Mode.scss';
+@import '../../Desks/Desks.scss', '../../Mode/Mode.scss';
 
 .layout {
     width: 100vw;
@@ -37,19 +37,7 @@
     }
 }
 
-@media (min-width: 1200px) or (max-width: 1400px) {
-    .layout__content {
-        transform: scale(1.5);
-    }
-}
-
-@media (max-width: 1200px) {
-    .layout__content {
-        transform: scale(1.2);
-    }
-}
-
-@media (max-width: 1000px) {
+@media (min-width: 800px) or (max-width: 1400px) {
     .layout__content {
         transform: scale(1);
     }

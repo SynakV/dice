@@ -83,7 +83,7 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_JOIN_DESK, updatedDesk);
+      this.server.to(desk._id).emit(EVENTS.ON_DESK_CHANGE, updatedDesk);
     }
   }
 

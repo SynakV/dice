@@ -51,6 +51,8 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterThrowDice(prev, ranking));
   };
 
+  const stageFinish = () => {};
+
   const settingsChange = (settings: SettingsType) => {
     setDesk((prev) => afterSettingsChange(prev, settings));
   };
@@ -64,10 +66,11 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
       handle={{
         startGame,
         triggerStageStart,
-        endGame,
         throwDice,
-        settingsChange,
+        stageFinish,
         conclusionClose,
+        endGame,
+        settingsChange,
       }}
       desk={desk}
       children={children}

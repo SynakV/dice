@@ -16,6 +16,7 @@ interface DeskContext {
     triggerStageStart: () => void;
     endGame: () => void;
     throwDice: (ranking: RankingResultWithInfoType) => void;
+    stageFinish: () => void;
     settingsChange: (settings: SettingsType) => void;
     conclusionClose: (isLastRound: boolean) => void;
   };
@@ -28,6 +29,7 @@ const DEFAULT_VALUES = {
     triggerStageStart: () => {},
     endGame: () => {},
     throwDice: () => {},
+    stageFinish: () => {},
     settingsChange: () => {},
     conclusionClose: () => {},
   },

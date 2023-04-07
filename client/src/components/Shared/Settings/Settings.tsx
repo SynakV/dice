@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { Form } from "@components/Game/Settings/Form/Form";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import { Form } from "@components/Shared/Settings/Form/Form";
 
 export const Settings = () => {
   const { replace } = useRouter();

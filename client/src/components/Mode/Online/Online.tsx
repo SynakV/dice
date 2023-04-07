@@ -6,10 +6,10 @@ import {
   setStorageItem,
 } from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
-import { Game } from "@components/Game/Game";
-import { Players } from "../../Game/Players/Players";
 import React, { FC, useEffect, useState } from "react";
 import { Loading } from "../../Shared/Loading/Loading";
+import { Game } from "@components/Mode/Online/Game/Game";
+import { Players } from "@components/Mode/Shared/Players/Players";
 import { Credentials } from "../../Shared/Credentials/Credentials";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { CredentialsType } from "../../Shared/Credentials/utils/types";
