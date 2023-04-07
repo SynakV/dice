@@ -119,7 +119,7 @@ export const Conclusion = () => {
         ))}
       </div>
       <span onClick={handleClick} className="conclusion__button">
-        {isLastRound ? "Close" : "Continue"}
+        {isLastRound ? "Close" : "Next round"}
       </span>
       <span
         className="conclusion__history"
