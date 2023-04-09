@@ -12,6 +12,7 @@ import {
   afterConclusionClose,
   afterEndGame,
   afterSettingsChange,
+  afterStageFinish,
   afterStartGame,
   afterThrowDice,
   afterTriggerStageStart,
@@ -51,7 +52,9 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterThrowDice(prev, ranking));
   };
 
-  const stageFinish = () => {};
+  const stageFinish = () => {
+    setDesk(afterStageFinish);
+  };
 
   const settingsChange = (settings: SettingsType) => {
     setDesk((prev) => afterSettingsChange(prev, settings));

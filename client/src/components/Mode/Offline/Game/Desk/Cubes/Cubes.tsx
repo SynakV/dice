@@ -1,8 +1,8 @@
 import { DICE } from "@utils/constants";
+import { PlayerType } from "@utils/common/types";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { Cube } from "@components/Mode/Offline/Game/Desk/Cubes/Cube/Cube";
-import { RankingResultType, PlayerType } from "@utils/common/types";
 import { getRandomIntsFromInterval } from "@utils/helpers/randomizer.helper";
 import {
   getRanking,
@@ -27,10 +27,6 @@ interface Props {
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
   const { onRefreshGame } = useGame();
-  const [temp, setTemp] = useState<{
-    cubes: (number | null)[];
-    ranking: RankingResultType;
-  } | null>(null);
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
@@ -58,18 +54,15 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     const newCubes = cubes || getRandomIntsFromInterval();
     const ranking = getRanking(newCubes);
 
-    setTemp({
-      ranking,
+    handle.throwDice({
+      ...ranking,
+      player,
       cubes: newCubes,
+      stage: desk.gameplay.current.stage,
     });
 
     playAudio("handThrowDice").onended = () => {
-      handle.throwDice({
-        ...ranking,
-        player,
-        cubes: newCubes,
-        stage: desk.gameplay.current.stage,
-      });
+      handle.stageFinish();
     };
   };
 
@@ -128,10 +121,6 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   }, [desk]);
 
   useEffect(() => {
-    setTemp(null);
-  }, [stage]);
-
-  useEffect(() => {
     if (onRefreshGame) {
       setCubesReroll(DEFAULT_CUBES);
     }
@@ -141,10 +130,10 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     <div className="cubes">
       <span className="cubes__name">
         <span>{name}</span>
-        <span>{temp?.ranking?.value.name || ranking?.value?.name}</span>
+        <span>{ranking?.value.name}</span>
       </span>
       <div className="cubes__container">
-        {(temp?.cubes || cubes || DEFAULT_CUBES).map((cube, index) => (
+        {(cubes || DEFAULT_CUBES).map((cube, index) => (
           <Cube
             key={index}
             value={cube}

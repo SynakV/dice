@@ -14,6 +14,14 @@ import {
 } from "@utils/common/constants";
 import { deepClone } from "@utils/common/helpers";
 
+export const afterStartGame = (prev: DeskType): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    isGameStarted: true,
+  },
+});
+
 export const afterTriggerStageStart = (prev: DeskType): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
@@ -41,34 +49,39 @@ export const afterTriggerStageStart = (prev: DeskType): DeskType => {
   };
 };
 
-export const afterStartGame = (prev: DeskType): DeskType => ({
-  ...prev,
-  gameplay: {
-    ...prev.gameplay,
-    isGameStarted: true,
-  },
-});
-
-export const afterEndGame = (prev: DeskType): DeskType => ({
-  ...prev,
-  gameplay: {
-    ...prev.gameplay,
-    isGameEnded: false,
-    isGameStarted: false,
-    rounds: [deepClone(DEFAULT_ROUND)],
-    current: {
-      ...deepClone(DEFAULT_CURRENT),
-      player: {
-        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
-      },
-    },
-  },
-});
-
 export const afterThrowDice = (
   prev: DeskType,
   ranking: RankingResultWithInfoType
 ): DeskType => {
+  return {
+    ...prev,
+    gameplay: {
+      ...prev.gameplay,
+      rounds: prev.gameplay.rounds.map((round, index) => {
+        const isCurrentRound = prev.gameplay.current.round === index;
+
+        if (!isCurrentRound) {
+          return round;
+        }
+
+        round.stages.map((stage, index) => {
+          const isCurrentStage = prev.gameplay.current.stage === index;
+
+          if (isCurrentStage) {
+            stage.isStarted = false;
+            stage.rankings.push(ranking);
+          }
+
+          return stage;
+        });
+
+        return round;
+      }),
+    },
+  };
+};
+
+export const afterStageFinish = (prev: DeskType): DeskType => {
   const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
@@ -93,7 +106,7 @@ export const afterThrowDice = (
           const isCurrentStage = prev.gameplay.current.stage === index;
 
           if (isCurrentStage) {
-            stage.rankings.push(ranking);
+            stage.isStarted = true;
           }
 
           if (isLastPlayerDidntThrowYet) {
@@ -133,6 +146,40 @@ export const afterThrowDice = (
   };
 };
 
+export const afterConclusionClose = (
+  prev: DeskType,
+  isLastRound: boolean
+): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev?.gameplay,
+    isGameEnded: isLastRound,
+    rounds: [...prev.gameplay.rounds, deepClone(DEFAULT_ROUND)],
+    current: {
+      ...prev.gameplay.current,
+      round: ++prev.gameplay.current.round,
+      stage: 0,
+      status: "",
+    },
+  },
+});
+
+export const afterEndGame = (prev: DeskType): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    isGameEnded: false,
+    isGameStarted: false,
+    rounds: [deepClone(DEFAULT_ROUND)],
+    current: {
+      ...deepClone(DEFAULT_CURRENT),
+      player: {
+        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      },
+    },
+  },
+});
+
 export const afterSettingsChange = (
   prev: DeskType,
   settings: SettingsType
@@ -160,24 +207,6 @@ export const afterSettingsChange = (
       player: {
         name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
       },
-    },
-  },
-});
-
-export const afterConclusionClose = (
-  prev: DeskType,
-  isLastRound: boolean
-): DeskType => ({
-  ...prev,
-  gameplay: {
-    ...prev?.gameplay,
-    isGameEnded: isLastRound,
-    rounds: [...prev.gameplay.rounds, deepClone(DEFAULT_ROUND)],
-    current: {
-      ...prev.gameplay.current,
-      round: ++prev.gameplay.current.round,
-      stage: 0,
-      status: "",
     },
   },
 });
