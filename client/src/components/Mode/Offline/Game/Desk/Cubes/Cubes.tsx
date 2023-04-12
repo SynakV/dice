@@ -11,6 +11,7 @@ import {
 import { useDesk } from "@utils/contexts/DeskContext";
 import {
   getCubesReroll,
+  getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
@@ -34,18 +35,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   const round = desk.gameplay.rounds[desk.gameplay.current.round];
   const stage = round.stages[desk.gameplay.current.stage];
 
-  const ranking =
-    // show current ranking
-    stage.rankings.find((ranking) => ranking.player.name === player.name) ||
-    // if no ranking, show ranking from previous stage
-    round.stages[desk.gameplay.current.stage - 1]?.rankings.find(
-      (ranking) => ranking.player.name === player.name
-    ) ||
-    // if no ranking, show ranking from last stage of previous round
-    desk.gameplay.rounds[desk.gameplay.current.round - 1]?.stages
-      .at(-1)
-      ?.rankings.find((ranking) => ranking.player.name === player.name);
-
+  const ranking = getCurrentRanking(desk, player);
   const cubes = ranking?.cubes;
 
   const handleSetCubes = (cubes?: number[]) => {

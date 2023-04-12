@@ -11,9 +11,9 @@ import {
 import { useDesk } from "@utils/contexts/DeskContext";
 import {
   getCubesReroll,
+  getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
-import { useGame } from "@utils/contexts/GameContext";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 
@@ -26,7 +26,6 @@ interface Props {
 
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
-  const { setIsControlsLoading } = useGame();
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
@@ -39,18 +38,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   const round = desk.gameplay.rounds[desk.gameplay.current.round];
   const stage = round.stages[desk.gameplay.current.stage];
 
-  const ranking =
-    // show current ranking
-    stage.rankings.find((ranking) => ranking.player.name === player.name) ||
-    // if no ranking, show ranking from previous stage
-    round.stages[desk.gameplay.current.stage - 1]?.rankings.find(
-      (ranking) => ranking.player.name === player.name
-    ) ||
-    // if no ranking, show ranking from last stage of previous round
-    desk.gameplay.rounds[desk.gameplay.current.round - 1]?.stages
-      .at(-1)
-      ?.rankings.find((ranking) => ranking.player.name === player.name);
-
+  const ranking = getCurrentRanking(desk, player);
   const cubes = ranking?.cubes;
 
   const handleSetCubes = (cubes?: number[]) => {
@@ -64,13 +52,13 @@ export const Cubes: FC<Props> = ({ player, name }) => {
       stage: desk.gameplay.current.stage,
     });
 
-    playAudio("handThrowDice").onended = () => {
+    playAudio("handThrowDice", true).onended = () => {
       handle.finishStage();
     };
   };
 
   const handleRollDice = () => {
-    playAudio("handMixDice").onended = () => {
+    playAudio("handMixDice", true).onended = () => {
       handleSetCubes();
     };
   };
@@ -100,23 +88,16 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     }
   };
 
-  const playThrowSound = () => {
-    playAudio("handMixDice").onended = () => {
-      playAudio("handThrowDice");
-    };
-  };
-
   // Round flow
   useEffect(() => {
-    if (!stage.isStarted || stage.isCompleted || !isCurrentPlayerTurn) {
+    if (
+      !stage.isStarted ||
+      stage.isCompleted ||
+      !isCurrentPlayerTurn ||
+      isOtherPlayer
+    ) {
       return;
     }
-
-    if (isOtherPlayer) {
-      return playThrowSound();
-    }
-
-    setIsControlsLoading(false);
 
     if (desk.gameplay.current.stage === 0) {
       // FIRST STAGE (Roll)

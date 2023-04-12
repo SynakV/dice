@@ -8,6 +8,7 @@ import {
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { Loading } from "../../Shared/Loading/Loading";
+import { playAudio } from "@utils/helpers/audio.helper";
 import { Game } from "@components/Mode/Online/Game/Game";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Players } from "@components/Mode/Shared/Players/Players";
@@ -73,13 +74,7 @@ export const Online: FC = () => {
       return;
     }
 
-    [
-      EVENTS.ON_JOIN_DESK,
-      EVENTS.ON_START_STAGE,
-      EVENTS.ON_THROW_DICE,
-      EVENTS.ON_CHANGE_SETTINGS,
-      EVENTS.ON_LEAVE_DESK,
-    ].forEach((event) => {
+    [EVENTS.ON_JOIN_DESK, EVENTS.ON_LEAVE_DESK].forEach((event) => {
       socket.on(event, (desk: DeskType) => {
         setDesk(desk);
       });
@@ -88,6 +83,17 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_START_GAME, (desk: DeskType) => {
       setDesk(desk);
       setIsControlsLoading(false);
+    });
+
+    socket.on(EVENTS.ON_START_STAGE, (desk: DeskType) => {
+      setDesk(desk);
+      playAudio("handMixDice");
+      setIsControlsLoading(false);
+    });
+
+    socket.on(EVENTS.ON_THROW_DICE, (desk: DeskType) => {
+      setDesk(desk);
+      playAudio("handThrowDice");
     });
 
     socket.on(EVENTS.ON_FINISH_STAGE, (desk: DeskType) => {
@@ -106,6 +112,10 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_END_GAME, (desk: DeskType) => {
       setDesk(desk);
       toggleGameOpen(GAME_OPEN.CONCLUSION);
+    });
+
+    socket.on(EVENTS.ON_CHANGE_SETTINGS, (desk: DeskType) => {
+      setDesk(desk);
     });
 
     return () => {
