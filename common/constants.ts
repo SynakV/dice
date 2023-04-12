@@ -5,6 +5,7 @@ export const DEFAULT_STAGE: StageType = {
   rankings: [],
   isStarted: false,
   isCompleted: false,
+  isPlayerThrew: false,
 };
 
 export const DEFAULT_ROUND: RoundType = {
@@ -23,6 +24,8 @@ export const DEFAULT_DESK: DeskType = {
     players: [],
     isGameEnded: false,
     isGameStarted: false,
+    isLastRound: false,
+    isShowConclusion: false,
     rounds: [deepClone(DEFAULT_ROUND)],
     max: {
       wins: 2,

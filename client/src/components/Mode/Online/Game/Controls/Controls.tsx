@@ -25,12 +25,14 @@ export const Controls = () => {
     desk.gameplay.players.length === desk.gameplay.max.players;
 
   const isCurrentStageNotStarted = !currentStage.isStarted;
+  const isCurrentPlayerThrew = currentStage.isPlayerThrew;
   const isCurrentPlayer =
     desk.gameplay.current.player?.name ===
     getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS).name;
   const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
 
-  const isRoll = isCurrentStageNotStarted && isCurrentPlayer;
+  const isAllowedToRoll =
+    isCurrentStageNotStarted && !isCurrentPlayerThrew && isCurrentPlayer;
 
   return portal(
     <div className="controls">
@@ -45,9 +47,9 @@ export const Controls = () => {
         </span>
       ) : (
         <span
-          onClick={isRoll ? () => handleRollDice() : () => {}}
+          onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
           className={`controls__roll ${
-            isRoll ? "" : "controls__roll--disabled"
+            isAllowedToRoll ? "" : "controls__roll--disabled"
           }`}
         >
           {isFirstStageNotCompleted ? "Roll" : "Re-roll"} dice

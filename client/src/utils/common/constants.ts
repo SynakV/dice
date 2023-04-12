@@ -5,6 +5,7 @@ export const DEFAULT_STAGE: StageType = {
   rankings: [],
   isStarted: false,
   isCompleted: false,
+  isPlayerThrew: false,
 };
 
 export const DEFAULT_ROUND: RoundType = {

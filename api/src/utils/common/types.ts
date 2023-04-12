@@ -133,6 +133,7 @@ export type RoundType = {
 export type StageType = {
   isStarted: boolean;
   isCompleted: boolean;
+  isPlayerThrew: boolean;
   winners?: PlayerType[];
   rankings: RankingResultWithInfoType[];
 };

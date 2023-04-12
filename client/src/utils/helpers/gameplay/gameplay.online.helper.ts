@@ -83,8 +83,9 @@ export const afterThrowDice = (
           const isCurrentStage = prev.gameplay.current.stage === index;
 
           if (isCurrentStage) {
-            stage.rankings.push(ranking);
             stage.isStarted = false;
+            stage.isPlayerThrew = true;
+            stage.rankings.push(ranking);
           }
 
           return stage;
@@ -120,6 +121,10 @@ export const afterFinishStage = (prev: DeskType, socket: Socket): DeskType => {
 
         round.stages.map((stage, index) => {
           const isCurrentStage = prev.gameplay.current.stage === index;
+
+          if (isCurrentStage) {
+            stage.isPlayerThrew = false;
+          }
 
           if (isLastPlayerDidntThrowYet) {
             return stage;

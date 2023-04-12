@@ -4,13 +4,13 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Model } from 'mongoose';
-import { Timers } from 'src/utils/types';
 import { Desk } from '../desk/desk.model';
 import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
 import { deepClone } from 'src/utils/common/helpers';
+import { DocumentDeskType, Timers } from 'src/utils/types';
 import { DEFAULT_ROUND } from 'src/utils/common/constants';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
 import { MESSAGES, EVENTS, DeskType } from '../utils/common/types';
@@ -125,10 +125,7 @@ export class GatewayService implements OnModuleInit {
       updatedDesk.gameplay.rounds[updatedDesk.gameplay.current.round]
         .isCompleted
     ) {
-      this.handleFinishStageAfterCloseConclusion(_, {
-        ...updatedDesk,
-        _id: desk._id,
-      });
+      this.handleFinishStageAfterCloseConclusion(_, updatedDesk);
     }
   }
 
@@ -146,10 +143,7 @@ export class GatewayService implements OnModuleInit {
       }
 
       if (updatedDesk.gameplay.isLastRound) {
-        this.handleEndGameAfterCloseConclusion(_, {
-          ...updatedDesk,
-          _id: desk._id,
-        });
+        this.handleEndGameAfterCloseConclusion(_, updatedDesk);
       } else {
         this.server
           .to(updatedDesk.id)
@@ -199,10 +193,34 @@ export class GatewayService implements OnModuleInit {
     client.to(room).emit(EVENTS.ON_LEAVE_DESK, updatedDesk);
   }
 
-  async handleEndGameAfterCloseConclusion(_: Socket, updatedDesk: DeskType) {
+  async handleFinishStageAfterCloseConclusion(
+    _: Socket,
+    updatedDesk: DocumentDeskType,
+  ) {
+    this.handleCloseConclusion(_, {
+      ...updatedDesk,
+      _id: updatedDesk._id.toString(),
+      gameplay: {
+        ...updatedDesk.gameplay,
+        isShowConclusion: false,
+        rounds: [...updatedDesk.gameplay.rounds, deepClone(DEFAULT_ROUND)],
+        current: {
+          ...updatedDesk.gameplay.current,
+          round: updatedDesk.gameplay.current.round + 1,
+          stage: 0,
+          status: '',
+        },
+      },
+    });
+  }
+
+  async handleEndGameAfterCloseConclusion(
+    _: Socket,
+    updatedDesk: DocumentDeskType,
+  ) {
     this.handleEndGame(_, {
       ...updatedDesk,
-      _id: updatedDesk._id,
+      _id: updatedDesk._id.toString(),
       gameplay: {
         ...updatedDesk.gameplay,
         isLastRound: false,
@@ -213,27 +231,6 @@ export class GatewayService implements OnModuleInit {
         current: {
           ...deepClone(DEFAULT_CURRENT),
           player: updatedDesk.gameplay.players[0],
-        },
-      },
-    });
-  }
-
-  async handleFinishStageAfterCloseConclusion(
-    _: Socket,
-    updatedDesk: DeskType,
-  ) {
-    this.handleCloseConclusion(_, {
-      ...updatedDesk,
-      _id: updatedDesk._id,
-      gameplay: {
-        ...updatedDesk.gameplay,
-        isShowConclusion: false,
-        rounds: [...updatedDesk.gameplay.rounds, deepClone(DEFAULT_ROUND)],
-        current: {
-          ...updatedDesk.gameplay.current,
-          round: updatedDesk.gameplay.current.round + 1,
-          stage: 0,
-          status: '',
         },
       },
     });
