@@ -9,13 +9,13 @@ import { DeskCommonProps, DeskProvider } from "./DeskContext";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
-  afterConclusionClose,
-  afterEndGame,
-  afterSettingsChange,
-  afterStageFinish,
   afterStartGame,
+  afterStartStage,
   afterThrowDice,
-  afterTriggerStageStart,
+  afterFinishStage,
+  afterCloseConclusion,
+  afterEndGame,
+  afterChangeSettings,
 } from "@utils/helpers/gameplay/gameplay.offline.helper";
 
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
@@ -40,42 +40,43 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk(afterStartGame);
   };
 
-  const triggerStageStart = () => {
-    setDesk(afterTriggerStageStart);
-  };
-
-  const endGame = () => {
-    setDesk(afterEndGame);
+  const startStage = () => {
+    setDesk(afterStartStage);
   };
 
   const throwDice = (ranking: RankingResultWithInfoType) => {
     setDesk((prev) => afterThrowDice(prev, ranking));
   };
 
-  const stageFinish = () => {
-    setDesk(afterStageFinish);
+  const finishStage = () => {
+    setDesk(afterFinishStage);
   };
 
-  const settingsChange = (settings: SettingsType) => {
-    setDesk((prev) => afterSettingsChange(prev, settings));
+  const closeConclusion = (isLastRound: boolean) => {
+    setDesk((prev) => afterCloseConclusion(prev, isLastRound));
   };
 
-  const conclusionClose = (isLastRound: boolean) => {
-    setDesk((prev) => afterConclusionClose(prev, isLastRound));
+  const endGame = () => {
+    setDesk(afterEndGame);
+  };
+
+  const changeSettings = (settings: SettingsType) => {
+    setDesk((prev) => afterChangeSettings(prev, settings));
   };
 
   return (
     <DeskProvider
       handle={{
         startGame,
-        triggerStageStart,
+        startStage,
         throwDice,
-        stageFinish,
-        conclusionClose,
+        finishStage,
+        closeConclusion,
         endGame,
-        settingsChange,
+        changeSettings,
       }}
       desk={desk}
+      setDesk={setDesk}
       children={children}
     />
   );

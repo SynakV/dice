@@ -10,12 +10,12 @@ export const Controls = () => {
   const { handle, desk } = useDesk();
   const { toggleGameOpen } = useGame();
 
-  const handleGameStart = () => {
+  const handleStartGame = () => {
     handle.startGame();
   };
 
   const handleRollDice = () => {
-    handle.triggerStageStart();
+    handle.startStage();
   };
 
   const rounds = desk.gameplay.rounds;
@@ -39,7 +39,7 @@ export const Controls = () => {
           className={`controls__start ${
             isAllPlayersPresent ? "" : "controls__start--disabled"
           }`}
-          onClick={isAllPlayersPresent ? () => handleGameStart() : () => {}}
+          onClick={isAllPlayersPresent ? () => handleStartGame() : () => {}}
         >
           Start game
         </span>

@@ -1,5 +1,12 @@
-import { FC, ReactNode, useContext, createContext } from "react";
-import { Socket } from "socket.io-client";
+import {
+  FC,
+  ReactNode,
+  useContext,
+  createContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
+import type { Socket } from "socket.io-client";
 import {
   DeskType,
   SettingsType,
@@ -11,27 +18,29 @@ import { DEFAULT_DESK } from "@utils/common/constants";
 interface DeskContext {
   desk: DeskType;
   socket?: Socket;
+  setDesk: Dispatch<SetStateAction<DeskType>>;
   handle: {
     startGame: () => void;
-    triggerStageStart: () => void;
-    endGame: () => void;
+    startStage: () => void;
     throwDice: (ranking: RankingResultWithInfoType) => void;
-    stageFinish: () => void;
-    settingsChange: (settings: SettingsType) => void;
-    conclusionClose: (isLastRound: boolean) => void;
+    finishStage: () => void;
+    closeConclusion: (isLastRound: boolean) => void;
+    endGame: () => void;
+    changeSettings: (settings: SettingsType) => void;
   };
 }
 
 const DEFAULT_VALUES = {
   desk: DEFAULT_DESK,
+  setDesk: () => {},
   handle: {
     startGame: () => {},
-    triggerStageStart: () => {},
-    endGame: () => {},
+    startStage: () => {},
     throwDice: () => {},
-    stageFinish: () => {},
-    settingsChange: () => {},
-    conclusionClose: () => {},
+    finishStage: () => {},
+    closeConclusion: () => {},
+    endGame: () => {},
+    changeSettings: () => {},
   },
 };
 
@@ -45,10 +54,11 @@ export const DeskProvider: FC<DeskCommonProps & DeskContext> = ({
   desk,
   socket,
   handle,
+  setDesk,
   children,
 }) => {
   return (
-    <DeskContext.Provider value={{ handle, socket, desk }}>
+    <DeskContext.Provider value={{ setDesk, handle, socket, desk }}>
       <GameProvider>{desk && children}</GameProvider>
     </DeskContext.Provider>
   );

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Offline } from "@components/Mode/Offline/Offline";
+import { GameProvider } from "@utils/contexts/GameContext";
 import { DeskOfflineProvider } from "@utils/contexts/DeskOfflineProvider";
 
 export default function Page() {
@@ -8,9 +9,11 @@ export default function Page() {
       <Head>
         <title>Dice | Offline</title>
       </Head>
-      <DeskOfflineProvider>
-        <Offline />
-      </DeskOfflineProvider>
+      <GameProvider>
+        <DeskOfflineProvider>
+          <Offline />
+        </DeskOfflineProvider>
+      </GameProvider>
     </>
   );
 }

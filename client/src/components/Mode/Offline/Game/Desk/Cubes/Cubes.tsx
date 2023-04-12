@@ -9,7 +9,6 @@ import {
   getReRollIndexes,
 } from "@utils/helpers/ranking/ranking.helper";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { useGame } from "@utils/contexts/GameContext";
 import {
   getCubesReroll,
   getDiceForReroll,
@@ -26,7 +25,6 @@ interface Props {
 
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
-  const { onRefreshGame } = useGame();
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
@@ -62,7 +60,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     });
 
     playAudio("handThrowDice").onended = () => {
-      handle.stageFinish();
+      handle.finishStage();
     };
   };
 
@@ -89,7 +87,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   };
 
   const handleSelectDie = (index: number | number[]) => {
-    if (round?.stages?.[0]?.isCompleted) {
+    if (round.stages[0].isCompleted) {
       const cubesForReroll = getCubesReroll(index, cubesReroll);
       setCubesReroll(cubesForReroll);
 
@@ -106,10 +104,11 @@ export const Cubes: FC<Props> = ({ player, name }) => {
       return;
     }
 
-    // FIRST STAGE (Roll)
     if (desk.gameplay.current.stage === 0) {
+      // FIRST STAGE (Roll)
       handleRollDice();
     } else {
+      // LAST STAGE (Re-Roll)
       if (isOtherPlayer && cubes && ranking) {
         const reRollIndexes = getReRollIndexes(cubes, ranking);
         const cubesReroll = handleSelectDie(reRollIndexes);
@@ -121,10 +120,10 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   }, [desk]);
 
   useEffect(() => {
-    if (onRefreshGame) {
+    if (!desk.gameplay.isGameStarted) {
       setCubesReroll(DEFAULT_CUBES);
     }
-  }, [onRefreshGame]);
+  }, [desk.gameplay.isGameStarted]);
 
   return (
     <div className="cubes">

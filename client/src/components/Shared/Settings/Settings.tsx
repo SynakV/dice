@@ -4,21 +4,16 @@ import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
-import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Form } from "@components/Shared/Settings/Form/Form";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
 export const Settings = () => {
   const { replace } = useRouter();
   const { handle, desk } = useDesk();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [settings, setSettings] = useState<SettingsType | null>(null);
-  const {
-    gameOpen,
-    isInitSettings,
-    refreshGame,
-    toggleGameOpen,
-    setIsInitSettings,
-  } = useGame();
+  const { gameOpen, isInitSettings, toggleGameOpen, setIsInitSettings } =
+    useGame();
 
   const isGameStarted = desk.gameplay.isGameStarted;
 
@@ -41,9 +36,9 @@ export const Settings = () => {
 
   const handleConfirm = (isConfirmed: boolean) => {
     if (isConfirmed && settings) {
-      refreshGame();
+      handle.endGame();
+      handle.changeSettings(settings);
       toggleGameOpen(GAME_OPEN.SETTINGS);
-      handle.settingsChange(settings);
     }
     setIsConfirmOpen(false);
   };

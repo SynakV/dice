@@ -21,8 +21,10 @@ export const DEFAULT_CURRENT: CurrentType = {
 export const DEFAULT_DESK: DeskType = {
   gameplay: {
     players: [],
+    isLastRound: false,
     isGameEnded: false,
     isGameStarted: false,
+    isShowConclusion: false,
     rounds: [deepClone(DEFAULT_ROUND)],
     max: {
       wins: 2,

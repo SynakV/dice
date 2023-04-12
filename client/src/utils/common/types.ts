@@ -2,18 +2,27 @@
 
 export const MESSAGES = {
   MESSAGE: "message",
-  GAME_START: "gameStart",
+  START_GAME: "startGame",
+  START_STAGE: "startStage",
+  THROW_DICE: "throwDice",
+  FINISH_STAGE: "finishStage",
+  CLOSE_CONCLUSION: "closeConclusion",
+  END_GAME: "endGame",
+  CHANGE_SETTINGS: "changeSettings",
   JOIN_DESK: "joinDesk",
   LEAVE_DESK: "leaveDesk",
-  DESK_CHANGE: "deskChange",
 } as const;
 
 export const EVENTS = {
-  CONNECTION: "connection",
-  ON_GAME_START: "onGameStart",
+  ON_START_GAME: "onStartGame",
+  ON_START_STAGE: "onStartStage",
+  ON_THROW_DICE: "onThrowDice",
+  ON_FINISH_STAGE: "onFinishStage",
+  ON_CLOSE_CONCLUSION: "onCloseConclusion",
+  ON_END_GAME: "onEndGame",
+  ON_CHANGE_SETTINGS: "onChangeSettings",
   ON_JOIN_DESK: "onJoinDesk",
   ON_LEAVE_DESK: "onLeaveDesk",
-  ON_DESK_CHANGE: "onDeskChange",
 } as const;
 
 // DESK //
@@ -37,8 +46,19 @@ export type GameplayType = {
   current: CurrentType;
   isGameEnded: boolean;
   isGameStarted: boolean;
+  isLastRound: boolean;
+  isShowConclusion: boolean;
   players: PlayerType[];
+  timers?: Timers;
 };
+
+export type Timers = {
+  [key in TIMERS]: number;
+};
+
+export enum TIMERS {
+  STAGE_THINKING_TIME = 30,
+}
 
 export type CurrentType = {
   round: number;

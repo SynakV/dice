@@ -13,7 +13,7 @@ export const Controls = () => {
   };
 
   const handleRollDice = () => {
-    handle.triggerStageStart();
+    handle.startStage();
   };
 
   const rounds = desk.gameplay.rounds;

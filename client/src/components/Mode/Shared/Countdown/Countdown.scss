@@ -1,0 +1,12 @@
+.countdown {
+    left: 50%;
+    bottom: 50px;
+    position: absolute;
+    transition: opacity 0.3s;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.5);
+
+    &.closing {
+        opacity: 0;
+    }
+}

@@ -81,7 +81,7 @@ export const Conclusion = () => {
     playAudio("hover");
 
     setTimeout(() => {
-      handle.conclusionClose(isLastRound);
+      handle.closeConclusion(isLastRound);
     }, 300);
   };
 

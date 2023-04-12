@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { playAudio } from "../helpers/audio.helper";
 import {
   FC,
@@ -9,19 +10,18 @@ import {
   createContext,
   SetStateAction,
 } from "react";
-import { useDesk } from "./DeskContext";
 
 export enum GAME_OPEN {
   HISTORY,
   SETTINGS,
+  CONCLUSION,
 }
 
 interface GameContextType {
   gameOpen: GameOpenType;
   isInitSettings: boolean;
-  refreshGame: () => void;
-  onRefreshGame: {} | null;
   toggleGameOpen: (key: GAME_OPEN) => void;
+  handleGameOpen: (key: GAME_OPEN, value: boolean) => void;
   setIsInitSettings: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -32,13 +32,13 @@ type GameOpenType = {
 const DEFAULT_GAME_OPEN = {
   [GAME_OPEN.HISTORY]: false,
   [GAME_OPEN.SETTINGS]: false,
+  [GAME_OPEN.CONCLUSION]: false,
 };
 
 const DEFAULT_VALUES: GameContextType = {
   isInitSettings: true,
-  onRefreshGame: null,
-  refreshGame: () => {},
   toggleGameOpen: () => {},
+  handleGameOpen: () => {},
   setIsInitSettings: () => {},
   gameOpen: DEFAULT_GAME_OPEN,
 };
@@ -50,32 +50,38 @@ interface Props {
 }
 
 export const GameProvider: FC<Props> = ({ children }) => {
-  const { socket, handle } = useDesk();
+  const { route } = useRouter();
   const [gameOpen, setGameOpen] = useState<GameOpenType>(DEFAULT_GAME_OPEN);
   const [isInitSettings, setIsInitSettings] = useState(
     DEFAULT_VALUES.isInitSettings
   );
-  const [refreshGame, setRefreshGame] = useState<{} | null>(
-    DEFAULT_VALUES.onRefreshGame
-  );
+
+  const isOnline = route.includes("online");
 
   const toggleGameOpen = (key: GAME_OPEN) => {
     if (!isInitSettings) {
       playAudio("hover");
     }
+    setGameOpen((prev) => {
+      return {
+        ...prev,
+        [key]: !prev[key],
+      };
+    });
+  };
+
+  const handleGameOpen = (key: GAME_OPEN, value: boolean) => {
+    if (!isInitSettings) {
+      playAudio("hover");
+    }
     setGameOpen((prev) => ({
       ...prev,
-      [key]: !prev[key],
+      [key]: value,
     }));
   };
 
-  const handleRefreshGame = () => {
-    setRefreshGame({});
-    handle.endGame();
-  };
-
   useEffect(() => {
-    if (!socket) {
+    if (!isOnline) {
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }
   }, []);
@@ -86,9 +92,8 @@ export const GameProvider: FC<Props> = ({ children }) => {
         gameOpen,
         isInitSettings,
         toggleGameOpen,
+        handleGameOpen,
         setIsInitSettings,
-        onRefreshGame: refreshGame,
-        refreshGame: handleRefreshGame,
       }}
     >
       {children}

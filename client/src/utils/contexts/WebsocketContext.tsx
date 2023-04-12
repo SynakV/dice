@@ -1,4 +1,5 @@
 import { server } from "../api/api";
+import { GameProvider } from "./GameContext";
 import { io, Socket } from "socket.io-client";
 import { DeskOnlineProvider } from "./DeskOnlineProvider";
 import { createContext, FC, ReactNode, useContext } from "react";
@@ -12,7 +13,9 @@ interface Props {
 
 export const SocketProvider: FC<Props> = ({ children }) => (
   <SocketContext.Provider value={socket}>
-    <DeskOnlineProvider>{children}</DeskOnlineProvider>
+    <GameProvider>
+      <DeskOnlineProvider>{children}</DeskOnlineProvider>
+    </GameProvider>
   </SocketContext.Provider>
 );
 

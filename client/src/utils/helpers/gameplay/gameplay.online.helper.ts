@@ -1,9 +1,13 @@
-import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
+import {
+  getGameWinner,
+  getRankingsComparisonWinner,
+} from "../ranking/ranking.helper";
 import {
   MESSAGES,
   DeskType,
   SettingsType,
   RankingResultWithInfoType,
+  TIMERS,
 } from "@utils/common/types";
 import {
   DEFAULT_STAGE,
@@ -12,9 +16,10 @@ import {
 } from "@utils/common/constants";
 import type { Socket } from "socket.io-client";
 import { deepClone } from "@utils/common/helpers";
+import { getSeconds } from "@utils/hooks/useCountdown";
 
 export const afterStartGame = (prev: DeskType, socket: Socket): DeskType => {
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.START_GAME, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -24,18 +29,15 @@ export const afterStartGame = (prev: DeskType, socket: Socket): DeskType => {
         player: prev.gameplay.players[0],
       },
     },
-  });
+  } as DeskType);
 
   return prev;
 };
 
-export const afterTriggerStageStart = (
-  prev: DeskType,
-  socket: Socket
-): DeskType => {
+export const afterStartStage = (prev: DeskType, socket: Socket): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.START_STAGE, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -56,7 +58,7 @@ export const afterTriggerStageStart = (
           "...",
       },
     },
-  });
+  } as DeskType);
 
   return prev;
 };
@@ -66,7 +68,7 @@ export const afterThrowDice = (
   ranking: RankingResultWithInfoType,
   socket: Socket
 ): DeskType => {
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.THROW_DICE, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -91,12 +93,12 @@ export const afterThrowDice = (
         return round;
       }),
     },
-  });
+  } as DeskType);
 
   return prev;
 };
 
-export const afterStageFinish = (prev: DeskType, socket: Socket): DeskType => {
+export const afterFinishStage = (prev: DeskType, socket: Socket): DeskType => {
   const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
@@ -105,7 +107,7 @@ export const afterStageFinish = (prev: DeskType, socket: Socket): DeskType => {
   const stageThroughText = nextPlayer.name + " is thinking...";
   const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
 
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  const desk = {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -149,42 +151,60 @@ export const afterStageFinish = (prev: DeskType, socket: Socket): DeskType => {
         status: isLastPlayerDidntThrowYet ? stageThroughText : stageFinishText,
         stage:
           !isLastStage && !isLastPlayerDidntThrowYet
-            ? ++prev.gameplay.current.stage
+            ? prev.gameplay.current.stage + 1
             : prev.gameplay.current.stage,
       },
+      timers: {
+        ...prev.gameplay.timers,
+        [TIMERS.STAGE_THINKING_TIME]: getSeconds(TIMERS.STAGE_THINKING_TIME),
+      },
     },
-  });
+  } as DeskType;
+
+  const gameWinner = getGameWinner(
+    desk.gameplay.rounds,
+    desk.gameplay.max.wins
+  );
+
+  desk.gameplay.isLastRound = gameWinner !== false;
+  desk.gameplay.isShowConclusion =
+    !!desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
+
+  socket.emit(MESSAGES.FINISH_STAGE, desk);
+
   return prev;
 };
 
-export const afterConclusionClose = (
+export const afterCloseConclusion = (
   prev: DeskType,
   isLastRound: boolean,
   socket: Socket
 ): DeskType => {
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.CLOSE_CONCLUSION, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
+      isLastRound: false,
       isGameEnded: isLastRound,
       rounds: [...prev.gameplay.rounds, deepClone(DEFAULT_ROUND)],
       current: {
         ...prev.gameplay.current,
-        round: ++prev.gameplay.current.round,
+        round: prev.gameplay.current.round + 1,
         stage: 0,
         status: "",
       },
     },
-  });
+  } as DeskType);
 
   return prev;
 };
 
 export const afterEndGame = (prev: DeskType, socket: Socket): DeskType => {
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.END_GAME, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
+      isLastRound: false,
       isGameEnded: false,
       isGameStarted: false,
       rounds: [deepClone(DEFAULT_ROUND)],
@@ -193,17 +213,17 @@ export const afterEndGame = (prev: DeskType, socket: Socket): DeskType => {
         player: prev.gameplay.players[0],
       },
     },
-  });
+  } as DeskType);
 
   return prev;
 };
 
-export const afterSettingsChange = (
+export const afterChangeSettings = (
   prev: DeskType,
   settings: SettingsType,
   socket: Socket
 ): DeskType => {
-  socket.emit(MESSAGES.DESK_CHANGE, {
+  socket.emit(MESSAGES.CHANGE_SETTINGS, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -219,7 +239,7 @@ export const afterSettingsChange = (
         player: prev.gameplay.players[0],
       },
     },
-  });
+  } as DeskType);
 
   return prev;
 };

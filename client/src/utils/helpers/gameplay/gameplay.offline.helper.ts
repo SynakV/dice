@@ -22,7 +22,7 @@ export const afterStartGame = (prev: DeskType): DeskType => ({
   },
 });
 
-export const afterTriggerStageStart = (prev: DeskType): DeskType => {
+export const afterStartStage = (prev: DeskType): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
   return {
@@ -81,7 +81,7 @@ export const afterThrowDice = (
   };
 };
 
-export const afterStageFinish = (prev: DeskType): DeskType => {
+export const afterFinishStage = (prev: DeskType): DeskType => {
   const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
@@ -146,7 +146,7 @@ export const afterStageFinish = (prev: DeskType): DeskType => {
   };
 };
 
-export const afterConclusionClose = (
+export const afterCloseConclusion = (
   prev: DeskType,
   isLastRound: boolean
 ): DeskType => ({
@@ -180,7 +180,7 @@ export const afterEndGame = (prev: DeskType): DeskType => ({
   },
 });
 
-export const afterSettingsChange = (
+export const afterChangeSettings = (
   prev: DeskType,
   settings: SettingsType
 ): DeskType => ({

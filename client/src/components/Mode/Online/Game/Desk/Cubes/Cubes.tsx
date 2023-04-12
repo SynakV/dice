@@ -1,5 +1,5 @@
 import { DICE } from "@utils/constants";
-import { PlayerType, RankingResultType } from "@utils/common/types";
+import { PlayerType } from "@utils/common/types";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { Cube } from "@components/Mode/Online/Game/Desk/Cubes/Cube/Cube";
@@ -9,7 +9,6 @@ import {
   getReRollIndexes,
 } from "@utils/helpers/ranking/ranking.helper";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { useGame } from "@utils/contexts/GameContext";
 import {
   getCubesReroll,
   getDiceForReroll,
@@ -26,7 +25,6 @@ interface Props {
 
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
-  const { onRefreshGame } = useGame();
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
@@ -65,7 +63,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     });
 
     playAudio("handThrowDice").onended = () => {
-      handle.stageFinish();
+      handle.finishStage();
     };
   };
 
@@ -113,8 +111,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     }
 
     if (isOtherPlayer) {
-      playThrowSound();
-      return;
+      return playThrowSound();
     }
 
     if (desk.gameplay.current.stage === 0) {
@@ -133,10 +130,10 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   }, [desk]);
 
   useEffect(() => {
-    if (onRefreshGame) {
+    if (!desk.gameplay.isGameStarted) {
       setCubesReroll(DEFAULT_CUBES);
     }
-  }, [onRefreshGame]);
+  }, [desk.gameplay.isGameStarted]);
 
   return (
     <div className="cubes">
