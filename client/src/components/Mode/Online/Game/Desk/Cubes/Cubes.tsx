@@ -13,6 +13,7 @@ import {
   getCubesReroll,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { useGame } from "@utils/contexts/GameContext";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 
@@ -25,6 +26,7 @@ interface Props {
 
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
+  const { setIsControlsLoading } = useGame();
   const [cubesReroll, setCubesReroll] =
     useState<(number | null)[]>(DEFAULT_CUBES);
 
@@ -113,6 +115,8 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     if (isOtherPlayer) {
       return playThrowSound();
     }
+
+    setIsControlsLoading(false);
 
     if (desk.gameplay.current.stage === 0) {
       // FIRST STAGE (Roll)

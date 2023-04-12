@@ -18,9 +18,9 @@ import { useNotification } from "../../Shared/Notification/Notification";
 
 export const Online: FC = () => {
   const { push } = useRouter();
-  const { toggleGameOpen } = useGame();
   const { notification } = useNotification();
   const { desk, socket, setDesk } = useDesk();
+  const { toggleGameOpen, setIsControlsLoading } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -75,7 +75,6 @@ export const Online: FC = () => {
 
     [
       EVENTS.ON_JOIN_DESK,
-      EVENTS.ON_START_GAME,
       EVENTS.ON_START_STAGE,
       EVENTS.ON_THROW_DICE,
       EVENTS.ON_CHANGE_SETTINGS,
@@ -84,6 +83,11 @@ export const Online: FC = () => {
       socket.on(event, (desk: DeskType) => {
         setDesk(desk);
       });
+    });
+
+    socket.on(EVENTS.ON_START_GAME, (desk: DeskType) => {
+      setDesk(desk);
+      setIsControlsLoading(false);
     });
 
     socket.on(EVENTS.ON_FINISH_STAGE, (desk: DeskType) => {

@@ -20,9 +20,11 @@ export enum GAME_OPEN {
 interface GameContextType {
   gameOpen: GameOpenType;
   isInitSettings: boolean;
+  isControlsLoading: boolean;
   toggleGameOpen: (key: GAME_OPEN) => void;
   handleGameOpen: (key: GAME_OPEN, value: boolean) => void;
   setIsInitSettings: Dispatch<SetStateAction<boolean>>;
+  setIsControlsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 type GameOpenType = {
@@ -37,9 +39,11 @@ const DEFAULT_GAME_OPEN = {
 
 const DEFAULT_VALUES: GameContextType = {
   isInitSettings: true,
+  isControlsLoading: false,
   toggleGameOpen: () => {},
   handleGameOpen: () => {},
   setIsInitSettings: () => {},
+  setIsControlsLoading: () => {},
   gameOpen: DEFAULT_GAME_OPEN,
 };
 
@@ -52,6 +56,9 @@ interface Props {
 export const GameProvider: FC<Props> = ({ children }) => {
   const { route } = useRouter();
   const [gameOpen, setGameOpen] = useState<GameOpenType>(DEFAULT_GAME_OPEN);
+  const [isControlsLoading, setIsControlsLoading] = useState(
+    DEFAULT_VALUES.isControlsLoading
+  );
   const [isInitSettings, setIsInitSettings] = useState(
     DEFAULT_VALUES.isInitSettings
   );
@@ -91,9 +98,11 @@ export const GameProvider: FC<Props> = ({ children }) => {
       value={{
         gameOpen,
         isInitSettings,
+        isControlsLoading,
         toggleGameOpen,
         handleGameOpen,
         setIsInitSettings,
+        setIsControlsLoading,
       }}
     >
       {children}

@@ -8,14 +8,16 @@ import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 export const Controls = () => {
   const portal = usePortal();
   const { handle, desk } = useDesk();
-  const { toggleGameOpen } = useGame();
+  const { isControlsLoading, toggleGameOpen, setIsControlsLoading } = useGame();
 
   const handleStartGame = () => {
     handle.startGame();
+    setIsControlsLoading(true);
   };
 
   const handleRollDice = () => {
     handle.startStage();
+    setIsControlsLoading(true);
   };
 
   const rounds = desk.gameplay.rounds;
@@ -40,17 +42,25 @@ export const Controls = () => {
         <span
           className={`controls__start ${
             isAllPlayersPresent ? "" : "controls__start--disabled"
-          }`}
-          onClick={isAllPlayersPresent ? () => handleStartGame() : () => {}}
+          } ${isControlsLoading ? "controls__start--loading" : ""}`}
+          onClick={
+            !isControlsLoading && isAllPlayersPresent
+              ? () => handleStartGame()
+              : () => {}
+          }
         >
           Start game
         </span>
       ) : (
         <span
-          onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
+          onClick={
+            !isControlsLoading && isAllowedToRoll
+              ? () => handleRollDice()
+              : () => {}
+          }
           className={`controls__roll ${
             isAllowedToRoll ? "" : "controls__roll--disabled"
-          }`}
+          } ${isControlsLoading ? "controls__start--loading" : ""}`}
         >
           {isFirstStageNotCompleted ? "Roll" : "Re-roll"} dice
         </span>
