@@ -5,25 +5,28 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next export",
     "start": "next start",
+    "tauri": "tauri",
     "lint": "next lint",
     "test": "jest --watch"
   },
   "dependencies": {
-    "swr": "^2.1.0",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "socket.io-client": "^4.6.1"
+    "socket.io-client": "^4.6.1",
+    "swr": "^2.1.0"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.2.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
-    "@types/socket.io-client": "^3.0.0",
     "@types/node": "18.14.6",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@types/socket.io-client": "^3.0.0",
     "@types/testing-library__jest-dom": "^5.14.5",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
