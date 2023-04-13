@@ -8,18 +8,23 @@ import { Form } from "@components/Shared/Settings/Form/Form";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
 export const Settings = () => {
-  const { replace } = useRouter();
+  const { back } = useRouter();
   const { handle, desk } = useDesk();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [settings, setSettings] = useState<SettingsType | null>(null);
-  const { gameOpen, isInitSettings, toggleGameOpen, setIsInitSettings } =
-    useGame();
+  const {
+    isOnline,
+    gameOpen,
+    isInitSettings,
+    toggleGameOpen,
+    setIsInitSettings,
+  } = useGame();
 
   const isGameStarted = desk.gameplay.isGameStarted;
 
   const handleClose = () => {
-    if (isInitSettings) {
-      replace("/");
+    if (isInitSettings && !isOnline) {
+      back();
     } else {
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }
@@ -36,7 +41,6 @@ export const Settings = () => {
 
   const handleConfirm = (isConfirmed: boolean) => {
     if (isConfirmed && settings) {
-      handle.endGame();
       handle.changeSettings(settings);
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }
@@ -58,7 +62,7 @@ export const Settings = () => {
             Close
           </div>
           <div className="settings__button" onClick={handleApply}>
-            {isInitSettings ? "Start" : "Apply"}
+            Apply
           </div>
         </div>
       </Modal>

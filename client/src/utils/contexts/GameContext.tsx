@@ -18,6 +18,7 @@ export enum GAME_OPEN {
 }
 
 interface GameContextType {
+  isOnline?: boolean;
   gameOpen: GameOpenType;
   isInitSettings: boolean;
   isControlsLoading: boolean;
@@ -97,6 +98,7 @@ export const GameProvider: FC<Props> = ({ children }) => {
     <GameContext.Provider
       value={{
         gameOpen,
+        isOnline,
         isInitSettings,
         isControlsLoading,
         toggleGameOpen,

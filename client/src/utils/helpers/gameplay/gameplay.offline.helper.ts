@@ -69,6 +69,7 @@ export const afterThrowDice = (
 
           if (isCurrentStage) {
             stage.isStarted = false;
+            stage.isPlayerThrew = true;
             stage.rankings.push(ranking);
           }
 
@@ -107,6 +108,7 @@ export const afterFinishStage = (prev: DeskType): DeskType => {
 
           if (isCurrentStage) {
             stage.isStarted = true;
+            stage.isPlayerThrew = false;
           }
 
           if (isLastPlayerDidntThrowYet) {
