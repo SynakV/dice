@@ -24,6 +24,9 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   useEffect(() => {
     setDesk((prev) => ({
       ...prev,
+      creator: {
+        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      },
       gameplay: {
         ...prev.gameplay,
         current: {

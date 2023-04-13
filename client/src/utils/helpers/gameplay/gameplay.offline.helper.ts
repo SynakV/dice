@@ -22,65 +22,51 @@ export const afterStartGame = (prev: DeskType): DeskType => ({
   },
 });
 
-export const afterStartThrowDice = (prev: DeskType): DeskType => {
-  const isNotFirstStage = prev.gameplay.current.stage !== 0;
-
-  return {
-    ...prev,
-    gameplay: {
-      ...prev?.gameplay,
-      rounds: prev.gameplay.rounds.map((round) => {
-        round.stages.map((stage, index) => {
-          if (prev.gameplay.current.stage === index) {
-            stage.isStarted = true;
-          }
-        });
-        return round;
-      }),
-      current: {
-        ...prev.gameplay.current,
-        status:
-          prev.gameplay.current.player?.name +
-          " " +
-          (!isNotFirstStage ? "rolling" : "re-rolling") +
-          "...",
-      },
-    },
-  };
-};
+export const afterStartThrowDice = (prev: DeskType): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev?.gameplay,
+    rounds: prev.gameplay.rounds.map((round) => {
+      round.stages.map((stage, index) => {
+        if (prev.gameplay.current.stage === index) {
+          stage.isStarted = true;
+        }
+      });
+      return round;
+    }),
+  },
+});
 
 export const afterThrowDice = (
   prev: DeskType,
   ranking: RankingResultWithInfoType
-): DeskType => {
-  return {
-    ...prev,
-    gameplay: {
-      ...prev.gameplay,
-      rounds: prev.gameplay.rounds.map((round, index) => {
-        const isCurrentRound = prev.gameplay.current.round === index;
+): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    rounds: prev.gameplay.rounds.map((round, index) => {
+      const isCurrentRound = prev.gameplay.current.round === index;
 
-        if (!isCurrentRound) {
-          return round;
+      if (!isCurrentRound) {
+        return round;
+      }
+
+      round.stages.map((stage, index) => {
+        const isCurrentStage = prev.gameplay.current.stage === index;
+
+        if (isCurrentStage) {
+          stage.isStarted = false;
+          stage.isPlayerThrew = true;
+          stage.rankings.push(ranking);
         }
 
-        round.stages.map((stage, index) => {
-          const isCurrentStage = prev.gameplay.current.stage === index;
+        return stage;
+      });
 
-          if (isCurrentStage) {
-            stage.isStarted = false;
-            stage.isPlayerThrew = true;
-            stage.rankings.push(ranking);
-          }
-
-          return stage;
-        });
-
-        return round;
-      }),
-    },
-  };
-};
+      return round;
+    }),
+  },
+});
 
 export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   const nextPlayer = getNextPlayer(prev);
@@ -88,9 +74,7 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
     prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
-  const stageThroughText =
-    nextPlayer.name + (!isLastStage ? " rolling..." : " re-rolling");
-  const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
+  const isRoundCompleted = isLastStage && !isLastPlayerDidntThrowYet;
 
   return {
     ...prev,
@@ -126,7 +110,7 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
           return stage;
         });
 
-        if (isLastStage && !isLastPlayerDidntThrowYet) {
+        if (isRoundCompleted) {
           round.isCompleted = true;
           round.winners = getRankingsComparisonWinner(
             round.stages[prev.gameplay.current.stage].rankings
@@ -135,10 +119,10 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
 
         return round;
       }),
+      isShowConclusion: isRoundCompleted,
       current: {
         ...prev.gameplay.current,
         player: nextPlayer,
-        status: isLastPlayerDidntThrowYet ? stageThroughText : stageFinishText,
         stage:
           !isLastStage && !isLastPlayerDidntThrowYet
             ? ++prev.gameplay.current.stage
@@ -155,13 +139,13 @@ export const afterCloseConclusion = (
   ...prev,
   gameplay: {
     ...prev?.gameplay,
+    isShowConclusion: false,
     isGameEnded: isLastRound,
     rounds: [...prev.gameplay.rounds, deepClone(DEFAULT_ROUND)],
     current: {
       ...prev.gameplay.current,
       round: ++prev.gameplay.current.round,
       stage: 0,
-      status: "",
     },
   },
 });
