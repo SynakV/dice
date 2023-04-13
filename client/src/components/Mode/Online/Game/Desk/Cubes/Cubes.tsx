@@ -53,7 +53,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     });
 
     playAudio("handThrowDice", true).onended = () => {
-      handle.finishStage();
+      handle.finishThrowDice();
     };
   };
 

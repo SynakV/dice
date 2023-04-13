@@ -22,7 +22,7 @@ export const afterStartGame = (prev: DeskType): DeskType => ({
   },
 });
 
-export const afterStartStage = (prev: DeskType): DeskType => {
+export const afterStartThrowDice = (prev: DeskType): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
   return {
@@ -82,7 +82,7 @@ export const afterThrowDice = (
   };
 };
 
-export const afterFinishStage = (prev: DeskType): DeskType => {
+export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;

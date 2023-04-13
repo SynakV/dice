@@ -16,7 +16,7 @@ export const Controls = () => {
   };
 
   const handleRollDice = () => {
-    handle.startStage();
+    handle.startThrowDice();
     setIsControlsLoading(true);
   };
 

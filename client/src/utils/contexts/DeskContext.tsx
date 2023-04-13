@@ -21,9 +21,9 @@ interface DeskContext {
   setDesk: Dispatch<SetStateAction<DeskType>>;
   handle: {
     startGame: () => void;
-    startStage: () => void;
+    startThrowDice: () => void;
     throwDice: (ranking: RankingResultWithInfoType) => void;
-    finishStage: () => void;
+    finishThrowDice: () => void;
     closeConclusion: (isLastRound: boolean) => void;
     endGame: () => void;
     changeSettings: (settings: SettingsType) => void;
@@ -35,9 +35,9 @@ const DEFAULT_VALUES = {
   setDesk: () => {},
   handle: {
     startGame: () => {},
-    startStage: () => {},
+    startThrowDice: () => {},
     throwDice: () => {},
-    finishStage: () => {},
+    finishThrowDice: () => {},
     closeConclusion: () => {},
     endGame: () => {},
     changeSettings: () => {},

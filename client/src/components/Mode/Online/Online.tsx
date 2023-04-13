@@ -85,7 +85,7 @@ export const Online: FC = () => {
       setIsControlsLoading(false);
     });
 
-    socket.on(EVENTS.ON_START_STAGE, (desk: DeskType) => {
+    socket.on(EVENTS.ON_START_THROW_DICE, (desk: DeskType) => {
       setDesk(desk);
       playAudio("handMixDice");
       setIsControlsLoading(false);
@@ -96,7 +96,7 @@ export const Online: FC = () => {
       playAudio("handThrowDice");
     });
 
-    socket.on(EVENTS.ON_FINISH_STAGE, (desk: DeskType) => {
+    socket.on(EVENTS.ON_FINISH_THROW_DICE, (desk: DeskType) => {
       setDesk(desk);
 
       if (desk.gameplay.isShowConclusion) {
@@ -125,9 +125,9 @@ export const Online: FC = () => {
       [
         EVENTS.ON_JOIN_DESK,
         EVENTS.ON_START_GAME,
-        EVENTS.ON_START_STAGE,
+        EVENTS.ON_START_THROW_DICE,
         EVENTS.ON_THROW_DICE,
-        EVENTS.ON_FINISH_STAGE,
+        EVENTS.ON_FINISH_THROW_DICE,
         EVENTS.ON_CLOSE_CONCLUSION,
         EVENTS.ON_END_GAME,
         EVENTS.ON_CHANGE_SETTINGS,

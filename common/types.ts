@@ -1,11 +1,10 @@
 // SECKETS //
 
 export const MESSAGES = {
-  MESSAGE: "message",
   START_GAME: "startGame",
-  START_STAGE: "startStage",
+  START_THROW_DICE: "startThrowDice",
   THROW_DICE: "throwDice",
-  FINISH_STAGE: "finishStage",
+  FINISH_THROW_DICE: "finishThrowDice",
   CLOSE_CONCLUSION: "closeConclusion",
   END_GAME: "endGame",
   CHANGE_SETTINGS: "changeSettings",
@@ -15,9 +14,9 @@ export const MESSAGES = {
 
 export const EVENTS = {
   ON_START_GAME: "onStartGame",
-  ON_START_STAGE: "onStartStage",
+  ON_START_THROW_DICE: "onStartThrowDice",
   ON_THROW_DICE: "onThrowDice",
-  ON_FINISH_STAGE: "onFinishStage",
+  ON_FINISH_THROW_DICE: "onFinishThrowDice",
   ON_CLOSE_CONCLUSION: "onCloseConclusion",
   ON_END_GAME: "onEndGame",
   ON_CHANGE_SETTINGS: "onChangeSettings",

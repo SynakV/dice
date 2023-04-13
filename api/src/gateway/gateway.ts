@@ -81,7 +81,7 @@ export class GatewayService implements OnModuleInit {
     }
   }
 
-  @SubscribeMessage(MESSAGES.START_STAGE)
+  @SubscribeMessage(MESSAGES.START_THROW_DICE)
   async handleStartStage(_: Socket, desk: DeskType) {
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk._id },
@@ -90,7 +90,7 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_START_STAGE, updatedDesk);
+      this.server.to(desk._id).emit(EVENTS.ON_START_THROW_DICE, updatedDesk);
     }
   }
 
@@ -107,7 +107,7 @@ export class GatewayService implements OnModuleInit {
     }
   }
 
-  @SubscribeMessage(MESSAGES.FINISH_STAGE)
+  @SubscribeMessage(MESSAGES.FINISH_THROW_DICE)
   async handleFinishStage(_: Socket, desk: DeskType) {
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk._id },
@@ -119,7 +119,9 @@ export class GatewayService implements OnModuleInit {
       return;
     }
 
-    this.server.to(updatedDesk.id).emit(EVENTS.ON_FINISH_STAGE, updatedDesk);
+    this.server
+      .to(updatedDesk.id)
+      .emit(EVENTS.ON_FINISH_THROW_DICE, updatedDesk);
 
     if (
       updatedDesk.gameplay.rounds[updatedDesk.gameplay.current.round]

@@ -14,10 +14,10 @@ import {
   afterCloseConclusion,
   afterEndGame,
   afterChangeSettings,
-  afterFinishStage,
+  afterFinishThrowDice,
   afterStartGame,
   afterThrowDice,
-  afterStartStage,
+  afterStartThrowDice,
 } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
@@ -39,16 +39,16 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterStartGame(prev, socket));
   };
 
-  const startStage = () => {
-    setDesk((prev) => afterStartStage(prev, socket));
+  const startThrowDice = () => {
+    setDesk((prev) => afterStartThrowDice(prev, socket));
   };
 
   const throwDice = (ranking: RankingResultWithInfoType) => {
     setDesk((prev) => afterThrowDice(prev, ranking, socket));
   };
 
-  const finishStage = () => {
-    setDesk((prev) => afterFinishStage(prev, socket));
+  const finishThrowDice = () => {
+    setDesk((prev) => afterFinishThrowDice(prev, socket));
   };
 
   const closeConclusion = (isLastRound: boolean) => {
@@ -67,9 +67,9 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     <DeskProvider
       handle={{
         startGame,
-        startStage,
+        startThrowDice,
         throwDice,
-        finishStage,
+        finishThrowDice,
         closeConclusion,
         endGame,
         changeSettings,

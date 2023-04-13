@@ -10,9 +10,9 @@ import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
   afterStartGame,
-  afterStartStage,
+  afterStartThrowDice,
   afterThrowDice,
-  afterFinishStage,
+  afterFinishThrowDice,
   afterCloseConclusion,
   afterEndGame,
   afterChangeSettings,
@@ -40,16 +40,16 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk(afterStartGame);
   };
 
-  const startStage = () => {
-    setDesk(afterStartStage);
+  const startThrowDice = () => {
+    setDesk(afterStartThrowDice);
   };
 
   const throwDice = (ranking: RankingResultWithInfoType) => {
     setDesk((prev) => afterThrowDice(prev, ranking));
   };
 
-  const finishStage = () => {
-    setDesk(afterFinishStage);
+  const finishThrowDice = () => {
+    setDesk(afterFinishThrowDice);
   };
 
   const closeConclusion = (isLastRound: boolean) => {
@@ -68,9 +68,9 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     <DeskProvider
       handle={{
         startGame,
-        startStage,
+        startThrowDice,
         throwDice,
-        finishStage,
+        finishThrowDice,
         closeConclusion,
         endGame,
         changeSettings,

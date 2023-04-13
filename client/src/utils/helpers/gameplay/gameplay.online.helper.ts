@@ -34,10 +34,13 @@ export const afterStartGame = (prev: DeskType, socket: Socket): DeskType => {
   return prev;
 };
 
-export const afterStartStage = (prev: DeskType, socket: Socket): DeskType => {
+export const afterStartThrowDice = (
+  prev: DeskType,
+  socket: Socket
+): DeskType => {
   const isNotFirstStage = prev.gameplay.current.stage !== 0;
 
-  socket.emit(MESSAGES.START_STAGE, {
+  socket.emit(MESSAGES.START_THROW_DICE, {
     ...prev,
     gameplay: {
       ...prev.gameplay,
@@ -99,7 +102,10 @@ export const afterThrowDice = (
   return prev;
 };
 
-export const afterFinishStage = (prev: DeskType, socket: Socket): DeskType => {
+export const afterFinishThrowDice = (
+  prev: DeskType,
+  socket: Socket
+): DeskType => {
   const nextPlayer = getNextPlayer(prev);
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
@@ -175,7 +181,7 @@ export const afterFinishStage = (prev: DeskType, socket: Socket): DeskType => {
   desk.gameplay.isShowConclusion =
     !!desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
-  socket.emit(MESSAGES.FINISH_STAGE, desk);
+  socket.emit(MESSAGES.FINISH_THROW_DICE, desk);
 
   return prev;
 };
