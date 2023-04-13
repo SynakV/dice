@@ -124,15 +124,15 @@ export type StructuredType = {
 
 export type RoundType = {
   stages: StageType[];
-  winners?: PlayerType[];
-  isCompleted?: boolean;
+  winners: PlayerType[];
+  isCompleted: boolean;
 };
 
 export type StageType = {
   isStarted: boolean;
   isCompleted: boolean;
   isPlayerThrew: boolean;
-  winners?: PlayerType[];
+  winners: PlayerType[];
   rankings: RankingResultWithInfoType[];
 };
 

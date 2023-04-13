@@ -82,7 +82,7 @@ export const getWinTotals = (rounds: RoundType[]) => {
       continue;
     }
 
-    rounds[i].winners?.forEach(({ name }) => {
+    rounds[i].winners.forEach(({ name }) => {
       const winnerName = name || "";
       if (!(winnerName in totals)) {
         totals[winnerName] = 1;
@@ -95,11 +95,11 @@ export const getWinTotals = (rounds: RoundType[]) => {
   return totals;
 };
 
-export const getWinnersNamesArray = (winners?: PlayerType[]) =>
-  winners?.map(({ name }) => name);
+export const getWinnersNamesArray = (winners: PlayerType[]) =>
+  winners.map(({ name }) => name);
 
-export const getWinnersNamesString = (winners?: PlayerType[]) =>
-  getWinnersNamesArray(winners)?.join(", ") || "";
+export const getWinnersNamesString = (winners: PlayerType[]) =>
+  getWinnersNamesArray(winners).join(", ") || "";
 
 const getFullHouseWinners = (
   maxPlayersRankings: RankingResultWithInfoType[]

@@ -40,7 +40,7 @@ export const Conclusion = () => {
       desk.gameplay.rounds[desk.gameplay.current.round].winners
     );
 
-    const isYouAmongWinners = winnersNames?.includes(
+    const isYouAmongWinners = winnersNames.includes(
       getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name
     );
 

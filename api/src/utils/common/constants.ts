@@ -2,6 +2,7 @@ import { deepClone } from './helpers';
 import { CurrentType, DeskType, RoundType, StageType } from './types';
 
 export const DEFAULT_STAGE: StageType = {
+  winners: [],
   rankings: [],
   isStarted: false,
   isCompleted: false,
@@ -9,6 +10,7 @@ export const DEFAULT_STAGE: StageType = {
 };
 
 export const DEFAULT_ROUND: RoundType = {
+  winners: [],
   isCompleted: false,
   stages: [deepClone(DEFAULT_STAGE)],
 };
