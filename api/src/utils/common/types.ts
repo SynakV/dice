@@ -62,7 +62,6 @@ export enum TIMERS {
 export type CurrentType = {
   round: number;
   stage: number;
-  status?: string;
   player: PlayerType | null;
 };
 

@@ -210,7 +210,6 @@ export class GatewayService implements OnModuleInit {
           ...updatedDesk.gameplay.current,
           round: updatedDesk.gameplay.current.round + 1,
           stage: 0,
-          status: '',
         },
       },
     });

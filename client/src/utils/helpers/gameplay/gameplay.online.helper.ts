@@ -38,8 +38,6 @@ export const afterStartThrowDice = (
   prev: DeskType,
   socket: Socket
 ): DeskType => {
-  const isNotFirstStage = prev.gameplay.current.stage !== 0;
-
   socket.emit(MESSAGES.START_THROW_DICE, {
     ...prev,
     gameplay: {
@@ -52,14 +50,6 @@ export const afterStartThrowDice = (
         });
         return round;
       }),
-      current: {
-        ...prev.gameplay.current,
-        status:
-          prev.gameplay.current.player?.name +
-          " " +
-          (!isNotFirstStage ? "rolling" : "re-rolling") +
-          "...",
-      },
     },
   } as DeskType);
 
@@ -111,8 +101,6 @@ export const afterFinishThrowDice = (
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
     prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
-  const stageThroughText = nextPlayer.name + " is thinking...";
-  const stageFinishText = !isLastStage ? "Select dice for re-roll" : "Results";
 
   const desk = {
     ...prev,
@@ -159,7 +147,6 @@ export const afterFinishThrowDice = (
       current: {
         ...prev.gameplay.current,
         player: nextPlayer,
-        status: isLastPlayerDidntThrowYet ? stageThroughText : stageFinishText,
         stage:
           !isLastStage && !isLastPlayerDidntThrowYet
             ? prev.gameplay.current.stage + 1
@@ -179,7 +166,7 @@ export const afterFinishThrowDice = (
 
   desk.gameplay.isLastRound = gameWinner !== false;
   desk.gameplay.isShowConclusion =
-    !!desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
+    desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
   socket.emit(MESSAGES.FINISH_THROW_DICE, desk);
 
@@ -202,7 +189,6 @@ export const afterCloseConclusion = (
         ...prev.gameplay.current,
         round: prev.gameplay.current.round + 1,
         stage: 0,
-        status: "",
       },
     },
   } as DeskType);
