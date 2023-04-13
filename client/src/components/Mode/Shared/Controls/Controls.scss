@@ -6,6 +6,7 @@
     display: flex;
     position: absolute;
     flex-direction: column;
+    transform-origin: bottom right;
 
     &__start, &__roll, &__history, &__settings {
         width: 100%;
@@ -53,5 +54,41 @@
                 filter: blur(2px);
             }
         }
+    }
+}
+
+@media (min-width: 800px) or (max-width: 1400px) {
+    .controls {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 800px) {
+    .controls {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 650px) {
+    .controls {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 500px) {
+    .controls {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 390px) {
+    .controls {
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 320px) {
+    .controls {
+        transform: scale(0.5);
     }
 }
