@@ -25,7 +25,9 @@ export const Online: FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const credentials = getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS);
+  const credentials: CredentialsType = getStorageObjectItem(
+    STORAGE_ITEMS.CREDENTIALS
+  );
 
   const handleSameNameNotification = (
     data: DeskType,
@@ -33,7 +35,7 @@ export const Online: FC = () => {
   ) => {
     const playersNames = data.gameplay.players.map((player) => player.name);
 
-    if (playersNames?.includes(credentials.name)) {
+    if (playersNames?.includes(credentials.name || "")) {
       notification(`Name ${credentials.name} already present in the desk`);
       return true;
     }
@@ -53,7 +55,7 @@ export const Online: FC = () => {
     }
 
     setIsOpen(false);
-    handleInitializePlayer();
+    handleInitializePlayer(credentials);
     setStorageItem(STORAGE_ITEMS.CREDENTIALS, JSON.stringify(credentials));
   };
 
@@ -66,7 +68,7 @@ export const Online: FC = () => {
       return setIsOpen(true);
     }
 
-    handleInitializePlayer();
+    handleInitializePlayer(credentials);
   }, []);
 
   useEffect(() => {
@@ -138,10 +140,10 @@ export const Online: FC = () => {
     };
   }, []);
 
-  const handleInitializePlayer = () => {
+  const handleInitializePlayer = (credentials: CredentialsType) => {
     socket?.emit(MESSAGES.JOIN_DESK, {
       desk: desk._id,
-      name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+      name: credentials.name,
     });
   };
 

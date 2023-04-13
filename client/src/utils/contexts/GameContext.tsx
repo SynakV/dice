@@ -5,7 +5,6 @@ import {
   Dispatch,
   useState,
   ReactNode,
-  useEffect,
   useContext,
   createContext,
   SetStateAction,
@@ -23,7 +22,6 @@ interface GameContextType {
   isInitSettings: boolean;
   isControlsLoading: boolean;
   toggleGameOpen: (key: GAME_OPEN) => void;
-  handleGameOpen: (key: GAME_OPEN, value: boolean) => void;
   setIsInitSettings: Dispatch<SetStateAction<boolean>>;
   setIsControlsLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -42,7 +40,6 @@ const DEFAULT_VALUES: GameContextType = {
   isInitSettings: true,
   isControlsLoading: false,
   toggleGameOpen: () => {},
-  handleGameOpen: () => {},
   setIsInitSettings: () => {},
   setIsControlsLoading: () => {},
   gameOpen: DEFAULT_GAME_OPEN,
@@ -78,22 +75,6 @@ export const GameProvider: FC<Props> = ({ children }) => {
     });
   };
 
-  const handleGameOpen = (key: GAME_OPEN, value: boolean) => {
-    if (!isInitSettings) {
-      playAudio("hover");
-    }
-    setGameOpen((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  useEffect(() => {
-    if (!isOnline) {
-      toggleGameOpen(GAME_OPEN.SETTINGS);
-    }
-  }, []);
-
   return (
     <GameContext.Provider
       value={{
@@ -102,7 +83,6 @@ export const GameProvider: FC<Props> = ({ children }) => {
         isInitSettings,
         isControlsLoading,
         toggleGameOpen,
-        handleGameOpen,
         setIsInitSettings,
         setIsControlsLoading,
       }}
