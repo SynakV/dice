@@ -2,7 +2,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import { FC, useEffect, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
@@ -49,7 +49,7 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk(afterStartThrowDice);
   };
 
-  const throwDice = (ranking: RankingResultWithInfoType) => {
+  const throwDice = (ranking: RankingWithInfoType) => {
     setDesk((prev) => afterThrowDice(prev, ranking));
   };
 

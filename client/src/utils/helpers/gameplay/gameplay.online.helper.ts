@@ -8,7 +8,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import {
   DEFAULT_STAGE,
@@ -59,7 +59,7 @@ export const afterStartThrowDice = (
 
 export const afterThrowDice = (
   prev: DeskType,
-  ranking: RankingResultWithInfoType,
+  ranking: RankingWithInfoType,
   socket: Socket
 ): DeskType => {
   socket.emit(MESSAGES.THROW_DICE, {

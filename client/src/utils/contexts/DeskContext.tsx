@@ -11,7 +11,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "../common/types";
 import { GameProvider } from "./GameContext";
 import { DEFAULT_DESK } from "@utils/common/constants";
@@ -23,7 +23,7 @@ interface DeskContext {
   handle: {
     startGame: () => void;
     startThrowDice: () => void;
-    throwDice: (ranking: RankingResultWithInfoType) => void;
+    throwDice: (ranking: RankingWithInfoType) => void;
     finishThrowDice: () => void;
     selectDice: (selectedDice: RerollType) => void;
     closeConclusion: (isLastRound: boolean) => void;
