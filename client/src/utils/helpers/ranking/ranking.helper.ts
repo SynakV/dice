@@ -159,21 +159,21 @@ const getTwoPairsWinners = (
 };
 
 const getOfAKindWinners = (maxPlayersRankings: RankingResultWithInfoType[]) => {
-  const ofAKindValues: [PlayerType, number][] = [];
+  const appeared: [PlayerType, number][] = [];
   const rest: [PlayerType, [string, number][]][] = [];
 
   maxPlayersRankings.forEach((ranking) => {
-    ofAKindValues.push([ranking.player, +ranking.result.appeared[0][0]]);
+    appeared.push([ranking.player, +ranking.result.appeared[0][0]]);
     rest.push([ranking.player, ranking.result.rest]);
   });
 
-  const isAllValuesSame = ofAKindValues.every(
-    ([_, value]) => value === ofAKindValues[0][1]
+  const isAllValuesSame = appeared.every(
+    ([_, value]) => value === appeared[0][1]
   );
 
   return isAllValuesSame
     ? getHighestRestPlayers(rest)
-    : getMaxAppeared(ofAKindValues).map(([player]) => player);
+    : getMaxAppeared(appeared, rest).map(([player]) => player);
 };
 
 const getHighestRestPlayers = (
@@ -211,7 +211,10 @@ const getHighestRestPlayers = (
   return playersWithRests.map(([player]) => player);
 };
 
-const getMaxAppeared = (appeares: [PlayerType, number][]) => {
+const getMaxAppeared = (
+  appeares: [PlayerType, number][],
+  rest?: [PlayerType, [string, number][]][]
+) => {
   let maxAppeared = appeares[0][1];
 
   appeares.forEach((appeared) => {
@@ -220,7 +223,17 @@ const getMaxAppeared = (appeares: [PlayerType, number][]) => {
     }
   });
 
-  return appeares.filter((appeared) => appeared[1] === maxAppeared);
+  const playersAppeares = appeares.filter(
+    (appeared) => appeared[1] === maxAppeared
+  );
+
+  if (playersAppeares.length === 1) {
+    return playersAppeares;
+  }
+
+  return rest
+    ? getHighestRestPlayers(rest).map((player) => [player])
+    : playersAppeares;
 };
 
 export const findMaxPlayersRankings = (
@@ -230,26 +243,28 @@ export const findMaxPlayersRankings = (
   return rankings.filter((ranking) => ranking.value.value === max);
 };
 
-export const getReRollIndexes = (
-  cubes: number[],
-  ranking: RankingResultType
-) => {
-  if (ranking.key === RANKING_OF_HANDS_KEYS.NOTHING) {
+export const getReRollIndexes = ({
+  key,
+  cubes,
+  result,
+}: RankingResultWithInfoType) => {
+  if (key === RANKING_OF_HANDS_KEYS.NOTHING) {
     return new Array(DICE.COUNT).fill(null).map((_, index) => index);
   }
 
-  if (!ranking.result.rest) {
+  if (!result.rest) {
     return [];
   }
 
-  const rest = ranking.result.rest;
+  const rest = result.rest;
+  const roll = cubes.roll || [];
 
   if (rest) {
     const restNumbers = rest.map((number) => +number[0]);
     const indexes = [];
 
-    for (let i = 0; i < cubes.length; i++) {
-      if (restNumbers.includes(cubes[i])) {
+    for (let i = 0; i < roll.length; i++) {
+      if (restNumbers.includes(roll[i])) {
         indexes.push(i);
       }
     }

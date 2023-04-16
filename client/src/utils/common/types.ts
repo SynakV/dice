@@ -5,6 +5,7 @@ export const MESSAGES = {
   START_THROW_DICE: "startThrowDice",
   THROW_DICE: "throwDice",
   FINISH_THROW_DICE: "finishThrowDice",
+  SELECT_DICE: "selectDice",
   CLOSE_CONCLUSION: "closeConclusion",
   END_GAME: "endGame",
   CHANGE_SETTINGS: "changeSettings",
@@ -17,6 +18,7 @@ export const EVENTS = {
   ON_START_THROW_DICE: "onStartThrowDice",
   ON_THROW_DICE: "onThrowDice",
   ON_FINISH_THROW_DICE: "onFinishThrowDice",
+  ON_SELECT_DICE: "onSelectDice",
   ON_CLOSE_CONCLUSION: "onCloseConclusion",
   ON_END_GAME: "onEndGame",
   ON_CHANGE_SETTINGS: "onChangeSettings",
@@ -92,10 +94,17 @@ export type RankingResultType = {
 };
 
 export type RankingResultWithInfoType = RankingResultType & {
-  stage?: number;
-  cubes?: number[];
+  stage: number;
+  cubes: CubesType;
   player: PlayerType;
 };
+
+export type CubesType = {
+  roll?: number[];
+  reroll?: RerollType;
+};
+
+export type RerollType = (number | null)[];
 
 export type RankingOfHandsType = {
   [key in RANKING_OF_HANDS_KEYS]: RankingOfTypeValueType;

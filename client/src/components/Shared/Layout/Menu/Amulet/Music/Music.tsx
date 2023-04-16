@@ -33,8 +33,8 @@ export const Music = () => {
         width={100}
         height={55}
         alt="amulet"
-        src="/images/amulet.png"
         className="music__icon"
+        src="/images/amulet.png"
       />
       <audio controls loop={true} id={PLAYER}>
         <source src="/music/music.mp3" type="audio/mp3" />

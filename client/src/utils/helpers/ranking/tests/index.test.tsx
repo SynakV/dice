@@ -196,12 +196,12 @@ describe("Comparison tests", () => {
       2, 2, 3, 4, 6,
     ]);
 
-    player1.player = { name: "Player_1" };
-    player2.player = { name: "Player_2" };
-    player3.player = { name: "Player_3" };
+    player1.player = { name: "1" };
+    player2.player = { name: "2" };
+    player3.player = { name: "3" };
 
-    const winner = getRankingsComparisonWinner([player1, player2, player3]);
+    const winners = getRankingsComparisonWinner([player1, player2, player3]);
 
-    console.log(winner);
+    expect(winners.map((winner) => winner.name).join(",")).toBe("3");
   });
 });

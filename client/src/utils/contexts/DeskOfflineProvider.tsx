@@ -1,5 +1,6 @@
 import {
   DeskType,
+  RerollType,
   SettingsType,
   RankingResultWithInfoType,
 } from "@utils/common/types";
@@ -13,6 +14,7 @@ import {
   afterStartThrowDice,
   afterThrowDice,
   afterFinishThrowDice,
+  afterSelectDice,
   afterCloseConclusion,
   afterEndGame,
   afterChangeSettings,
@@ -55,6 +57,10 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk(afterFinishThrowDice);
   };
 
+  const selectDice = (selectedDice: RerollType) => {
+    setDesk((prev) => afterSelectDice(prev, selectedDice));
+  };
+
   const closeConclusion = (isLastRound: boolean) => {
     setDesk((prev) => afterCloseConclusion(prev, isLastRound));
   };
@@ -74,6 +80,7 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
         startThrowDice,
         throwDice,
         finishThrowDice,
+        selectDice,
         closeConclusion,
         endGame,
         changeSettings,

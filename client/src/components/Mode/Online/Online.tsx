@@ -106,6 +106,10 @@ export const Online: FC = () => {
       }
     });
 
+    socket.on(EVENTS.ON_SELECT_DICE, (desk: DeskType) => {
+      setDesk(desk);
+    });
+
     socket.on(EVENTS.ON_CLOSE_CONCLUSION, (desk: DeskType) => {
       setDesk(desk);
       toggleGameOpen(GAME_OPEN.CONCLUSION);

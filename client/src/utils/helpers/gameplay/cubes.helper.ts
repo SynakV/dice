@@ -1,44 +1,40 @@
+import { DICE } from "@utils/constants";
 import { playAudio } from "../audio.helper";
 import { getRandomInt } from "../randomizer.helper";
-import { DeskType, PlayerType } from "@utils/common/types";
+import { CubesType, DeskType, PlayerType } from "@utils/common/types";
+
+export const DEFAULT_CUBES: null[] = new Array(DICE.COUNT).fill(null);
 
 export const getCubesReroll = (
   index: number | number[],
-  cubesReroll: (number | null)[]
+  { roll, reroll }: CubesType
 ) => {
-  const copy = [...cubesReroll];
+  const selectedDice = [...(reroll || DEFAULT_CUBES)];
 
   if (Array.isArray(index)) {
-    // Computer
     for (let i = 0; i < index.length; i++) {
-      copy.splice(index[i], 1, getRandomInt());
+      selectedDice[index[i]] = !selectedDice[index[i]]
+        ? roll?.[index[i]] || null
+        : null;
     }
-    return copy;
   } else {
-    // User
-    if (copy[index]) {
-      copy.splice(index, 1, null);
-    } else {
-      copy[index] = getRandomInt();
-    }
+    selectedDice[index] = !selectedDice[index] ? roll?.[index] || null : null;
   }
 
   playAudio("selectDieForReroll");
 
-  return copy;
+  return selectedDice;
 };
 
-export const getDiceForReroll = (
-  cubes: number[],
-  cubesReroll: (number | null)[],
-  computerCubesReloll?: (number | null)[]
-) => {
-  const cubersForReroll = computerCubesReloll || cubesReroll;
-
+export const getDiceForReroll = ({ roll, reroll }: CubesType) => {
   const newCubes: number[] = [];
 
-  for (let i = 0; i < cubersForReroll.length; i++) {
-    newCubes.push(cubersForReroll[i] ? cubersForReroll[i]! : cubes[i]);
+  if (!roll || !reroll) {
+    return roll;
+  }
+
+  for (let i = 0; i < reroll.length; i++) {
+    newCubes.push(reroll[i] ? getRandomInt() : roll[i]);
   }
 
   return newCubes;
