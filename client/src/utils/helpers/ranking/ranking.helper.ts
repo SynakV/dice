@@ -159,21 +159,21 @@ const getTwoPairsWinners = (
 };
 
 const getOfAKindWinners = (maxPlayersRankings: RankingResultWithInfoType[]) => {
-  const ofAKindValues: [PlayerType, number][] = [];
+  const appeared: [PlayerType, number][] = [];
   const rest: [PlayerType, [string, number][]][] = [];
 
   maxPlayersRankings.forEach((ranking) => {
-    ofAKindValues.push([ranking.player, +ranking.result.appeared[0][0]]);
+    appeared.push([ranking.player, +ranking.result.appeared[0][0]]);
     rest.push([ranking.player, ranking.result.rest]);
   });
 
-  const isAllValuesSame = ofAKindValues.every(
-    ([_, value]) => value === ofAKindValues[0][1]
+  const isAllValuesSame = appeared.every(
+    ([_, value]) => value === appeared[0][1]
   );
 
   return isAllValuesSame
     ? getHighestRestPlayers(rest)
-    : getMaxAppeared(ofAKindValues).map(([player]) => player);
+    : getMaxAppeared(appeared, rest).map(([player]) => player);
 };
 
 const getHighestRestPlayers = (
@@ -211,7 +211,10 @@ const getHighestRestPlayers = (
   return playersWithRests.map(([player]) => player);
 };
 
-const getMaxAppeared = (appeares: [PlayerType, number][]) => {
+const getMaxAppeared = (
+  appeares: [PlayerType, number][],
+  rest?: [PlayerType, [string, number][]][]
+) => {
   let maxAppeared = appeares[0][1];
 
   appeares.forEach((appeared) => {
@@ -220,7 +223,17 @@ const getMaxAppeared = (appeares: [PlayerType, number][]) => {
     }
   });
 
-  return appeares.filter((appeared) => appeared[1] === maxAppeared);
+  const playersAppeares = appeares.filter(
+    (appeared) => appeared[1] === maxAppeared
+  );
+
+  if (playersAppeares.length === 1) {
+    return playersAppeares;
+  }
+
+  return rest
+    ? getHighestRestPlayers(rest).map((player) => [player])
+    : playersAppeares;
 };
 
 export const findMaxPlayersRankings = (
