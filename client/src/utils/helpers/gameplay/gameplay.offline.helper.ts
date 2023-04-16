@@ -5,7 +5,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import { getRandomNames } from "../randomizer.helper";
 import {
@@ -40,7 +40,7 @@ export const afterStartThrowDice = (prev: DeskType): DeskType => ({
 
 export const afterThrowDice = (
   prev: DeskType,
-  ranking: RankingResultWithInfoType
+  ranking: RankingWithInfoType
 ): DeskType => ({
   ...prev,
   gameplay: {

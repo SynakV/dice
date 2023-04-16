@@ -9,7 +9,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import {
   afterStartGame,
@@ -45,7 +45,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterStartThrowDice(prev, socket));
   };
 
-  const throwDice = (ranking: RankingResultWithInfoType) => {
+  const throwDice = (ranking: RankingWithInfoType) => {
     setDesk((prev) => afterThrowDice(prev, ranking, socket));
   };
 

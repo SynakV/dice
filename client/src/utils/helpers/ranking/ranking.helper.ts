@@ -2,14 +2,14 @@ import {
   RoundType,
   PlayerType,
   StructuredType,
-  RankingResultType,
+  RankingType,
   RANKING_OF_HANDS_KEYS,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import { DICE, RANKING_OF_HANDS } from "@utils/constants";
 import { getAppearedNumbers } from "@utils/helpers/ranking/calculations.helper";
 
-export const getRanking = (numbers: number[]): RankingResultType => {
+export const getRanking = (numbers: number[]): RankingType => {
   const appeared = getAppearedNumbers(numbers);
 
   let ranking: any;
@@ -36,7 +36,7 @@ export const getRanking = (numbers: number[]): RankingResultType => {
 };
 
 export const getRankingsComparisonWinner = (
-  rankings: RankingResultWithInfoType[]
+  rankings: RankingWithInfoType[]
 ): PlayerType[] => {
   const maxPlayersRankings = findMaxPlayersRankings(rankings);
 
@@ -102,7 +102,7 @@ export const getWinnersNamesString = (winners: PlayerType[]) =>
   getWinnersNamesArray(winners).join(", ") || "";
 
 const getFullHouseWinners = (
-  maxPlayersRankings: RankingResultWithInfoType[]
+  maxPlayersRankings: RankingWithInfoType[]
 ): PlayerType[] => {
   const appeares: [PlayerType, [string, number][]][] = [];
   const triples: [PlayerType, number][] = [];
@@ -140,9 +140,7 @@ const getFullHouseWinners = (
   return getMaxAppeared(triples).map(([player]) => player);
 };
 
-const getTwoPairsWinners = (
-  maxPlayersRankings: RankingResultWithInfoType[]
-) => {
+const getTwoPairsWinners = (maxPlayersRankings: RankingWithInfoType[]) => {
   const appeares: [PlayerType, [string, number][]][] = [];
   const rests: [PlayerType, [string, number][]][] = [];
 
@@ -158,7 +156,7 @@ const getTwoPairsWinners = (
     : hightAmongAppeared;
 };
 
-const getOfAKindWinners = (maxPlayersRankings: RankingResultWithInfoType[]) => {
+const getOfAKindWinners = (maxPlayersRankings: RankingWithInfoType[]) => {
   const appeared: [PlayerType, number][] = [];
   const rest: [PlayerType, [string, number][]][] = [];
 
@@ -236,9 +234,7 @@ const getMaxAppeared = (
     : playersAppeares;
 };
 
-export const findMaxPlayersRankings = (
-  rankings: RankingResultWithInfoType[]
-) => {
+export const findMaxPlayersRankings = (rankings: RankingWithInfoType[]) => {
   const max = Math.max(...rankings.map((ranking) => ranking.value.value));
   return rankings.filter((ranking) => ranking.value.value === max);
 };
@@ -247,7 +243,7 @@ export const getReRollIndexes = ({
   key,
   cubes,
   result,
-}: RankingResultWithInfoType) => {
+}: RankingWithInfoType) => {
   if (key === RANKING_OF_HANDS_KEYS.NOTHING) {
     return new Array(DICE.COUNT).fill(null).map((_, index) => index);
   }

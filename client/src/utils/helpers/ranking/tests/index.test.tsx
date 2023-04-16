@@ -2,7 +2,7 @@ import { RANKING_OF_HANDS } from "@utils/constants";
 import {
   RANKING_OF_HANDS_KEYS,
   RankingOfTypeValueType,
-  RankingResultWithInfoType,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import {
   permute,
@@ -97,10 +97,10 @@ describe("Ranking tests", () => {
 //       const dice: DiceType = {
 //         [USER.FIRST]: {
 //           value: opponents[i][0],
-//         } as RankingResultWithInfoType,
+//         } as RankingWithInfoType,
 //         [USER.SECOND]: {
 //           value: opponents[i][1],
-//         } as RankingResultWithInfoType,
+//         } as RankingWithInfoType,
 //       };
 
 //       it(`it should return winner: ${winner}`, () => {
@@ -115,13 +115,13 @@ describe("Ranking tests", () => {
 
 //       const getEqualRankings = (arrays: number[][]) => {
 //         arrays.forEach((array) => {
-//           const rankingResult = getRankingResult(
+//           const ranking = getRanking(
 //             array
-//           ) as RankingResultWithInfoType;
+//           ) as RankingWithInfoType;
 
 //           testRankings.push({
-//             [USER.FIRST]: rankingResult,
-//             [USER.SECOND]: rankingResult,
+//             [USER.FIRST]: ranking,
+//             [USER.SECOND]: ranking,
 //           });
 //         });
 //       };
@@ -186,15 +186,9 @@ describe("Ranking tests", () => {
 
 describe("Comparison tests", () => {
   it(`3 players winner`, () => {
-    const player1: RankingResultWithInfoType | any = getRanking([
-      2, 2, 3, 4, 5,
-    ]);
-    const player2: RankingResultWithInfoType | any = getRanking([
-      1, 1, 3, 4, 5,
-    ]);
-    const player3: RankingResultWithInfoType | any = getRanking([
-      2, 2, 3, 4, 6,
-    ]);
+    const player1: RankingWithInfoType | any = getRanking([2, 2, 3, 4, 5]);
+    const player2: RankingWithInfoType | any = getRanking([1, 1, 3, 4, 5]);
+    const player3: RankingWithInfoType | any = getRanking([2, 2, 3, 4, 6]);
 
     player1.player = { name: "1" };
     player2.player = { name: "2" };

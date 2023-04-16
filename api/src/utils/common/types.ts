@@ -87,15 +87,15 @@ export enum RANKING_OF_HANDS_KEYS {
   FIVE_OF_A_KIND = 'fiveOfAKind',
 }
 
-export type RankingResultType = {
+export type RankingType = {
   key: RANKING_OF_HANDS_KEYS;
   value: RankingOfTypeValueType;
   result: StructuredType;
 };
 
-export type RankingResultWithInfoType = RankingResultType & {
-  stage?: number;
-  cubes?: number[];
+export type RankingWithInfoType = RankingType & {
+  stage: number;
+  cubes: number[];
   player: PlayerType;
 };
 
@@ -134,7 +134,7 @@ export type StageType = {
   isCompleted: boolean;
   isPlayerThrew: boolean;
   winners: PlayerType[];
-  rankings: RankingResultWithInfoType[];
+  rankings: RankingWithInfoType[];
 };
 
 // SETTINGS //
