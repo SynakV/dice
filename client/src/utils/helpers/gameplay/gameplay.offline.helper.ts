@@ -3,6 +3,7 @@ import { getStorageObjectItem } from "../storage/storage.helper";
 import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
 import {
   DeskType,
+  RerollType,
   SettingsType,
   RankingResultWithInfoType,
 } from "@utils/common/types";
@@ -131,6 +132,46 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
     },
   };
 };
+
+export const afterSelectDice = (
+  prev: DeskType,
+  selectedDice: RerollType
+): DeskType => ({
+  ...prev,
+  gameplay: {
+    ...prev.gameplay,
+    rounds: prev.gameplay.rounds.map((round, index) => {
+      const isCurrentRound = prev.gameplay.current.round === index;
+
+      if (!isCurrentRound) {
+        return round;
+      }
+
+      round.stages.map((stage, index) => {
+        const isPreviousStage = prev.gameplay.current.stage - 1 === index;
+
+        if (!isPreviousStage) {
+          return stage;
+        }
+
+        stage.rankings.map((ranking) => {
+          const isPlayersRanking =
+            prev.gameplay.current.player?.name === ranking.player.name;
+
+          if (isPlayersRanking) {
+            ranking.cubes.reroll = selectedDice;
+          }
+
+          return ranking;
+        });
+
+        return stage;
+      });
+
+      return round;
+    }),
+  },
+});
 
 export const afterCloseConclusion = (
   prev: DeskType,

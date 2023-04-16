@@ -1,14 +1,15 @@
 import {
   FC,
+  Dispatch,
   ReactNode,
   useContext,
   createContext,
   SetStateAction,
-  Dispatch,
 } from "react";
 import type { Socket } from "socket.io-client";
 import {
   DeskType,
+  RerollType,
   SettingsType,
   RankingResultWithInfoType,
 } from "../common/types";
@@ -24,6 +25,7 @@ interface DeskContext {
     startThrowDice: () => void;
     throwDice: (ranking: RankingResultWithInfoType) => void;
     finishThrowDice: () => void;
+    selectDice: (selectedDice: RerollType) => void;
     closeConclusion: (isLastRound: boolean) => void;
     endGame: () => void;
     changeSettings: (settings: SettingsType) => void;
@@ -38,6 +40,7 @@ const DEFAULT_VALUES = {
     startThrowDice: () => {},
     throwDice: () => {},
     finishThrowDice: () => {},
+    selectDice: () => {},
     closeConclusion: () => {},
     endGame: () => {},
     changeSettings: () => {},

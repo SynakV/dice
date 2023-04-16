@@ -58,7 +58,7 @@ export const Status = () => {
       if (!currentStage.isStarted && !currentStage.isPlayerThrew) {
         return isYouCurrentPlayer
           ? "Select dice for re-roll"
-          : `${currentPlayersName}'s is thinking to re-roll dice...`;
+          : `${currentPlayersName} is thinking to re-roll dice...`;
       }
 
       if (currentStage.isStarted && !currentStage.isPlayerThrew) {

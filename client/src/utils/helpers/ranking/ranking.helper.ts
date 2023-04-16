@@ -230,26 +230,28 @@ export const findMaxPlayersRankings = (
   return rankings.filter((ranking) => ranking.value.value === max);
 };
 
-export const getReRollIndexes = (
-  cubes: number[],
-  ranking: RankingResultType
-) => {
-  if (ranking.key === RANKING_OF_HANDS_KEYS.NOTHING) {
+export const getReRollIndexes = ({
+  key,
+  cubes,
+  result,
+}: RankingResultWithInfoType) => {
+  if (key === RANKING_OF_HANDS_KEYS.NOTHING) {
     return new Array(DICE.COUNT).fill(null).map((_, index) => index);
   }
 
-  if (!ranking.result.rest) {
+  if (!result.rest) {
     return [];
   }
 
-  const rest = ranking.result.rest;
+  const rest = result.rest;
+  const roll = cubes.roll || [];
 
   if (rest) {
     const restNumbers = rest.map((number) => +number[0]);
     const indexes = [];
 
-    for (let i = 0; i < cubes.length; i++) {
-      if (restNumbers.includes(cubes[i])) {
+    for (let i = 0; i < roll.length; i++) {
+      if (restNumbers.includes(roll[i])) {
         indexes.push(i);
       }
     }

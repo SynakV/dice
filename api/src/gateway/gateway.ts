@@ -131,6 +131,19 @@ export class GatewayService implements OnModuleInit {
     }
   }
 
+  @SubscribeMessage(MESSAGES.SELECT_DICE)
+  async handleselectDice(_: Socket, desk: DeskType) {
+    const updatedDesk = await this.deskModel.findOneAndUpdate(
+      { _id: desk._id },
+      { $set: { gameplay: desk.gameplay } },
+      { new: true },
+    );
+
+    if (updatedDesk) {
+      this.server.to(updatedDesk.id).emit(EVENTS.ON_SELECT_DICE, updatedDesk);
+    }
+  }
+
   @SubscribeMessage(MESSAGES.CLOSE_CONCLUSION)
   async handleCloseConclusion(_: Socket, desk: DeskType) {
     const updatedDesk = await this.deskModel.findOneAndUpdate(

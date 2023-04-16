@@ -7,17 +7,19 @@ import { DEFAULT_DESK } from "@utils/common/constants";
 import { DeskCommonProps, DeskProvider } from "./DeskContext";
 import {
   DeskType,
+  RerollType,
   SettingsType,
   RankingResultWithInfoType,
 } from "@utils/common/types";
 import {
+  afterStartGame,
+  afterStartThrowDice,
+  afterThrowDice,
+  afterFinishThrowDice,
+  afterSelectDice,
   afterCloseConclusion,
   afterEndGame,
   afterChangeSettings,
-  afterFinishThrowDice,
-  afterStartGame,
-  afterThrowDice,
-  afterStartThrowDice,
 } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
@@ -51,6 +53,10 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterFinishThrowDice(prev, socket));
   };
 
+  const selectDice = (selectedDice: RerollType) => {
+    setDesk((prev) => afterSelectDice(prev, selectedDice, socket));
+  };
+
   const closeConclusion = (isLastRound: boolean) => {
     setDesk((prev) => afterCloseConclusion(prev, isLastRound, socket));
   };
@@ -70,6 +76,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
         startThrowDice,
         throwDice,
         finishThrowDice,
+        selectDice,
         closeConclusion,
         endGame,
         changeSettings,

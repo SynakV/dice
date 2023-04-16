@@ -45,7 +45,14 @@ export const History = () => {
                               {stage.rankings.map((ranking, index) => (
                                 <li key={index}>
                                   {ranking.player.name}: {ranking.value.name} -{" "}
-                                  {ranking.cubes?.toString()}
+                                  {ranking.cubes.roll?.toString()}{" "}
+                                  {!ranking.cubes.reroll?.every(
+                                    (cube) => cube === null
+                                  ) && ranking.cubes.reroll !== undefined
+                                    ? `- ${ranking.cubes.reroll?.filter(
+                                        (cube) => cube
+                                      )}`
+                                    : null}
                                 </li>
                               ))}
                             </ul>

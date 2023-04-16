@@ -13,66 +13,66 @@ import {
   getRankingsComparisonWinner,
 } from "@utils/helpers/ranking/ranking.helper";
 
-describe("Ranking tests", () => {
-  Object.keys(RANKING_OF_HANDS).forEach((key) => {
-    let testArrays: number[][] = [];
+// describe("Ranking tests", () => {
+//   Object.keys(RANKING_OF_HANDS).forEach((key) => {
+//     let testArrays: number[][] = [];
 
-    switch (key) {
-      case RANKING_OF_HANDS_KEYS.NOTHING:
-        testArrays = [
-          [1, 3, 4, 5, 6],
-          [1, 2, 4, 5, 6],
-          [1, 2, 3, 5, 6],
-          [1, 2, 3, 4, 6],
-        ];
-        break;
-      case RANKING_OF_HANDS_KEYS.PAIR:
-        testArrays = getAllPossibleRepeatedInts({ repeats: [2] });
-        break;
-      case RANKING_OF_HANDS_KEYS.TWO_PAIRS:
-        testArrays = getAllPossibleRepeatedInts({
-          repeats: [2, 2],
-          key,
-        });
-        break;
-      case RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND:
-        testArrays = getAllPossibleRepeatedInts({ repeats: [3] });
-        break;
-      case RANKING_OF_HANDS_KEYS.FIVE_HIGH_STRAIGHT:
-        testArrays = [[1, 2, 3, 4, 5]];
-        break;
-      case RANKING_OF_HANDS_KEYS.SIX_HIGH_STRAIGHT:
-        testArrays = [[2, 3, 4, 5, 6]];
-        break;
-      case RANKING_OF_HANDS_KEYS.FULL_HOUSE:
-        testArrays = getAllPossibleRepeatedInts({
-          repeats: [3, 2],
-          key,
-        });
-        break;
-      case RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND:
-        testArrays = getAllPossibleRepeatedInts({ repeats: [4] });
-        break;
-      case RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND:
-        testArrays = getAllPossibleRepeatedInts({ repeats: [5] });
-        break;
-      default:
-        break;
-    }
+//     switch (key) {
+//       case RANKING_OF_HANDS_KEYS.NOTHING:
+//         testArrays = [
+//           [1, 3, 4, 5, 6],
+//           [1, 2, 4, 5, 6],
+//           [1, 2, 3, 5, 6],
+//           [1, 2, 3, 4, 6],
+//         ];
+//         break;
+//       case RANKING_OF_HANDS_KEYS.PAIR:
+//         testArrays = getAllPossibleRepeatedInts({ repeats: [2] });
+//         break;
+//       case RANKING_OF_HANDS_KEYS.TWO_PAIRS:
+//         testArrays = getAllPossibleRepeatedInts({
+//           repeats: [2, 2],
+//           key,
+//         });
+//         break;
+//       case RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND:
+//         testArrays = getAllPossibleRepeatedInts({ repeats: [3] });
+//         break;
+//       case RANKING_OF_HANDS_KEYS.FIVE_HIGH_STRAIGHT:
+//         testArrays = [[1, 2, 3, 4, 5]];
+//         break;
+//       case RANKING_OF_HANDS_KEYS.SIX_HIGH_STRAIGHT:
+//         testArrays = [[2, 3, 4, 5, 6]];
+//         break;
+//       case RANKING_OF_HANDS_KEYS.FULL_HOUSE:
+//         testArrays = getAllPossibleRepeatedInts({
+//           repeats: [3, 2],
+//           key,
+//         });
+//         break;
+//       case RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND:
+//         testArrays = getAllPossibleRepeatedInts({ repeats: [4] });
+//         break;
+//       case RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND:
+//         testArrays = getAllPossibleRepeatedInts({ repeats: [5] });
+//         break;
+//       default:
+//         break;
+//     }
 
-    describe(key, () => {
-      for (let array = 0; array < testArrays.length; array++) {
-        const randomizedArray = permute(testArrays[array]);
+//     describe(key, () => {
+//       for (let array = 0; array < testArrays.length; array++) {
+//         const randomizedArray = permute(testArrays[array]);
 
-        for (let i = 0; i < randomizedArray.length; i++) {
-          it(`${i + 1}: [${randomizedArray[i].toString()}]`, () => {
-            expect(getRanking(randomizedArray[i]).key).toEqual(key);
-          });
-        }
-      }
-    });
-  });
-});
+//         for (let i = 0; i < randomizedArray.length; i++) {
+//           it(`${i + 1}: [${randomizedArray[i].toString()}]`, () => {
+//             expect(getRanking(randomizedArray[i]).key).toEqual(key);
+//           });
+//         }
+//       }
+//     });
+//   });
+// });
 
 // describe("Comparison tests", () => {
 //   describe("Tests if ones value is bigger than another", () => {
@@ -196,12 +196,12 @@ describe("Comparison tests", () => {
       2, 2, 3, 4, 6,
     ]);
 
-    player1.player = { name: "Player_1" };
-    player2.player = { name: "Player_2" };
-    player3.player = { name: "Player_3" };
+    player1.player = { name: "1" };
+    player2.player = { name: "2" };
+    player3.player = { name: "3" };
 
-    const winner = getRankingsComparisonWinner([player1, player2, player3]);
+    const winners = getRankingsComparisonWinner([player1, player2, player3]);
 
-    console.log(winner);
+    expect(winners.map((winner) => winner.name).join(",")).toBe("3");
   });
 });

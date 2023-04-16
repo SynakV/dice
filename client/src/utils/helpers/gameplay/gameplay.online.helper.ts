@@ -3,11 +3,12 @@ import {
   getRankingsComparisonWinner,
 } from "../ranking/ranking.helper";
 import {
+  TIMERS,
   MESSAGES,
   DeskType,
+  RerollType,
   SettingsType,
   RankingResultWithInfoType,
-  TIMERS,
 } from "@utils/common/types";
 import {
   DEFAULT_STAGE,
@@ -169,6 +170,51 @@ export const afterFinishThrowDice = (
     desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
   socket.emit(MESSAGES.FINISH_THROW_DICE, desk);
+
+  return prev;
+};
+
+export const afterSelectDice = (
+  prev: DeskType,
+  selectedDice: RerollType,
+  socket: Socket
+) => {
+  socket.emit(MESSAGES.SELECT_DICE, {
+    ...prev,
+    gameplay: {
+      ...prev.gameplay,
+      rounds: prev.gameplay.rounds.map((round, index) => {
+        const isCurrentRound = prev.gameplay.current.round === index;
+
+        if (!isCurrentRound) {
+          return round;
+        }
+
+        round.stages.map((stage, index) => {
+          const isPreviousStage = prev.gameplay.current.stage - 1 === index;
+
+          if (!isPreviousStage) {
+            return stage;
+          }
+
+          stage.rankings.map((ranking) => {
+            const isPlayersRanking =
+              prev.gameplay.current.player?.name === ranking.player.name;
+
+            if (isPlayersRanking) {
+              ranking.cubes.reroll = selectedDice;
+            }
+
+            return ranking;
+          });
+
+          return stage;
+        });
+
+        return round;
+      }),
+    },
+  } as DeskType);
 
   return prev;
 };
