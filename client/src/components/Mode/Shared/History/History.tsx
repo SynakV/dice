@@ -82,7 +82,7 @@ export const History = () => {
                                       key={index}
                                       value={cube}
                                       isSelected={!!reroll?.[index]}
-                                      wrapperClassName="history__cube-wrapper"
+                                      wrapperClassName="history__cube"
                                     />
                                   ))}
                                 </div>

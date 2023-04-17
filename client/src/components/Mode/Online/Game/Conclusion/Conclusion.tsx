@@ -11,6 +11,7 @@ import {
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import { Cube } from "@components/Mode/Shared/Game/Desk/Cubes/Cube/Cube";
 
 export const Conclusion = () => {
   const { desk } = useDesk();
@@ -20,14 +21,14 @@ export const Conclusion = () => {
 
   const getWinnerIcons = (wins: number = 0) => {
     return wins > 0 ? (
-      <div className="conclusion__wins">
-        <span className="conclusion__wins-counter">{wins}</span>
+      <div className="ranking__wins">
+        <span className="ranking__wins-counter">{wins}</span>
         <Image
           width={125}
           height={125}
           alt="winner"
           src="/icons/winner.webp"
-          className="conclusion__wins-img"
+          className="ranking__wins-img"
         />
       </div>
     ) : null;
@@ -87,16 +88,24 @@ export const Conclusion = () => {
         Round: {desk.gameplay.current.round + 1}
       </span>
 
-      <div className="conclusion__pool">
+      <div className="conclusion__rankings">
         {rankings.map((ranking, index) => (
-          <div key={index} className="conclusion__pool-ranking">
-            <span className="conclusion__pool-player">
-              {ranking.player.name}
-            </span>
-            <span className="conclusion__pool-name">{ranking.value.name}</span>
-            <span className="conclusion__pool-wins">
-              {getWinnerIcons(winTotals[ranking.player.name || ""])}
-            </span>
+          <div key={index} className="ranking">
+            <div className="ranking__header">
+              <span className="ranking__player">{ranking.player.name}</span>
+              <span className="ranking__value">{ranking.value.name}</span>
+            </div>
+            <div className="ranking__cubes">
+              {ranking.cubes.roll?.map((cube) => (
+                <Cube
+                  isDisabled
+                  value={cube}
+                  isSelected={false}
+                  wrapperClassName="ranking__cube"
+                />
+              ))}
+            </div>
+            {getWinnerIcons(winTotals[ranking.player.name || ""])}
           </div>
         ))}
       </div>
