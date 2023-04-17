@@ -2,6 +2,12 @@ import React from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import {
+  isPass,
+  getCurrentRanking,
+} from "@utils/helpers/gameplay/cubes.helper";
 
 export const Controls = () => {
   const portal = usePortal();
@@ -13,8 +19,16 @@ export const Controls = () => {
   };
 
   const handleRollDice = () => {
-    handle.startThrowDice();
+    if (isPassing && desk.gameplay.current.stage !== 0) {
+      handle.passThrowDice();
+    } else {
+      handle.startThrowDice();
+    }
   };
+
+  const player = getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS);
+  const ranking = getCurrentRanking(desk, player);
+  const isPassing = isPass(ranking?.cubes.reroll);
 
   const rounds = desk.gameplay.rounds;
   const currentRound = rounds[desk.gameplay.current.round];
@@ -46,7 +60,11 @@ export const Controls = () => {
             isAllowedToRoll ? "" : "controls__roll--disabled"
           }`}
         >
-          {isFirstStageNotCompleted ? "Roll" : "Re-roll"} dice
+          {isFirstStageNotCompleted
+            ? "Roll dice"
+            : isPassing
+            ? "Pass"
+            : "Re-roll dice"}
         </span>
       )}
       <span

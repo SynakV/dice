@@ -114,9 +114,10 @@ export const Conclusion = () => {
               <span className="ranking__value">{ranking.value.name}</span>
             </div>
             <div className="ranking__cubes">
-              {ranking.cubes.roll?.map((cube) => (
+              {ranking.cubes.roll?.map((cube, index) => (
                 <Cube
                   isDisabled
+                  key={index}
                   value={cube}
                   isSelected={false}
                   wrapperClassName="ranking__cube"

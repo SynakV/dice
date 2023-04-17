@@ -25,6 +25,7 @@ interface DeskContext {
     startThrowDice: () => void;
     throwDice: (ranking: RankingWithInfoType) => void;
     finishThrowDice: () => void;
+    passThrowDice: () => void;
     selectDice: (selectedDice: RerollType) => void;
     closeConclusion: (isLastRound: boolean) => void;
     endGame: () => void;
@@ -40,6 +41,7 @@ const DEFAULT_VALUES = {
     startThrowDice: () => {},
     throwDice: () => {},
     finishThrowDice: () => {},
+    passThrowDice: () => {},
     selectDice: () => {},
     closeConclusion: () => {},
     endGame: () => {},

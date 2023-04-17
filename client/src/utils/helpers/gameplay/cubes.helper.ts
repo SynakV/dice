@@ -1,7 +1,12 @@
 import { DICE } from "@utils/constants";
 import { playAudio } from "../audio.helper";
 import { getRandomInt } from "../randomizer.helper";
-import { CubesType, DeskType, PlayerType } from "@utils/common/types";
+import {
+  DeskType,
+  CubesType,
+  PlayerType,
+  RerollType,
+} from "@utils/common/types";
 
 export const DEFAULT_CUBES: null[] = new Array(DICE.COUNT).fill(null);
 
@@ -57,3 +62,6 @@ export const getCurrentRanking = (desk: DeskType, player: PlayerType) => {
 
   return ranking;
 };
+
+export const isPass = (reroll?: RerollType) =>
+  !reroll || reroll.every((cube) => cube === null);

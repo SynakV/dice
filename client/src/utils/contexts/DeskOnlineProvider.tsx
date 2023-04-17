@@ -16,6 +16,7 @@ import {
   afterStartThrowDice,
   afterThrowDice,
   afterFinishThrowDice,
+  afterPassThrowDice,
   afterSelectDice,
   afterCloseConclusion,
   afterEndGame,
@@ -53,6 +54,10 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterFinishThrowDice(prev, socket));
   };
 
+  const passThrowDice = () => {
+    setDesk((prev) => afterPassThrowDice(prev, socket));
+  };
+
   const selectDice = (selectedDice: RerollType) => {
     setDesk((prev) => afterSelectDice(prev, selectedDice, socket));
   };
@@ -76,6 +81,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
         startThrowDice,
         throwDice,
         finishThrowDice,
+        passThrowDice,
         selectDice,
         closeConclusion,
         endGame,
