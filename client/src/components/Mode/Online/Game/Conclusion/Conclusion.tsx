@@ -78,7 +78,11 @@ export const Conclusion = () => {
       .rankings;
 
   return (
-    <Modal title={title} isOpen={gameOpen[GAME_OPEN.CONCLUSION]}>
+    <Modal
+      title={title}
+      className="conclusion"
+      isOpen={gameOpen[GAME_OPEN.CONCLUSION]}
+    >
       <span className="conclusion__round">
         Round: {desk.gameplay.current.round + 1}
       </span>

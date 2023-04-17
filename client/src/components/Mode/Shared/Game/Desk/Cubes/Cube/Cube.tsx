@@ -5,17 +5,26 @@ interface Props {
   isSelected: boolean;
   isDisabled: boolean;
   value: number | null;
+  wrapperClassName?: string;
 }
 
-export const Cube: FC<Props> = ({ value, onClick, isSelected, isDisabled }) => {
+export const Cube: FC<Props> = ({
+  value,
+  onClick,
+  isSelected,
+  isDisabled,
+  wrapperClassName,
+}) => {
+  const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
+  const cubeWrapperClassName = wrapperClassName ? wrapperClassName : "";
+  const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
+  const cubeStatus = isSelected ? "cube-status__selected" : "";
+
   return (
     <div
-      className={`cube-wrapper ${isSelected ? "cube-wrapper__selected" : ""}`}
+      className={`cube-wrapper ${cubeWrapperSelected} ${cubeWrapperClassName}`}
     >
-      <div
-        onClick={isDisabled ? () => {} : () => onClick && onClick()}
-        className={`cube cube-${value}`}
-      >
+      <div onClick={cubeClick} className={`cube cube-${value}`}>
         <div className="front">
           <span className="dot dot1" />
         </div>
@@ -50,9 +59,7 @@ export const Cube: FC<Props> = ({ value, onClick, isSelected, isDisabled }) => {
           <span className="dot dot6" />
         </div>
       </div>
-      <span
-        className={`cube-status ${isSelected ? "cube-status__selected" : ""}`}
-      />
+      <span className={`cube-status ${cubeStatus}`} />
     </div>
   );
 };
