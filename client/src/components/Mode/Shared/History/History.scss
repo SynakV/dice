@@ -1,17 +1,4 @@
 .history {
-    ul {
-        text-align: left;
-        overflow-y: auto;
-        margin-block: 8px;
-        list-style-type: none;
-        align-self: self-start;
-        width: calc(100% - 20px);
-        justify-self: flex-start;
-        padding-inline-start: 20px;
-        max-height: calc(40vh + 50px);
-        color: rgba(255, 255, 255, 0.5);
-    }
-    
     &__no-data {
         top: 50%;
         left: 50%;
@@ -38,5 +25,51 @@
         &:hover {
             color: rgba(255, 255, 255, 0.35);
         }
+    }
+
+    &__rounds {
+        display: flex;
+        overflow-y: auto;
+        align-items: center;
+        flex-direction: column;
+        max-height: 40vh;
+    }
+
+    &__round {
+        font-size: 20px;
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__stage {
+        margin: 10px 0;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__ranking {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__header {
+        display: flex;
+        padding: 0 10px;
+        justify-content: space-between;
+    }
+
+    &__player, &__value {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    &__cubes {
+        display: flex;
+        margin: 10px 0;
+        justify-content: space-between;
+    }
+
+    &__cube-wrapper {
+        transform: scale(0.5);
     }
 }
