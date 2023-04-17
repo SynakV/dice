@@ -3,7 +3,10 @@ import { Cube } from "../Game/Desk/Cubes/Cube/Cube";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { getWinnersNamesString } from "@utils/helpers/ranking/ranking.helper";
+import {
+  getWinnersNamesString,
+  getWinnersNounString,
+} from "@utils/helpers/ranking/ranking.helper";
 
 export const History = () => {
   const { desk } = useDesk();
@@ -36,7 +39,8 @@ export const History = () => {
       {isAtLeastFirstRoundStageCompleted ? (
         <div className="history__rounds" id="history__rounds">
           {rounds.map((round, roundIndex) => {
-            const roundWinner = getWinnersNamesString(round.winners);
+            const roundWinners = getWinnersNamesString(round.winners);
+            const roundWinnersNoun = getWinnersNounString(roundWinners);
             const isAtLeastFirstRoundStageCompleted =
               round.stages[0].isCompleted;
             const roundId = `round-${roundIndex}`;
@@ -45,16 +49,19 @@ export const History = () => {
                 <Fragment key={roundIndex}>
                   <div className="history__round" id={roundId}>
                     Round: {roundIndex + 1}{" "}
-                    {roundWinner ? `(Winner: ${roundWinner})` : ""}
+                    {roundWinners ? `(${roundWinnersNoun})` : null}
                   </div>
                   {round.stages.map((stage, stageIndex) => {
                     const isStageFinished = stage.isCompleted;
+                    const stageWinners = getWinnersNounString(
+                      getWinnersNamesString(stage.winners)
+                    );
                     return (
                       isStageFinished && (
                         <Fragment key={stageIndex}>
                           <div className="history__stage">
-                            {stageIndex === 0 ? `Roll` : "Re-roll"} (Winner:{" "}
-                            {getWinnersNamesString(stage.winners)})
+                            {stageIndex === 0 ? `Roll` : "Re-roll"} (
+                            {stageWinners})
                           </div>
                           {stage.rankings.map((ranking, rankingIndex) => {
                             const { cubes, value, player } = ranking;

@@ -8,6 +8,7 @@ import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
   getWinTotals,
   getWinnersNamesArray,
+  getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -70,9 +71,7 @@ export const Conclusion = () => {
     rounds[desk.gameplay.current.round].winners
   );
 
-  const title = `Winner${
-    winnersNames.includes(", ") ? "s" : ""
-  }: ${winnersNames}`;
+  const title = getWinnersNounString(winnersNames);
 
   const rankings =
     rounds[desk.gameplay.current.round].stages[desk.gameplay.current.stage]

@@ -10,6 +10,7 @@ import {
   getWinTotals,
   getGameWinner,
   getWinnersNamesArray,
+  getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { Cube } from "@components/Mode/Shared/Game/Desk/Cubes/Cube/Cube";
@@ -92,9 +93,7 @@ export const Conclusion = () => {
     rounds[desk.gameplay.current.round].winners
   );
 
-  const title = `Winner${
-    winnersNames.includes(", ") ? "s" : ""
-  }: ${winnersNames}`;
+  const title = getWinnersNounString(winnersNames);
 
   const rankings =
     rounds[desk.gameplay.current.round].stages[desk.gameplay.current.stage]
