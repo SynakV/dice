@@ -110,6 +110,7 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_SELECT_DICE, (desk: DeskType) => {
       setDesk(desk);
       setIsControlsLoading(false);
+      playAudio("selectDieForReroll");
     });
 
     socket.on(EVENTS.ON_CLOSE_CONCLUSION, (desk: DeskType) => {

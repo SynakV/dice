@@ -1,5 +1,4 @@
 import { DICE } from "@utils/constants";
-import { playAudio } from "../audio.helper";
 import { getRandomInt } from "../randomizer.helper";
 import {
   DeskType,
@@ -25,8 +24,6 @@ export const getCubesReroll = (
   } else {
     selectedDice[index] = !selectedDice[index] ? roll?.[index] || null : null;
   }
-
-  playAudio("selectDieForReroll");
 
   return selectedDice;
 };

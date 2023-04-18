@@ -110,7 +110,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
       stage: desk.gameplay.current.stage,
     });
 
-    playAudio("handThrowDice").onended = () => {
+    playAudio("handThrowDice", true).onended = () => {
       handle.finishThrowDice();
     };
   };

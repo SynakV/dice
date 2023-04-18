@@ -22,7 +22,7 @@ export class DeskService {
     }
   }
 
-  async createDesk(body: any): Promise<Desk | null> {
+  async create(body: any): Promise<Desk | null> {
     const { name, creator, wins, players, stages } = body;
 
     const existedDesk = await this.deskModel.findOne({ name });
