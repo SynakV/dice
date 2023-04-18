@@ -5,7 +5,7 @@ import {
   getWinnersNamesString,
   getWinnersNounString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { Row } from "@components/Mode/Shared/Desk/Row/Row";
+import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
@@ -71,7 +71,7 @@ export const History = () => {
                                 rankingIndex
                               ]?.cubes.reroll;
                             return (
-                              <Row
+                              <Hand
                                 key={rankingIndex}
                                 ranking={value.name}
                                 player={player.name}
@@ -84,7 +84,7 @@ export const History = () => {
                                     isSelected={!!reroll?.[index]}
                                   />
                                 ))}
-                              </Row>
+                              </Hand>
                             );
                           })}
                         </Fragment>

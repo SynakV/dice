@@ -11,7 +11,7 @@ import {
   getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { Row } from "@components/Mode/Shared/Desk/Row/Row";
+import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
@@ -23,14 +23,14 @@ export const Conclusion = () => {
 
   const getWinnerIcons = (wins: number = 0) => {
     return wins > 0 ? (
-      <div className="ranking__wins">
-        <span className="ranking__wins-counter">{wins}</span>
+      <div className="hand__wins">
+        <span className="hand__wins-counter">{wins}</span>
         <Image
           width={125}
           height={125}
           alt="winner"
           src="/icons/winner.webp"
-          className="ranking__wins-img"
+          className="hand__wins-img"
         />
       </div>
     ) : null;
@@ -88,9 +88,9 @@ export const Conclusion = () => {
         Round: {desk.gameplay.current.round + 1}
       </span>
 
-      <div className="conclusion__rankings">
+      <div className="conclusion__hands">
         {rankings.map((ranking, index) => (
-          <Row
+          <Hand
             key={index}
             player={ranking.player.name}
             ranking={ranking.value.name}
@@ -99,7 +99,7 @@ export const Conclusion = () => {
               <Cube isDisabled key={index} value={cube} isSelected={false} />
             ))}
             {getWinnerIcons(winTotals[ranking.player.name || ""])}
-          </Row>
+          </Hand>
         ))}
       </div>
     </Modal>

@@ -1,11 +1,11 @@
-@import './Row/Row.scss', './Cube/Cube.scss';
+@import './Hand/Hand.scss', './Cube/Cube.scss';
 
 .desk {
     gap: 30px 0;
     display: flex;
     flex-direction: column;
 
-    .row {
+    .hand {
         &__header {
             font-size: 30px;
         }
