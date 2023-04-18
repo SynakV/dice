@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Game } from "@components/Mode/Offline/Game/Game";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Settings } from "@components/Shared/Settings/Settings";
@@ -11,6 +10,12 @@ import {
 } from "@utils/helpers/storage/storage.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { useRouter } from "next/router";
+import { Desk } from "../Shared/Desk/Desk";
+import { Status } from "../Shared/Status/Status";
+import { History } from "../Shared/History/History";
+import { Controls } from "./Controls/Controls";
+import { Conclusion } from "./Conclusion/Conclusion";
+import { Cubes } from "./Cubes/Cubes";
 
 export const Offline = () => {
   const { replace } = useRouter();
@@ -41,7 +46,15 @@ export const Offline = () => {
     <>
       <Settings />
       <Navigator text="Home" />
-      {!isInitSettings && <Game />}
+      {!isInitSettings && (
+        <>
+          <Status />
+          <History />
+          <Controls />
+          <Conclusion />
+          <Desk cubes={Cubes} />
+        </>
+      )}
       <Credentials
         isOpen={isOpen}
         setCredentials={handleSetCredentials}

@@ -47,29 +47,20 @@
         color: var(--white-50);
     }
 
-    &__ranking {
-        display: flex;
-        flex-direction: column;
-    }
+    .row {
+        &__header {
+            font-size: 20px;
+            padding: 0 10px;
+            width: calc(100% - 20px);
+        }
 
-    &__header {
-        display: flex;
-        padding: 0 10px;
-        justify-content: space-between;
-    }
-
-    &__player, &__value {
-        font-size: 20px;
-        color: var(--white-50);
-    }
-
-    &__cubes {
-        display: flex;
-        margin: 10px 0;
-        justify-content: space-between;
-    }
-
-    &__cube {
-        transform: scale(0.5);
+        &__cubes {
+            gap: 0;
+            margin: 10px 0;
+        }
+    
+        .cube-wrapper {
+            scale: 0.5;
+        }
     }
 }

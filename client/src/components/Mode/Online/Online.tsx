@@ -9,13 +9,19 @@ import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { Loading } from "../../Shared/Loading/Loading";
 import { playAudio } from "@utils/helpers/audio.helper";
-import { Game } from "@components/Mode/Online/Game/Game";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Players } from "@components/Mode/Shared/Players/Players";
 import { Credentials } from "../../Shared/Credentials/Credentials";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { CredentialsType } from "../../Shared/Credentials/utils/types";
 import { useNotification } from "../../Shared/Notification/Notification";
+import { Desk } from "../Shared/Desk/Desk";
+import { Status } from "../Shared/Status/Status";
+import { History } from "../Shared/History/History";
+import { Controls } from "./Controls/Controls";
+import { Settings } from "@components/Shared/Settings/Settings";
+import { Conclusion } from "./Conclusion/Conclusion";
+import { Cubes } from "./Cubes/Cubes";
 
 export const Online: FC = () => {
   const { push } = useRouter();
@@ -162,8 +168,13 @@ export const Online: FC = () => {
     <>
       {desk ? (
         <>
-          <Game />
+          <Status />
+          <History />
           <Players />
+          <Controls />
+          <Settings />
+          <Conclusion />
+          <Desk cubes={Cubes} />
         </>
       ) : (
         <Loading />
