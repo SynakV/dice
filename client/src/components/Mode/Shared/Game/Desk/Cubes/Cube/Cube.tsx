@@ -6,6 +6,7 @@ interface Props {
   isDisabled: boolean;
   value: number | null;
   wrapperClassName?: string;
+  rollAnimationNumber?: number | false;
 }
 
 export const Cube: FC<Props> = ({
@@ -14,19 +15,26 @@ export const Cube: FC<Props> = ({
   isSelected,
   isDisabled,
   wrapperClassName,
+  rollAnimationNumber,
 }) => {
-  const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
+  const cubeStatus = isSelected ? "cube-status__selected" : "";
   const cubeWrapperClassName = wrapperClassName ? wrapperClassName : "";
   const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
-  const cubeStatus = isSelected ? "cube-status__selected" : "";
+
+  const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
 
   return (
     <div
       className={`cube-wrapper ${cubeWrapperSelected} ${cubeWrapperClassName}`}
     >
-      <div onClick={cubeClick} className={`cube cube-${value}`}>
+      <div
+        onClick={cubeClick}
+        className={`cube cube-${rollAnimationNumber || value} ${
+          rollAnimationNumber ? `cube-roll` : ""
+        }`}
+      >
         <div className="front">
-          <span className="dot dot1" />
+          <span className="dot dot__centered" />
         </div>
         <div className="back">
           <span className="dot dot1" />
@@ -34,7 +42,7 @@ export const Cube: FC<Props> = ({
         </div>
         <div className="right">
           <span className="dot dot1" />
-          <span className="dot dot2" />
+          <span className="dot dot__centered" />
           <span className="dot dot3" />
         </div>
         <div className="left">
@@ -48,7 +56,7 @@ export const Cube: FC<Props> = ({
           <span className="dot dot2" />
           <span className="dot dot3" />
           <span className="dot dot4" />
-          <span className="dot dot5" />
+          <span className="dot dot__centered" />
         </div>
         <div className="bottom">
           <span className="dot dot1" />

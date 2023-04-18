@@ -2,4 +2,12 @@
 
 body {
     margin: 0;
+
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-35: rgba(255, 255, 255, 0.35);
+    --white-20: rgba(255, 255, 255, 0.2);
+
+    --black-50: rgba(0, 0, 0, 0.5);
+
+    --transition-30: 0.3s;
 }

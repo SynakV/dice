@@ -16,17 +16,17 @@
         width: 100%;
         display: flex;
         align-items: center;
+        color: var(--white-50);
         justify-content: space-around;
-        color: rgba(255, 255, 255, 0.5);
     }
 
     &__create, &__close {
         cursor: pointer;
-        transition: 0.3s;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 }

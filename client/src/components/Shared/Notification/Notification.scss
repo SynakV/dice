@@ -3,17 +3,17 @@
     top: 15px;
     z-index: 100;
     position: fixed;
-    transition: 0.3s;
+    transition: var(--transition-30);
 
     &__notification {
         font-size: 25px;
-        transition: 0.3s;
         margin-left: 15px;
         position: relative;
+        color: var(--white-50);
         padding: 8px 36px 8px 12px;
-        background: rgba(0, 0, 0, 0.5);
-        color: rgba(255, 255, 255, 0.5);
-        border: 2px solid rgba(0, 0, 0, 0.5);
+        background: var(--black-50);
+        transition: var(--transition-30);
+        border: 2px solid var(--black-50);
     
         &.opened {
             animation: movingRight 0.3s;
@@ -39,7 +39,7 @@
             height: 1px;
             display: flex;
             position: absolute;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--white-50);
         }
 
         &::before {

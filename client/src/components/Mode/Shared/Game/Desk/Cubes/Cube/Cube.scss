@@ -1,7 +1,7 @@
 .cube {
-    width: 80px;
-    height: 80px;
-    transition: transform 1s;
+    transition: 1s;
+    width: var(--square);
+    height: var(--square);
     transform-style: preserve-3d;
     
     &:hover {
@@ -32,62 +32,65 @@
         transform: rotateX(-225deg) rotateY(45deg);
     }
 
+    &-roll {
+        translate: 0px calc(var(--half-square) * -1);
+    }
+
+    --pos-12-5: 12.5px;
+    --pos-52-5: 52.5px;
+
     .front {
-        transform: translateZ(40px);
-        
-        .dot1 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        transform: translateZ(var(--half-square));
     }
 
     .back {
-        transform: rotateX(-180deg) translateZ(40px);
+        transform: rotateX(-180deg) translateZ(var(--half-square));
 
-        .dot1 { top: 12.5px; left: 12.5px; }
-        .dot2 { top: 52.5px; left: 52.5px; }
+        .dot1 { top: var(--pos-12-5); left: var(--pos-12-5); }
+        .dot2 { top: var(--pos-52-5); left: var(--pos-52-5); }
     }
 
     .right {
-        transform: rotateY(90deg) translateZ(40px);
+        transform: rotateY(90deg) translateZ(var(--half-square));
 
-        .dot1 { top: 12.5px; left: 12.5px; }
-        .dot2 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .dot3 { top: 52.5px; left: 52.5px; }
+        .dot1 { top: var(--pos-12-5); left: var(--pos-12-5); }
+        .dot3 { top: var(--pos-52-5); left: var(--pos-52-5); }
     }
 
     .left {
-        transform: rotateY(-90deg) translateZ(40px);
+        transform: rotateY(-90deg) translateZ(var(--half-square));
 
-        .dot1 { top: 12.5px; left: 12.5px; }
-        .dot2 { top: 52.5px; left: 12.5px; }
-        .dot3 { top: 12.5px; left: 52.5px; }
-        .dot4 { top: 52.5px; left: 52.5px; }
+        .dot1 { top: var(--pos-12-5); left: var(--pos-12-5); }
+        .dot2 { top: var(--pos-52-5); left: var(--pos-12-5); }
+        .dot3 { top: var(--pos-12-5); left: var(--pos-52-5); }
+        .dot4 { top: var(--pos-52-5); left: var(--pos-52-5); }
     }
 
     .top {
-        transform: rotateX(90deg) translateZ(40px);
+        transform: rotateX(90deg) translateZ(var(--half-square));
 
-        .dot1 { top: 12.5px; left: 12.5px; }
-        .dot2 { top: 52.5px; left: 12.5px; }
-        .dot3 { top: 12.5px; left: 52.5px; }
-        .dot4 { top: 52.5px; left: 52.5px; }
-        .dot5 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .dot1 { top: var(--pos-12-5); left: var(--pos-12-5); }
+        .dot2 { top: var(--pos-52-5); left: var(--pos-12-5); }
+        .dot3 { top: var(--pos-12-5); left: var(--pos-52-5); }
+        .dot4 { top: var(--pos-52-5); left: var(--pos-52-5); }
     }
 
     .bottom {
-        transform: rotateX(-90deg) translateZ(40px);
+        transform: rotateX(-90deg) translateZ(var(--half-square));
 
-        .dot1 { top: 12.5px; left: 12.5px; }
-        .dot2 { top: 50%; transform: translateY(-50%); left: 12.5px; }
-        .dot3 { top: 52.5px; left: 12.5px; }
-        .dot4 { top: 12.5px; left: 52.5px; }
-        .dot5 { top: 50%; transform: translateY(-50%); left: 52.5px; }
-        .dot6 { top: 52.2px; left: 52.5px; }
+        .dot1 { top: var(--pos-12-5); left: var(--pos-12-5); }
+        .dot2 { top: 50%; transform: translateY(-50%); left: var(--pos-12-5); }
+        .dot3 { top: var(--pos-52-5); left: var(--pos-12-5); }
+        .dot4 { top: var(--pos-12-5); left: var(--pos-52-5); }
+        .dot5 { top: 50%; transform: translateY(-50%); left: var(--pos-52-5); }
+        .dot6 { top: 52.2px; left: var(--pos-52-5); }
     }
 
     .front, .back, .right, .left, .top, .bottom {
-        width: 80px;
-        height: 80px;
         border-radius: 2px;
         position: absolute;
+        width: var(--square);
+        height: var(--square);
         background: #000000;
         outline: 2px solid rgba(255, 255, 255, 0.3);
     }
@@ -98,28 +101,36 @@
         display: block;
         position: absolute;
         border-radius: 15px;  
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--white-50);
+
+        &__centered {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
       }
 }
 
 .cube-wrapper {
-    transition: 0.3s;
+    --square: 80px;
+    --half-square: calc(var(--square) / 2);
+    transition: var(--transition-30);
 
     .cube {
         &-status {
             z-index: -1;
-            width: 80px;
-            height: 80px;
             display: block;
-            transition: 0.3s;
             position: absolute;
-            background-color: rgb(0, 0, 0, 0.5);
-            box-shadow: 0 0 10px 10px rgb(0, 0, 0, 0.5);
+            width: var(--square);
+            height: var(--square);
+            transition: var(--transition-30);
+            background-color: var(--black-50);
+            box-shadow: 0 0 10px 10px var(--black-50);
             transform: translate(0px, -50px) rotateX(45deg) rotateZ(45deg);
 
             &__selected {
-                background-color: rgb(255, 255, 255, 0.35);
-                box-shadow: 0 0 10px 10px rgb(255, 255, 255, 0.35);
+                background-color: var(--white-35);
+                box-shadow: 0 0 10px 10px var(--white-35);
             }
         }
     }
@@ -128,7 +139,7 @@
         transform: translate(0px, -10px);
 
         .cube-status {
-            transform: translate(0px, -40px) rotateX(45deg) rotateZ(45deg);
+            transform: translate(0px, calc(var(--half-square) * -1)) rotateX(45deg) rotateZ(45deg);
         }
     }
 }

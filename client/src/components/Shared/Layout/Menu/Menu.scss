@@ -12,8 +12,8 @@
         width: 100%;
         overflow-y: auto;
         animation: fadeIn 0.3s;
-        transition: 0.3s opacity;
         background: rgba(0, 0, 0, 0.95);
+        transition: var(--transition-30) opacity;
 
         &.closing {
             opacity: 0;
@@ -27,8 +27,8 @@
         display: flex;
         cursor: pointer;
         font-size: 20px;
-        transition: 0.3s;
         position: absolute;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        transition: var(--transition-30);
     }
 }

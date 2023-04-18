@@ -10,11 +10,11 @@
     &__button {
         display: flex;
         cursor: pointer;
-        transition: 0.3s;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 }

@@ -2,7 +2,7 @@
     &__round {
         font-size: 30px;
         margin-top: 10px;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__pool {
@@ -20,7 +20,7 @@
             align-items: center;
             flex-direction: column;
             align-self: flex-start;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--white-50);
         }
     }
 
@@ -28,12 +28,12 @@
         bottom: 40px;
         font-size: 16px;
         cursor: pointer;
-        transition: 0.3s;
         position: absolute;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 
@@ -43,15 +43,15 @@
         width: 100px;
         display: flex;
         cursor: pointer;
-        transition: 0.3s;
         position: absolute;
         align-items: center;
+        color: var(--white-50);
         justify-content: center;
         transform: translateX(-50%);
-        color: rgba(255, 255, 255, 0.5);
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 
@@ -72,7 +72,7 @@
 
         &__player, &__value {
             font-size: 20px;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--white-50);
         }
 
         &__cubes {
@@ -94,8 +94,8 @@
             position: absolute;
             text-align: center;
             align-items: center;
+            color: var(--white-50);
             justify-content: center;
-            color: rgba(255, 255, 255, 0.5);
     
             &-counter {
                 top: 20px;

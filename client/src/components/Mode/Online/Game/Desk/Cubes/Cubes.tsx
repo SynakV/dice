@@ -3,7 +3,10 @@ import React, { FC, useEffect } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
 import { Cube } from "@components/Mode/Shared/Game/Desk/Cubes/Cube/Cube";
-import { getRandomIntsFromInterval } from "@utils/helpers/randomizer.helper";
+import {
+  getNonRepeatedInt,
+  getRandomIntsFromInterval,
+} from "@utils/helpers/randomizer.helper";
 import {
   getRanking,
   getReRollIndexes,
@@ -110,7 +113,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
       stage: desk.gameplay.current.stage,
     });
 
-    playAudio("handThrowDice").onended = () => {
+    playAudio("handThrowDice", true).onended = () => {
       handle.finishThrowDice();
     };
   };
@@ -122,6 +125,8 @@ export const Cubes: FC<Props> = ({ player, name }) => {
     stage.isStarted ||
     stage.isPlayerThrew;
 
+  const isRollAnimationNumber = stage.isStarted && isCurrentPlayerTurn;
+
   return (
     <div className="cubes">
       <span className="cubes__name">
@@ -129,15 +134,26 @@ export const Cubes: FC<Props> = ({ player, name }) => {
         <span>{ranking?.value?.name}</span>
       </span>
       <div className="cubes__container">
-        {(roll || DEFAULT_CUBES).map((cube, index) => (
-          <Cube
-            key={index}
-            value={cube}
-            isDisabled={isDisableCube}
-            isSelected={!!reroll?.[index]}
-            onClick={() => handleSelectDie(index)}
-          />
-        ))}
+        {(roll || DEFAULT_CUBES).map((cube, index) => {
+          const isAllowSelectedAnimation =
+            !!reroll?.[index] || desk.gameplay.current.stage === 0;
+
+          const rollAnimationNumber =
+            isRollAnimationNumber &&
+            isAllowSelectedAnimation &&
+            getNonRepeatedInt(cube || 1);
+
+          return (
+            <Cube
+              key={index}
+              value={cube}
+              isDisabled={isDisableCube}
+              isSelected={!!reroll?.[index]}
+              onClick={() => handleSelectDie(index)}
+              rollAnimationNumber={rollAnimationNumber}
+            />
+          );
+        })}
       </div>
     </div>
   );

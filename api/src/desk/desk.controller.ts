@@ -17,6 +17,6 @@ export class DeskController {
 
   @Post()
   createDesk(@Req() req: any) {
-    return this.deskService.createDesk(req.body);
+    return this.deskService.create(req.body);
   }
 }
