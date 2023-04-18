@@ -94,6 +94,16 @@ export const getAllPossibleRepeatedInts = (options: {
   return arrays;
 };
 
+export const getNonRepeatedInt = (int: number) => {
+  let nonRepeatedInt = int;
+
+  while (nonRepeatedInt === int) {
+    nonRepeatedInt = getRandomInt();
+  }
+
+  return nonRepeatedInt;
+};
+
 export const shuffleArray = (arr: any[]) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

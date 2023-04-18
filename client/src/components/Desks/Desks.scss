@@ -14,16 +14,16 @@
         width: 100%;
         display: flex;
         font-size: 25px;
+        color: var(--white-50);
         justify-content: space-between;
-        color: rgba(255, 255, 255, 0.5);
     }
 
     &__create {
         cursor: pointer;
-        transition: 0.3s;
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 
@@ -39,8 +39,8 @@
         cursor: default;
         font-size: 20px;
         position: absolute;
+        color: var(--white-50);
         transform: translate(-50%, -50%);
-        color: rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -49,15 +49,15 @@
         gap: 0 15px;
         display: flex;
         padding: 0 10px;
-        transition: 0.3s;
         min-height: 40px;
         max-height: 40px;
         align-items: center;
         border: 1px solid transparent;
         justify-content: space-between;
+        transition: var(--transition-30);
 
         &:hover {
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--white-20);
             background-color: rgba(255, 255, 255, 0.05);
         }
     }
@@ -65,26 +65,26 @@
     &__title {
         cursor: default;
         font-size: 20px;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__players {
         margin-left: auto;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__join, &__share {
         cursor: pointer;
-        transition: 0.3s;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        transition: var(--transition-30);
 
         &--disabled {
             cursor: default;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--white-20);
         }
 
         &:hover:not(&--disabled) {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 }

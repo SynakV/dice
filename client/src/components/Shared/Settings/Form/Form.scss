@@ -5,7 +5,7 @@
     }
 
     &__label {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__input {
@@ -13,8 +13,8 @@
         width: 115px;
         outline: none;
         margin-left: auto;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
+        border: 1px solid var(--white-50);
         background-color: rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.5);
     }
 }

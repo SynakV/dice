@@ -4,8 +4,8 @@
         left: 50%;
         font-size: 20px;
         position: absolute;
+        color: var(--white-50);
         transform: translate(-50%, -50%);
-        color: rgba(255, 255, 255, 0.5);
     }
 
     &__button {
@@ -15,36 +15,36 @@
         bottom: 20px;
         display: flex;
         cursor: pointer;
-        transition: 0.3s;
         position: absolute;
         align-items: center;
+        color: var(--white-50);
         justify-content: center;
         transform: translateX(-50%);
-        color: rgba(255, 255, 255, 0.5);
+        transition: var(--transition-30);
 
         &:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: var(--white-35);
         }
     }
 
     &__rounds {
         display: flex;
         overflow-y: auto;
+        max-height: 40vh;
         align-items: center;
         flex-direction: column;
-        max-height: 40vh;
     }
 
     &__round {
         font-size: 20px;
         margin-top: 10px;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__stage {
         margin: 10px 0;
         font-size: 20px;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__ranking {
@@ -60,7 +60,7 @@
 
     &__player, &__value {
         font-size: 20px;
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--white-50);
     }
 
     &__cubes {
