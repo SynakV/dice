@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
-import { Cube } from "@components/Mode/Shared/Game/Desk/Cubes/Cube/Cube";
+import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import {
   getNonRepeatedInt,
   getRandomIntsFromInterval,
@@ -19,13 +19,13 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { Row } from "@components/Mode/Shared/Desk/Row/Row";
 
 interface Props {
-  name: string;
   player: PlayerType;
 }
 
-export const Cubes: FC<Props> = ({ player, name }) => {
+export const Cubes: FC<Props> = ({ player }) => {
   const { handle, desk } = useDesk();
 
   const isOtherPlayer =
@@ -118,33 +118,27 @@ export const Cubes: FC<Props> = ({ player, name }) => {
   const isRollAnimationNumber = stage.isStarted && isCurrentPlayerTurn;
 
   return (
-    <div className="cubes">
-      <span className="cubes__name">
-        <span>{name}</span>
-        <span>{ranking?.value.name}</span>
-      </span>
-      <div className="cubes__container">
-        {(roll || DEFAULT_CUBES).map((cube, index) => {
-          const isAllowSelectedAnimation =
-            !!reroll?.[index] || desk.gameplay.current.stage === 0;
+    <Row player={player.name} ranking={ranking?.value.name}>
+      {(roll || DEFAULT_CUBES).map((cube, index) => {
+        const isAllowSelectedAnimation =
+          !!reroll?.[index] || desk.gameplay.current.stage === 0;
 
-          const rollAnimationNumber =
-            isRollAnimationNumber &&
-            isAllowSelectedAnimation &&
-            getNonRepeatedInt(cube || 1);
+        const rollAnimationNumber =
+          isRollAnimationNumber &&
+          isAllowSelectedAnimation &&
+          getNonRepeatedInt(cube || 1);
 
-          return (
-            <Cube
-              key={index}
-              value={cube}
-              isDisabled={isDisableCube}
-              isSelected={!!reroll?.[index]}
-              onClick={() => handleSelectDie(index)}
-              rollAnimationNumber={rollAnimationNumber}
-            />
-          );
-        })}
-      </div>
-    </div>
+        return (
+          <Cube
+            key={index}
+            value={cube}
+            isDisabled={isDisableCube}
+            isSelected={!!reroll?.[index]}
+            onClick={() => handleSelectDie(index)}
+            rollAnimationNumber={rollAnimationNumber}
+          />
+        );
+      })}
+    </Row>
   );
 };

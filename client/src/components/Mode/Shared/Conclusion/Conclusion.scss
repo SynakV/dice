@@ -57,33 +57,24 @@
 
     &__rankings {
         margin: 20px 0;
+
+        .row {
+            &__header {
+                font-size: 20px;
+            }
+
+            &__cubes {
+                gap: 0;
+                margin: 10px 0;
+            }
+
+            .cube-wrapper {
+                scale: 0.5;
+            }
+        }
     }
 
     .ranking {
-        display: flex;
-        position: relative;
-        flex-direction: column;
-
-        &__header {
-            display: flex;
-            padding: 0 10px;
-            justify-content: space-between;
-        }
-
-        &__player, &__value {
-            font-size: 20px;
-            color: var(--white-50);
-        }
-
-        &__cubes {
-            display: flex;
-            margin: 10px 0;
-        }
-
-        &__cube {
-            transform: scale(0.5);
-        }
-
         &__wins {
             top: 40px;
             left: -120px;

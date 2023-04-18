@@ -4,10 +4,10 @@
     bottom: 15px;
     width: 200px;
     display: flex;
-    transition: var(--transition-30);
     position: absolute;
     flex-direction: column;
     transform-origin: bottom right;
+    transition: var(--transition-30);
 
     &__start, &__roll, &__history, &__settings {
         width: 100%;

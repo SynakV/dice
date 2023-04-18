@@ -5,7 +5,6 @@ interface Props {
   isSelected: boolean;
   isDisabled: boolean;
   value: number | null;
-  wrapperClassName?: string;
   rollAnimationNumber?: number | false;
 }
 
@@ -14,19 +13,15 @@ export const Cube: FC<Props> = ({
   onClick,
   isSelected,
   isDisabled,
-  wrapperClassName,
   rollAnimationNumber,
 }) => {
   const cubeStatus = isSelected ? "cube-status__selected" : "";
-  const cubeWrapperClassName = wrapperClassName ? wrapperClassName : "";
   const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
 
   const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
 
   return (
-    <div
-      className={`cube-wrapper ${cubeWrapperSelected} ${cubeWrapperClassName}`}
-    >
+    <div className={`cube-wrapper ${cubeWrapperSelected}`}>
       <div
         onClick={cubeClick}
         className={`cube cube-${rollAnimationNumber || value} ${

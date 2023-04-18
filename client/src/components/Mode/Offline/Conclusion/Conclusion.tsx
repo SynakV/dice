@@ -1,22 +1,26 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
   getWinTotals,
+  getGameWinner,
   getWinnersNamesArray,
   getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { Cube } from "@components/Mode/Shared/Game/Desk/Cubes/Cube/Cube";
+import { Row } from "@components/Mode/Shared/Desk/Row/Row";
+import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 
 export const Conclusion = () => {
-  const { desk } = useDesk();
-  const { gameOpen } = useGame();
+  const { handle, desk } = useDesk();
+  const { toggleGameOpen } = useGame();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLastRound, setIsLastRound] = useState(false);
 
   const rounds = desk.gameplay.rounds;
 
@@ -54,16 +58,35 @@ export const Conclusion = () => {
   };
 
   useEffect(() => {
-    if (!desk.gameplay.isShowConclusion) {
-      return;
-    }
+    const isRoundComplete =
+      desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
 
-    if (desk.gameplay.isLastRound) {
-      playWinnerSound("game");
-    } else {
-      playWinnerSound("round");
+    if (isRoundComplete) {
+      const gameWinner = getGameWinner(
+        desk.gameplay.rounds,
+        desk.gameplay.max.wins
+      );
+
+      if (gameWinner !== false) {
+        setIsLastRound(true);
+        playWinnerSound("game");
+      } else {
+        setIsLastRound(false);
+        playWinnerSound("round");
+      }
+
+      setIsOpen(true);
     }
-  }, [desk.gameplay]);
+  }, [desk]);
+
+  const handleClick = () => {
+    setIsOpen(false);
+    playAudio("hover");
+
+    setTimeout(() => {
+      handle.closeConclusion(isLastRound);
+    }, 300);
+  };
 
   const winTotals = getWinTotals(rounds);
 
@@ -78,37 +101,34 @@ export const Conclusion = () => {
       .rankings;
 
   return (
-    <Modal
-      title={title}
-      className="conclusion"
-      isOpen={gameOpen[GAME_OPEN.CONCLUSION]}
-    >
+    <Modal className="conclusion" title={title} isOpen={isOpen}>
       <span className="conclusion__round">
         Round: {desk.gameplay.current.round + 1}
       </span>
 
       <div className="conclusion__rankings">
         {rankings.map((ranking, index) => (
-          <div key={index} className="ranking">
-            <div className="ranking__header">
-              <span className="ranking__player">{ranking.player.name}</span>
-              <span className="ranking__value">{ranking.value.name}</span>
-            </div>
-            <div className="ranking__cubes">
-              {ranking.cubes.roll?.map((cube, index) => (
-                <Cube
-                  isDisabled
-                  key={index}
-                  value={cube}
-                  isSelected={false}
-                  wrapperClassName="ranking__cube"
-                />
-              ))}
-            </div>
+          <Row
+            key={index}
+            player={ranking.player.name}
+            ranking={ranking.value.name}
+          >
+            {ranking.cubes.roll?.map((cube, index) => (
+              <Cube isDisabled key={index} value={cube} isSelected={false} />
+            ))}
             {getWinnerIcons(winTotals[ranking.player.name || ""])}
-          </div>
+          </Row>
         ))}
       </div>
+      <span onClick={handleClick} className="conclusion__button">
+        {isLastRound ? "Close" : "Next round"}
+      </span>
+      <span
+        className="conclusion__history"
+        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
+      >
+        History
+      </span>
     </Modal>
   );
 };

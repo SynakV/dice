@@ -1,25 +1,18 @@
-@import './Cube/Cube.scss';
-
-.cubes {
+.row {
     display: flex;
     position: relative;
-    align-items: center;
     flex-direction: column;
 
-    &__name {
+    &__header {
         width: 100%;
         display: flex;
-        font-size: 30px;
         cursor: default;
         text-align: start;
         color: var(--white-50);
         justify-content: space-between;
     }
 
-    &__container {
-        gap: 0 80px;
-        height: 80px;
+    &__cubes {
         display: flex;
-        margin: 50px 0 25px;
     }
 }

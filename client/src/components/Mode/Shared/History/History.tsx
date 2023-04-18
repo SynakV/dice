@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { Cube } from "../Game/Desk/Cubes/Cube/Cube";
+import { Cube } from "../Desk/Cube/Cube";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -7,6 +7,7 @@ import {
   getWinnersNamesString,
   getWinnersNounString,
 } from "@utils/helpers/ranking/ranking.helper";
+import { Row } from "../Desk/Row/Row";
 
 export const History = () => {
   const { desk } = useDesk();
@@ -70,30 +71,20 @@ export const History = () => {
                                 rankingIndex
                               ]?.cubes.reroll;
                             return (
-                              <div
-                                className="history__ranking"
+                              <Row
                                 key={rankingIndex}
+                                ranking={value.name}
+                                player={player.name}
                               >
-                                <div className="history__header">
-                                  <span className="history__player">
-                                    {player.name}
-                                  </span>
-                                  <span className="history__value">
-                                    {value.name}
-                                  </span>
-                                </div>
-                                <div className="history__cubes">
-                                  {cubes.roll?.map((cube, index) => (
-                                    <Cube
-                                      isDisabled
-                                      key={index}
-                                      value={cube}
-                                      isSelected={!!reroll?.[index]}
-                                      wrapperClassName="history__cube"
-                                    />
-                                  ))}
-                                </div>
-                              </div>
+                                {cubes.roll?.map((cube, index) => (
+                                  <Cube
+                                    isDisabled
+                                    key={index}
+                                    value={cube}
+                                    isSelected={!!reroll?.[index]}
+                                  />
+                                ))}
+                              </Row>
                             );
                           })}
                         </Fragment>
