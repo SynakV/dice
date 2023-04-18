@@ -7,21 +7,21 @@ import {
 } from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
-import { Loading } from "../../Shared/Loading/Loading";
 import { playAudio } from "@utils/helpers/audio.helper";
+import { Desk } from "@components/Mode/Shared/Desk/Desk";
+import { Cubes } from "@components/Mode/Online/Cubes/Cubes";
+import { Loading } from "@components/Shared/Loading/Loading";
+import { Status } from "@components/Mode/Shared/Status/Status";
+import { Settings } from "@components/Shared/Settings/Settings";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Players } from "@components/Mode/Shared/Players/Players";
-import { Credentials } from "../../Shared/Credentials/Credentials";
+import { History } from "@components/Mode/Shared/History/History";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
-import { CredentialsType } from "../../Shared/Credentials/utils/types";
-import { useNotification } from "../../Shared/Notification/Notification";
-import { Desk } from "../Shared/Desk/Desk";
-import { Status } from "../Shared/Status/Status";
-import { History } from "../Shared/History/History";
-import { Controls } from "./Controls/Controls";
-import { Settings } from "@components/Shared/Settings/Settings";
-import { Conclusion } from "./Conclusion/Conclusion";
-import { Cubes } from "./Cubes/Cubes";
+import { Controls } from "@components/Mode/Online/Controls/Controls";
+import { Credentials } from "@components/Shared/Credentials/Credentials";
+import { Conclusion } from "@components/Mode/Online/Conclusion/Conclusion";
+import { CredentialsType } from "@components/Shared/Credentials/utils/types";
+import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Online: FC = () => {
   const { push } = useRouter();

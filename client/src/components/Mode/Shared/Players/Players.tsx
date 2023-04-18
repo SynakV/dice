@@ -23,11 +23,6 @@ export const Players = () => {
       <span className="players__counter">
         Players: {players?.length}/{max}
       </span>
-      {/* {new Array(15).fill(null).map((_, index) => (
-            <div key={index} className="players__player">
-              {index}
-            </div>
-          ))} */}
     </div>
   );
 };

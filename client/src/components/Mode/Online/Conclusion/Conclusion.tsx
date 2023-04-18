@@ -11,9 +11,9 @@ import {
   getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { Row } from "@components/Mode/Shared/Desk/Row/Row";
+import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
 export const Conclusion = () => {
   const { desk } = useDesk();

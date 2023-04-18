@@ -1,5 +1,5 @@
 import { DICE } from "@utils/constants";
-import { getRandomInt } from "../randomizer.helper";
+import { getRandomInt } from "@utils/helpers/randomizer.helper";
 import {
   DeskType,
   CubesType,

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { playAudio } from "../helpers/audio.helper";
+import { playAudio } from "@utils/helpers/audio.helper";
 import {
   FC,
   Dispatch,

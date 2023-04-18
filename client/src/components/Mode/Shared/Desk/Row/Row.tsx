@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import { PlayerType, RankingWithInfoType } from "@utils/common/types";
 
 interface Props {
   player: string;

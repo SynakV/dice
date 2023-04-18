@@ -17,9 +17,9 @@ import {
   getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { Row } from "@components/Mode/Shared/Desk/Row/Row";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
-import { Row } from "@components/Mode/Shared/Desk/Row/Row";
 
 interface Props {
   player: PlayerType;

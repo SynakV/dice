@@ -10,12 +10,12 @@ import {
 } from "@utils/helpers/storage/storage.helper";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { useRouter } from "next/router";
-import { Desk } from "../Shared/Desk/Desk";
-import { Status } from "../Shared/Status/Status";
-import { History } from "../Shared/History/History";
-import { Controls } from "./Controls/Controls";
-import { Conclusion } from "./Conclusion/Conclusion";
-import { Cubes } from "./Cubes/Cubes";
+import { Desk } from "@components/Mode/Shared/Desk/Desk";
+import { Cubes } from "@components/Mode/Offline/Cubes/Cubes";
+import { Status } from "@components/Mode/Shared/Status/Status";
+import { History } from "@components/Mode/Shared/History/History";
+import { Controls } from "@components/Mode/Offline/Controls/Controls";
+import { Conclusion } from "@components/Mode/Offline/Conclusion/Conclusion";
 
 export const Offline = () => {
   const { replace } = useRouter();

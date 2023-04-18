@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect } from "react";
-import { Cube } from "../Desk/Cube/Cube";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import {
   getWinnersNamesString,
   getWinnersNounString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { Row } from "../Desk/Row/Row";
+import { Row } from "@components/Mode/Shared/Desk/Row/Row";
+import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
+import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
 export const History = () => {
   const { desk } = useDesk();

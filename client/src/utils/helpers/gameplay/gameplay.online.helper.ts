@@ -1,7 +1,7 @@
 import {
   getGameWinner,
   getRankingsComparisonWinner,
-} from "../ranking/ranking.helper";
+} from "@utils/helpers/ranking/ranking.helper";
 import {
   TIMERS,
   MESSAGES,
