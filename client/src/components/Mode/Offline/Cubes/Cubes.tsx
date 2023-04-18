@@ -17,9 +17,9 @@ import {
   getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
-import { Row } from "@components/Mode/Shared/Desk/Row/Row";
 
 interface Props {
   player: PlayerType;
@@ -118,7 +118,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   const isRollAnimationNumber = stage.isStarted && isCurrentPlayerTurn;
 
   return (
-    <Row player={player.name} ranking={ranking?.value.name}>
+    <Hand player={player.name} ranking={ranking?.value.name}>
       {(roll || DEFAULT_CUBES).map((cube, index) => {
         const isAllowSelectedAnimation =
           !!reroll?.[index] || desk.gameplay.current.stage === 0;
@@ -139,6 +139,6 @@ export const Cubes: FC<Props> = ({ player }) => {
           />
         );
       })}
-    </Row>
+    </Hand>
   );
 };

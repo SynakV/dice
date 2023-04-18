@@ -1,13 +1,13 @@
-import { STORAGE_ITEMS } from "../storage/constants";
-import { getStorageObjectItem } from "../storage/storage.helper";
-import { getRankingsComparisonWinner } from "../ranking/ranking.helper";
+import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getRankingsComparisonWinner } from "@utils/helpers/ranking/ranking.helper";
 import {
   DeskType,
   RerollType,
   SettingsType,
   RankingWithInfoType,
 } from "@utils/common/types";
-import { getRandomNames } from "../randomizer.helper";
+import { getRandomNames } from "@utils/helpers/randomizer.helper";
 import {
   DEFAULT_STAGE,
   DEFAULT_ROUND,

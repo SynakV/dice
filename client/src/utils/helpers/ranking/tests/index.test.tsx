@@ -185,7 +185,7 @@ describe("Ranking tests", () => {
 // });
 
 describe("Comparison tests", () => {
-  it(`3 players winner`, () => {
+  it(`3-th player winner`, () => {
     const player1: RankingWithInfoType | any = getRanking([2, 2, 3, 4, 5]);
     const player2: RankingWithInfoType | any = getRanking([1, 1, 3, 4, 5]);
     const player3: RankingWithInfoType | any = getRanking([2, 2, 3, 4, 6]);

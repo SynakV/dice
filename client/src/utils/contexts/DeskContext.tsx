@@ -12,9 +12,9 @@ import {
   RerollType,
   SettingsType,
   RankingWithInfoType,
-} from "../common/types";
-import { GameProvider } from "./GameContext";
+} from "@utils/common/types";
 import { DEFAULT_DESK } from "@utils/common/constants";
+import { GameProvider } from "@utils/contexts/GameContext";
 
 interface DeskContext {
   desk: DeskType;

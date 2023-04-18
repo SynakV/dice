@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Modal } from "../Modal/Modal";
+import { Modal } from "@components/Shared/Modal/Modal";
 
 interface Props {
   ok: string;

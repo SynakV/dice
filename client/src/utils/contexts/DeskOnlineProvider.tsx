@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import { getRequest } from "../api/api";
+import { getRequest } from "@utils/api/api";
 import useSWRImmutable from "swr/immutable";
-import { useSocket } from "./WebsocketContext";
 import { FC, useEffect, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
-import { DeskCommonProps, DeskProvider } from "./DeskContext";
+import { useSocket } from "@utils/contexts/SocketContext";
+import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import {
   DeskType,
   RerollType,

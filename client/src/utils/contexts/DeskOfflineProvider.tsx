@@ -6,8 +6,8 @@ import {
 } from "@utils/common/types";
 import { FC, useEffect, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
-import { DeskCommonProps, DeskProvider } from "./DeskContext";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
   afterStartGame,

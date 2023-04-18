@@ -1,10 +1,10 @@
 import {
   RoundType,
   PlayerType,
-  StructuredType,
   RankingType,
-  RANKING_OF_HANDS_KEYS,
+  StructuredType,
   RankingWithInfoType,
+  RANKING_OF_HANDS_KEYS,
 } from "@utils/common/types";
 import { DICE, RANKING_OF_HANDS } from "@utils/constants";
 import { getAppearedNumbers } from "@utils/helpers/ranking/calculations.helper";

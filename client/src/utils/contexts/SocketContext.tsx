@@ -1,8 +1,8 @@
-import { server } from "../api/api";
-import { GameProvider } from "./GameContext";
+import { server } from "@utils/api/api";
 import { io, Socket } from "socket.io-client";
-import { DeskOnlineProvider } from "./DeskOnlineProvider";
+import { GameProvider } from "@utils/contexts/GameContext";
 import { createContext, FC, ReactNode, useContext } from "react";
+import { DeskOnlineProvider } from "@utils/contexts/DeskOnlineProvider";
 
 export const socket = io(server);
 export const SocketContext = createContext<Socket>(socket);

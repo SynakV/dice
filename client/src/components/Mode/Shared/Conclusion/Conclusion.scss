@@ -55,10 +55,10 @@
         }
     }
 
-    &__rankings {
+    &__hands {
         margin: 20px 0;
 
-        .row {
+        .hand {
             &__header {
                 font-size: 20px;
             }
@@ -74,7 +74,7 @@
         }
     }
 
-    .ranking {
+    .hand {
         &__wins {
             top: 40px;
             left: -120px;

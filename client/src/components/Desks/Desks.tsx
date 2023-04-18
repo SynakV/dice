@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
 import { DesksModal } from "@components/Desks/utils/types";
-import { useNotification } from "../Shared/Notification/Notification";
+import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
   const router = useRouter();
