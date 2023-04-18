@@ -174,6 +174,42 @@ export const afterFinishThrowDice = (
   return prev;
 };
 
+export const afterPassThrowDice = (
+  prev: DeskType,
+  socket: Socket
+): DeskType => {
+  return afterFinishThrowDice(
+    {
+      ...prev,
+      gameplay: {
+        ...prev.gameplay,
+        rounds: prev.gameplay.rounds.map((round, index) => {
+          const isCurrentRound = prev.gameplay.current.round === index;
+
+          if (!isCurrentRound) {
+            return round;
+          }
+
+          round.stages.map((stage, index) => {
+            const isCurrentStage = prev.gameplay.current.stage === index;
+
+            if (isCurrentStage) {
+              const previousStageRanking =
+                round.stages[index - 1].rankings[stage.rankings.length];
+              stage.rankings.push(previousStageRanking);
+            }
+
+            return stage;
+          });
+
+          return round;
+        }),
+      },
+    },
+    socket
+  );
+};
+
 export const afterSelectDice = (
   prev: DeskType,
   selectedDice: RerollType,

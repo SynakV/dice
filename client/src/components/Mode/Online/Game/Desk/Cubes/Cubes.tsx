@@ -14,6 +14,7 @@ import {
   getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { useGame } from "@utils/contexts/GameContext";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 
@@ -26,6 +27,7 @@ interface Props {
 
 export const Cubes: FC<Props> = ({ player, name }) => {
   const { handle, desk } = useDesk();
+  const { setIsControlsLoading } = useGame();
 
   const isOtherPlayer =
     player.name !== getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
@@ -89,6 +91,7 @@ export const Cubes: FC<Props> = ({ player, name }) => {
 
   const handleSelectDie = (index: number | number[]) => {
     if (ranking?.cubes) {
+      setIsControlsLoading(true);
       const selectedDice = getCubesReroll(index, ranking?.cubes);
       handle.selectDice(selectedDice);
 

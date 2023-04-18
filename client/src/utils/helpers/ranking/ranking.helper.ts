@@ -101,6 +101,9 @@ export const getWinnersNamesArray = (winners: PlayerType[]) =>
 export const getWinnersNamesString = (winners: PlayerType[]) =>
   getWinnersNamesArray(winners).join(", ") || "";
 
+export const getWinnersNounString = (winnersNames: string) =>
+  `Winner${winnersNames.includes(", ") ? "s" : ""}: ${winnersNames}`;
+
 const getFullHouseWinners = (
   maxPlayersRankings: RankingWithInfoType[]
 ): PlayerType[] => {

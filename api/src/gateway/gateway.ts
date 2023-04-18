@@ -108,7 +108,7 @@ export class GatewayService implements OnModuleInit {
   }
 
   @SubscribeMessage(MESSAGES.FINISH_THROW_DICE)
-  async handleFinishStage(_: Socket, desk: DeskType) {
+  async handleFinishThrowDice(_: Socket, desk: DeskType) {
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk._id },
       { $set: { gameplay: desk.gameplay } },

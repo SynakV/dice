@@ -2,8 +2,8 @@ import { useDesk } from "@utils/contexts/DeskContext";
 import { MESSAGES, DeskType, EVENTS } from "@utils/common/types";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import {
-  getStorageObjectItem,
   setStorageItem,
+  getStorageObjectItem,
 } from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
@@ -100,6 +100,7 @@ export const Online: FC = () => {
 
     socket.on(EVENTS.ON_FINISH_THROW_DICE, (desk: DeskType) => {
       setDesk(desk);
+      setIsControlsLoading(false);
 
       if (desk.gameplay.isShowConclusion) {
         toggleGameOpen(GAME_OPEN.CONCLUSION);
@@ -108,6 +109,7 @@ export const Online: FC = () => {
 
     socket.on(EVENTS.ON_SELECT_DICE, (desk: DeskType) => {
       setDesk(desk);
+      setIsControlsLoading(false);
     });
 
     socket.on(EVENTS.ON_CLOSE_CONCLUSION, (desk: DeskType) => {

@@ -133,6 +133,36 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   };
 };
 
+export const afterPassThrowDice = (prev: DeskType): DeskType => {
+  return afterFinishThrowDice({
+    ...prev,
+    gameplay: {
+      ...prev.gameplay,
+      rounds: prev.gameplay.rounds.map((round, index) => {
+        const isCurrentRound = prev.gameplay.current.round === index;
+
+        if (!isCurrentRound) {
+          return round;
+        }
+
+        round.stages.map((stage, index) => {
+          const isCurrentStage = prev.gameplay.current.stage === index;
+
+          if (isCurrentStage) {
+            const previousStageRanking =
+              round.stages[index - 1].rankings[stage.rankings.length];
+            stage.rankings.push(previousStageRanking);
+          }
+
+          return stage;
+        });
+
+        return round;
+      }),
+    },
+  });
+};
+
 export const afterSelectDice = (
   prev: DeskType,
   selectedDice: RerollType
