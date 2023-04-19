@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import React, { FC, useState } from "react";
+import { SETTINGS } from "@utils/constants";
 import { postRequest } from "@utils/api/api";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
-import { Form } from "@components/Shared/Settings/Form/Form";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { Fields } from "@components/Shared/Settings/Fields/Fields";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
@@ -66,17 +67,31 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       return false;
     }
 
-    if (!(settings.wins >= 2 && settings.wins <= 5)) {
+    if (
+      !(
+        settings.wins >= SETTINGS.MIN.WINS && settings.wins <= SETTINGS.MAX.WINS
+      )
+    ) {
       notification("Invalid number of wins");
       return false;
     }
 
-    if (!(settings.stages >= 2 && settings.stages <= 5)) {
+    if (
+      !(
+        settings.stages >= SETTINGS.MIN.STAGES &&
+        settings.stages <= SETTINGS.MAX.STAGES
+      )
+    ) {
       notification("Invalid number of stages");
       return false;
     }
 
-    if (!(settings.players >= 2 && settings.players <= 5)) {
+    if (
+      !(
+        settings.players >= SETTINGS.MIN.PLAYERS &&
+        settings.players <= SETTINGS.MAX.PLAYERS
+      )
+    ) {
       notification("Invalid number of players");
       return false;
     }
@@ -87,7 +102,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   return (
     <Modal isOpen={isOpen} title="Create new desk" className="create">
       <div className="create__main">
-        <Form isWithName setForm={setSettings} />
+        <Fields isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
         <span className="create__close" onClick={handleClose}>

@@ -4,8 +4,8 @@ import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
-import { Form } from "@components/Shared/Settings/Form/Form";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import { Fields } from "@components/Shared/Settings/Fields/Fields";
 
 export const Settings = () => {
   const { back } = useRouter();
@@ -55,7 +55,7 @@ export const Settings = () => {
         isOpen={gameOpen[GAME_OPEN.SETTINGS]}
       >
         <div className="settings__main">
-          <Form desk={desk} setForm={setSettings} />
+          <Fields desk={desk} setForm={setSettings} />
         </div>
         <div className="settings__buttons">
           <div className="settings__button" onClick={handleClose}>
