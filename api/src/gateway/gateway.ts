@@ -4,7 +4,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Model } from 'mongoose';
-import { Desk } from '../desk/desk.model';
+import { Desk } from 'src/desk/desk.model';
 import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,7 +13,7 @@ import { deepClone } from 'src/utils/common/helpers';
 import { DocumentDeskType, Timers } from 'src/utils/types';
 import { DEFAULT_ROUND } from 'src/utils/common/constants';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
-import { MESSAGES, EVENTS, DeskType } from '../utils/common/types';
+import { MESSAGES, EVENTS, DeskType } from 'src/utils/common/types';
 
 @WebSocketGateway({
   cors: {

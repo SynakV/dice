@@ -1,15 +1,18 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { SETTINGS } from "@utils/constants";
 import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
-import { Form } from "@components/Shared/Settings/Form/Form";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
+import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Settings = () => {
   const { back } = useRouter();
   const { handle, desk } = useDesk();
+  const { notification } = useNotification();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [settings, setSettings] = useState<SettingsType | null>(null);
   const {
@@ -40,7 +43,8 @@ export const Settings = () => {
   };
 
   const handleConfirm = (isConfirmed: boolean) => {
-    if (isConfirmed && settings) {
+    if (isConfirmed && settings && isValid(settings, notification)) {
+      console.log(settings);
       handle.changeSettings(settings);
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }
@@ -55,7 +59,7 @@ export const Settings = () => {
         isOpen={gameOpen[GAME_OPEN.SETTINGS]}
       >
         <div className="settings__main">
-          <Form desk={desk} setForm={setSettings} />
+          <Fields desk={desk} setForm={setSettings} />
         </div>
         <div className="settings__buttons">
           <div className="settings__button" onClick={handleClose}>

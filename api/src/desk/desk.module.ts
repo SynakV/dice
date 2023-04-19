@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DeskService } from './desk.service';
-import { Desk, DeskSchema } from './desk.model';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DeskController } from './desk.controller';
+import { DeskService } from 'src/desk/desk.service';
+import { Desk, DeskSchema } from 'src/desk/desk.model';
+import { DeskController } from 'src/desk/desk.controller';
 
 @Module({
   imports: [

@@ -1,4 +1,4 @@
-import { DeskService } from './desk.service';
+import { DeskService } from 'src/desk/desk.service';
 import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 
 @Controller('desk')

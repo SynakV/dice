@@ -1,5 +1,10 @@
-import { deepClone } from './helpers';
-import { CurrentType, DeskType, RoundType, StageType } from './types';
+import { deepClone } from 'src/utils/common/helpers';
+import {
+  DeskType,
+  RoundType,
+  StageType,
+  CurrentType,
+} from 'src/utils/common/types';
 
 export const DEFAULT_STAGE: StageType = {
   winners: [],

@@ -77,6 +77,20 @@ export const DICE = {
   },
 };
 
+export const SETTINGS = {
+  NAME: "Desk",
+  MIN: {
+    WINS: 2,
+    STAGES: 2,
+    PLAYERS: 2,
+  },
+  MAX: {
+    WINS: 5,
+    STAGES: 5,
+    PLAYERS: 5,
+  },
+};
+
 export const MODE = {
   online: {
     url: "online",
@@ -87,6 +101,8 @@ export const MODE = {
     title: "Offline",
   },
 };
+
+export const TIMEOUT_TRANSITION = 300;
 
 export const NAMES = [
   "Martin Andrews",

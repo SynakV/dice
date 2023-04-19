@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from 'src/app.service';
 import { ConfigModule } from '@nestjs/config';
-import { DeskModule } from './desk/desk.module';
-import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GatewayModule } from './gateway/gateway.module';
+import { DeskModule } from 'src/desk/desk.module';
+import { AppController } from 'src/app.controller';
+import { GatewayModule } from 'src/gateway/gateway.module';
 
 @Module({
   imports: [

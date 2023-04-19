@@ -15,6 +15,7 @@ import {
 } from "@utils/helpers/ranking/ranking.helper";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 
 export const Conclusion = () => {
   const { handle, desk } = useDesk();
@@ -85,7 +86,7 @@ export const Conclusion = () => {
 
     setTimeout(() => {
       handle.closeConclusion(isLastRound);
-    }, 300);
+    }, TIMEOUT_TRANSITION);
   };
 
   const winTotals = getWinTotals(rounds);

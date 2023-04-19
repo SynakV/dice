@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 
 export const useFadeIn = (isOpen: boolean) => {
   const [isShow, setIsShow] = useState(false);
@@ -13,7 +14,7 @@ export const useFadeIn = (isOpen: boolean) => {
       setIsClosing(true);
       setTimeout(() => {
         setIsShow(false);
-      }, 300);
+      }, TIMEOUT_TRANSITION);
     }
   }, [isOpen]);
 

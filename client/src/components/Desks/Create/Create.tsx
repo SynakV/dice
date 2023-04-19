@@ -2,11 +2,12 @@ import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
-import { Form } from "@components/Shared/Settings/Form/Form";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
@@ -26,7 +27,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   };
 
   const handleCreateNewDesk = async () => {
-    if (isValid() && settings) {
+    if (settings && isValid(settings, notification)) {
       const newDesk: DeskType = await trigger(
         {
           name: settings.name,
@@ -49,45 +50,17 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
               id: newDesk._id,
             },
           });
-        }, 300);
+        }, TIMEOUT_TRANSITION);
       } else {
         notification("Desk with such name already exists");
       }
     }
   };
 
-  const isValid = () => {
-    if (!settings) {
-      return false;
-    }
-
-    if (!settings.name) {
-      notification("Name is missing");
-      return false;
-    }
-
-    if (!(settings.wins >= 2 && settings.wins <= 5)) {
-      notification("Invalid number of wins");
-      return false;
-    }
-
-    if (!(settings.stages >= 2 && settings.stages <= 5)) {
-      notification("Invalid number of stages");
-      return false;
-    }
-
-    if (!(settings.players >= 2 && settings.players <= 5)) {
-      notification("Invalid number of players");
-      return false;
-    }
-
-    return true;
-  };
-
   return (
     <Modal isOpen={isOpen} title="Create new desk" className="create">
       <div className="create__main">
-        <Form isWithName setForm={setSettings} />
+        <Fields isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
         <span className="create__close" onClick={handleClose}>
