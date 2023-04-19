@@ -9,11 +9,11 @@ import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
+import { DeskType } from 'src/utils/common/types';
 import { deepClone } from 'src/utils/common/helpers';
 import { DocumentDeskType, Timers } from 'src/utils/types';
-import { DEFAULT_ROUND } from 'src/utils/common/constants';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
-import { MESSAGES, EVENTS, DeskType } from 'src/utils/common/types';
+import { DEFAULT_ROUND, EVENTS, MESSAGES } from 'src/utils/common/constants';
 
 @WebSocketGateway({
   cors: {
