@@ -3,7 +3,7 @@ import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import {
-  getNonRepeatedInt,
+  getNonEqualInt,
   getRandomIntsFromInterval,
 } from "@utils/helpers/randomizer.helper";
 import {
@@ -124,7 +124,7 @@ export const Cubes: FC<Props> = ({ player }) => {
         const rollAnimationNumber =
           isRollAnimationNumber &&
           isAllowSelectedAnimation &&
-          getNonRepeatedInt(cube || 1);
+          getNonEqualInt(cube || 1);
 
         return (
           <Cube

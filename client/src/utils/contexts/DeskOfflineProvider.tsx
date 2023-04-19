@@ -23,21 +23,19 @@ import {
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
 
-  const name = getCredentials().name;
+  const player = {
+    name: getCredentials().name,
+  };
 
   useEffect(() => {
     setDesk((prev) => ({
       ...prev,
-      creator: {
-        name,
-      },
+      creator: player,
       gameplay: {
         ...prev.gameplay,
         current: {
           ...prev.gameplay.current,
-          player: {
-            name,
-          },
+          player,
         },
       },
     }));
