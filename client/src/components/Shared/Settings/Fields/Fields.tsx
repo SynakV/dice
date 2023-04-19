@@ -19,7 +19,7 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
   const [settings, setSettings] = useReducer(
     (prev: SettingsType, next: Partial<SettingsType>) => ({ ...prev, ...next }),
     {
-      name: "",
+      name: isWithName ? "" : null,
       wins: SETTINGS.MIN.WINS,
       stages: SETTINGS.MIN.STAGES,
       players: SETTINGS.MIN.PLAYERS,
@@ -45,7 +45,7 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
       {isWithName && (
         <Form.Field label="Name">
           <Form.Input.Text
-            value={settings.name}
+            value={settings.name!}
             setValue={(value) => setSettings({ name: value })}
           />
         </Form.Field>
@@ -76,4 +76,44 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
       </Form.Field>
     </>
   );
+};
+
+export const isValid = (settings: SettingsType, notification: Function) => {
+  if (!settings) {
+    return false;
+  }
+
+  if (typeof settings.name === "string" && !settings.name) {
+    notification("Name should not be empty");
+    return false;
+  }
+
+  if (
+    !(settings.wins >= SETTINGS.MIN.WINS && settings.wins <= SETTINGS.MAX.WINS)
+  ) {
+    notification("Invalid number of wins");
+    return false;
+  }
+
+  if (
+    !(
+      settings.stages >= SETTINGS.MIN.STAGES &&
+      settings.stages <= SETTINGS.MAX.STAGES
+    )
+  ) {
+    notification("Invalid number of stages");
+    return false;
+  }
+
+  if (
+    !(
+      settings.players >= SETTINGS.MIN.PLAYERS &&
+      settings.players <= SETTINGS.MAX.PLAYERS
+    )
+  ) {
+    notification("Invalid number of players");
+    return false;
+  }
+
+  return true;
 };

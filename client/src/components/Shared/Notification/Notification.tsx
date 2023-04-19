@@ -6,6 +6,7 @@ import React, {
   createContext,
 } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 
 interface Props {
   children: ReactNode;
@@ -62,7 +63,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
       setNotifications((prev) =>
         prev.filter((notification) => notification.key !== key)
       );
-    }, 300);
+    }, TIMEOUT_TRANSITION);
   };
 
   return (

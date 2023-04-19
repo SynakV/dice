@@ -78,6 +78,7 @@ export const DICE = {
 };
 
 export const SETTINGS = {
+  NAME: "Desk",
   MIN: {
     WINS: 2,
     STAGES: 2,
@@ -100,6 +101,8 @@ export const MODE = {
     title: "Offline",
   },
 };
+
+export const TIMEOUT_TRANSITION = 300;
 
 export const NAMES = [
   "Martin Andrews",

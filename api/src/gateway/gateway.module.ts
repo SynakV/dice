@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { GatewayService } from './gateway';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Desk, DeskSchema } from '../desk/desk.model';
+import { GatewayService } from 'src/gateway/gateway';
+import { Desk, DeskSchema } from 'src/desk/desk.model';
 
 @Module({
   imports: [

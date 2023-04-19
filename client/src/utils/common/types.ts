@@ -147,8 +147,8 @@ export type StageType = {
 // SETTINGS //
 
 export type SettingsType = {
-  name: string;
   wins: number;
   stages: number;
   players: number;
+  name: string | null;
 };

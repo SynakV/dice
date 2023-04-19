@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import React, { FC, useState } from "react";
-import { SETTINGS } from "@utils/constants";
 import { postRequest } from "@utils/api/api";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { Fields } from "@components/Shared/Settings/Fields/Fields";
+import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
@@ -27,7 +27,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   };
 
   const handleCreateNewDesk = async () => {
-    if (isValid() && settings) {
+    if (settings && isValid(settings, notification)) {
       const newDesk: DeskType = await trigger(
         {
           name: settings.name,
@@ -50,53 +50,11 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
               id: newDesk._id,
             },
           });
-        }, 300);
+        }, TIMEOUT_TRANSITION);
       } else {
         notification("Desk with such name already exists");
       }
     }
-  };
-
-  const isValid = () => {
-    if (!settings) {
-      return false;
-    }
-
-    if (!settings.name) {
-      notification("Name is missing");
-      return false;
-    }
-
-    if (
-      !(
-        settings.wins >= SETTINGS.MIN.WINS && settings.wins <= SETTINGS.MAX.WINS
-      )
-    ) {
-      notification("Invalid number of wins");
-      return false;
-    }
-
-    if (
-      !(
-        settings.stages >= SETTINGS.MIN.STAGES &&
-        settings.stages <= SETTINGS.MAX.STAGES
-      )
-    ) {
-      notification("Invalid number of stages");
-      return false;
-    }
-
-    if (
-      !(
-        settings.players >= SETTINGS.MIN.PLAYERS &&
-        settings.players <= SETTINGS.MAX.PLAYERS
-      )
-    ) {
-      notification("Invalid number of players");
-      return false;
-    }
-
-    return true;
   };
 
   return (
