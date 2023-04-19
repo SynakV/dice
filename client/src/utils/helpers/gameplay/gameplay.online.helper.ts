@@ -4,13 +4,13 @@ import {
 } from "@utils/helpers/ranking/ranking.helper";
 import {
   TIMERS,
-  MESSAGES,
   DeskType,
   RerollType,
   SettingsType,
   RankingWithInfoType,
 } from "@utils/common/types";
 import {
+  MESSAGES,
   DEFAULT_STAGE,
   DEFAULT_ROUND,
   DEFAULT_CURRENT,
