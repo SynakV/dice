@@ -1,7 +1,6 @@
 import React, { FC, useRef } from "react";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 
 interface Props {
@@ -25,7 +24,7 @@ export const Credentials: FC<Props> = ({
     }
   };
 
-  const defaultValue = getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
+  const defaultValue = getCredentials().name;
 
   return (
     <Modal isOpen={isOpen} title="Enter your name">

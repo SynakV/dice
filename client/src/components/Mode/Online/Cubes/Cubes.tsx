@@ -19,8 +19,7 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
@@ -32,8 +31,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   const { handle, desk } = useDesk();
   const { setIsControlsLoading } = useGame();
 
-  const isOtherPlayer =
-    player.name !== getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
+  const isOtherPlayer = player.name !== getCredentials().name;
 
   const isCurrentPlayerTurn =
     desk.gameplay.current.player?.name === player.name;

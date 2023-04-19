@@ -44,7 +44,6 @@ export const Settings = () => {
 
   const handleConfirm = (isConfirmed: boolean) => {
     if (isConfirmed && settings && isValid(settings, notification)) {
-      console.log(settings);
       handle.changeSettings(settings);
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }

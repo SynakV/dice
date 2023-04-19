@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { playAudio } from "@utils/helpers/audio.helper";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import {
   getWinTotals,
   getGameWinner,
@@ -13,9 +12,9 @@ import {
   getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
+import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
-import { TIMEOUT_TRANSITION } from "@utils/constants";
 
 export const Conclusion = () => {
   const { handle, desk } = useDesk();
@@ -47,9 +46,7 @@ export const Conclusion = () => {
       desk.gameplay.rounds[desk.gameplay.current.round].winners
     );
 
-    const isYouAmongWinners = winnersNames.includes(
-      getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name
-    );
+    const isYouAmongWinners = winnersNames.includes(getCredentials().name);
 
     if (isYouAmongWinners) {
       playAudio(isGameWinner ? "gameWin" : "roundWin");

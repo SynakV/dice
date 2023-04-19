@@ -2,8 +2,7 @@ import React from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import {
   isPass,
   getCurrentRanking,
@@ -26,7 +25,7 @@ export const Controls = () => {
     }
   };
 
-  const player = getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS);
+  const player = getCredentials();
   const ranking = getCurrentRanking(desk, player);
   const isPassing = isPass(ranking?.cubes.reroll);
 

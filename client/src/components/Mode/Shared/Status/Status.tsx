@@ -1,17 +1,14 @@
 import React from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 
 export const Status = () => {
   const { desk } = useDesk();
   const portal = usePortal();
 
-  const player: CredentialsType = getStorageObjectItem(
-    STORAGE_ITEMS.CREDENTIALS
-  );
+  const player: CredentialsType = getCredentials();
 
   const isFirstStage = desk.gameplay.current.stage === 0;
 
