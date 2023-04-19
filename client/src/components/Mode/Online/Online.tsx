@@ -1,14 +1,14 @@
+import { DeskType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { MESSAGES, DeskType, EVENTS } from "@utils/common/types";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import {
-  setStorageItem,
-  getStorageObjectItem,
+  getCredentials,
+  setCredentials,
 } from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { Desk } from "@components/Mode/Shared/Desk/Desk";
+import { EVENTS, MESSAGES } from "@utils/common/constants";
 import { Cubes } from "@components/Mode/Online/Cubes/Cubes";
 import { Loading } from "@components/Shared/Loading/Loading";
 import { Status } from "@components/Mode/Shared/Status/Status";
@@ -31,9 +31,7 @@ export const Online: FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const credentials: CredentialsType = getStorageObjectItem(
-    STORAGE_ITEMS.CREDENTIALS
-  );
+  const credentials: CredentialsType = getCredentials();
 
   const handleSameNameNotification = (
     data: DeskType,
@@ -62,7 +60,7 @@ export const Online: FC = () => {
 
     setIsOpen(false);
     handleInitializePlayer(credentials);
-    setStorageItem(STORAGE_ITEMS.CREDENTIALS, JSON.stringify(credentials));
+    setCredentials(JSON.stringify(credentials));
   };
 
   useEffect(() => {

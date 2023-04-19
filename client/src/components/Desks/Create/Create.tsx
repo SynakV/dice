@@ -6,9 +6,8 @@ import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 interface Props {
@@ -35,7 +34,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
           stages: settings.stages,
           players: settings.players,
           creator: {
-            name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS).name,
+            name: getCredentials().name,
           },
         },
         { revalidate: false }

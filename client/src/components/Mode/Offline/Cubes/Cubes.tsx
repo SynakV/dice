@@ -3,7 +3,7 @@ import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import {
-  getNonRepeatedInt,
+  getNonEqualInt,
   getRandomIntsFromInterval,
 } from "@utils/helpers/randomizer.helper";
 import {
@@ -18,8 +18,7 @@ import {
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 
 interface Props {
   player: PlayerType;
@@ -28,8 +27,7 @@ interface Props {
 export const Cubes: FC<Props> = ({ player }) => {
   const { handle, desk } = useDesk();
 
-  const isOtherPlayer =
-    player.name !== getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name;
+  const isOtherPlayer = player.name !== getCredentials().name;
 
   const isCurrentPlayerTurn =
     desk.gameplay.current.player?.name === player.name;
@@ -126,7 +124,7 @@ export const Cubes: FC<Props> = ({ player }) => {
         const rollAnimationNumber =
           isRollAnimationNumber &&
           isAllowSelectedAnimation &&
-          getNonRepeatedInt(cube || 1);
+          getNonEqualInt(cube || 1);
 
         return (
           <Cube

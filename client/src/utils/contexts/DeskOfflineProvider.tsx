@@ -6,9 +6,8 @@ import {
 } from "@utils/common/types";
 import { FC, useEffect, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
 import {
   afterStartGame,
   afterStartThrowDice,
@@ -24,19 +23,19 @@ import {
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
 
+  const player = {
+    name: getCredentials().name,
+  };
+
   useEffect(() => {
     setDesk((prev) => ({
       ...prev,
-      creator: {
-        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
-      },
+      creator: player,
       gameplay: {
         ...prev.gameplay,
         current: {
           ...prev.gameplay.current,
-          player: {
-            name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
-          },
+          player,
         },
       },
     }));

@@ -1,5 +1,8 @@
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import {
+  getCredentials,
+  getStorageObjectItem,
+} from "@utils/helpers/storage/storage.helper";
 import { getRankingsComparisonWinner } from "@utils/helpers/ranking/ranking.helper";
 import {
   DeskType,
@@ -231,7 +234,7 @@ export const afterEndGame = (prev: DeskType): DeskType => ({
     current: {
       ...deepClone(DEFAULT_CURRENT),
       player: {
-        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+        name: getCredentials().name,
       },
     },
   },
@@ -253,7 +256,7 @@ export const afterChangeSettings = (
     },
     players: [
       {
-        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+        name: getCredentials().name,
       },
       ...getRandomNames(settings.players - 1).map((name) => ({
         name,
@@ -262,7 +265,7 @@ export const afterChangeSettings = (
     current: {
       ...deepClone(DEFAULT_CURRENT),
       player: {
-        name: getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name,
+        name: getCredentials().name,
       },
     },
   },

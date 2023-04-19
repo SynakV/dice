@@ -94,14 +94,14 @@ export const getAllPossibleRepeatedInts = (options: {
   return arrays;
 };
 
-export const getNonRepeatedInt = (int: number) => {
-  let nonRepeatedInt = int;
+export const getNonEqualInt = (int: number) => {
+  let nonEqualdInt = int;
 
-  while (nonRepeatedInt === int) {
-    nonRepeatedInt = getRandomInt();
+  while (nonEqualdInt === int) {
+    nonEqualdInt = getRandomInt();
   }
 
-  return nonRepeatedInt;
+  return nonEqualdInt;
 };
 
 export const shuffleArray = (arr: any[]) => {

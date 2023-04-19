@@ -14,7 +14,6 @@ import {
   RankingWithInfoType,
 } from "@utils/common/types";
 import { DEFAULT_DESK } from "@utils/common/constants";
-import { GameProvider } from "@utils/contexts/GameContext";
 
 interface DeskContext {
   desk: DeskType;
@@ -64,7 +63,7 @@ export const DeskProvider: FC<DeskCommonProps & DeskContext> = ({
 }) => {
   return (
     <DeskContext.Provider value={{ setDesk, handle, socket, desk }}>
-      <GameProvider>{desk && children}</GameProvider>
+      {desk && children}
     </DeskContext.Provider>
   );
 };

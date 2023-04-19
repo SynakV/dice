@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { playAudio } from "@utils/helpers/audio.helper";
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import { getStorageObjectItem } from "@utils/helpers/storage/storage.helper";
+import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import {
   getWinTotals,
   getWinnersNamesArray,
@@ -43,9 +42,7 @@ export const Conclusion = () => {
       desk.gameplay.rounds[desk.gameplay.current.round].winners
     );
 
-    const isYouAmongWinners = winnersNames.includes(
-      getStorageObjectItem(STORAGE_ITEMS.CREDENTIALS)?.name
-    );
+    const isYouAmongWinners = winnersNames.includes(getCredentials().name);
 
     if (isYouAmongWinners) {
       playAudio(isGameWinner ? "gameWin" : "roundWin");
