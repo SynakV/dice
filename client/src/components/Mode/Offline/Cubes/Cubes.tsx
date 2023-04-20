@@ -38,6 +38,13 @@ export const Cubes: FC<Props> = ({ player }) => {
   const ranking = getCurrentRanking(desk, player);
   const { roll, reroll } = ranking?.cubes || {};
 
+  const isOtherPlayerThinkingToReroll =
+    isOtherPlayer &&
+    !stage.isStarted &&
+    !stage.isPlayerThrew &&
+    isCurrentPlayerTurn &&
+    desk.gameplay.current.stage !== 0;
+
   // Round flow
   useEffect(() => {
     if (!stage.isStarted || stage.isCompleted || !isCurrentPlayerTurn) {
@@ -61,6 +68,23 @@ export const Cubes: FC<Props> = ({ player }) => {
         return handleReRollDice({ roll, reroll: cubesReroll });
       }
     }
+  }, [desk]);
+
+  // Computer thinking to re-roll or pass
+  useEffect(() => {
+    if (!isOtherPlayerThinkingToReroll || !ranking) {
+      return;
+    }
+
+    const reRollIndexes = getReRollIndexes(ranking);
+
+    setTimeout(() => {
+      if (reRollIndexes.length) {
+        handle.startThrowDice();
+      } else {
+        handle.passThrowDice();
+      }
+    }, 2000);
   }, [desk]);
 
   const handleRollDice = () => {

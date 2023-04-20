@@ -67,27 +67,26 @@ export const getRankingsComparisonWinner = (
 };
 
 export const getGameWinner = (rounds: RoundType[], wins: number) => {
-  const winners = Object.entries(getWinTotals(rounds)).filter(
-    ([_, total]) => total === wins
+  const winners = Object.values(getWinTotals(rounds)).filter(
+    (total) => total === wins
   );
 
   return winners.length ? winners : false;
 };
 
 export const getWinTotals = (rounds: RoundType[]) => {
-  const totals: { [name: string]: number } = {};
+  const totals: { [id: string]: number } = {};
 
   for (let i = 0; i < rounds.length; i++) {
     if (!rounds[i].isCompleted) {
       continue;
     }
 
-    rounds[i].winners.forEach(({ name }) => {
-      const winnerName = name || "";
-      if (!(winnerName in totals)) {
-        totals[winnerName] = 1;
+    rounds[i].winners.forEach(({ id }) => {
+      if (!(id in totals)) {
+        totals[id] = 1;
       } else {
-        totals[winnerName]++;
+        totals[id]++;
       }
     });
   }

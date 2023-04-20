@@ -31,12 +31,15 @@ export const afterStartThrowDice = (prev: DeskType): DeskType => ({
   ...prev,
   gameplay: {
     ...prev?.gameplay,
-    rounds: prev.gameplay.rounds.map((round) => {
-      round.stages.map((stage, index) => {
-        if (prev.gameplay.current.stage === index) {
-          stage.isStarted = true;
-        }
-      });
+    rounds: prev.gameplay.rounds.map((round, index) => {
+      if (prev.gameplay.current.round === index) {
+        round.stages.map((stage, index) => {
+          if (prev.gameplay.current.stage === index) {
+            stage.isStarted = true;
+          }
+          return stage;
+        });
+      }
       return round;
     }),
   },
@@ -75,6 +78,7 @@ export const afterThrowDice = (
 
 export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   const nextPlayer = getNextPlayer(prev);
+  const isFirtsStage = prev.gameplay.current.stage === 0;
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
@@ -96,8 +100,8 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
           const isCurrentStage = prev.gameplay.current.stage === index;
 
           if (isCurrentStage) {
-            stage.isStarted = true;
             stage.isPlayerThrew = false;
+            stage.isStarted = isFirtsStage;
           }
 
           if (isLastPlayerDidntThrowYet) {
@@ -265,15 +269,13 @@ export const getPlayer = (name: string): PlayerType => ({
 });
 
 export const getPlayers = (count: number, player: PlayerType) => {
-  const ids: string[] = [player.id];
-  const names: string[] = [player.name];
   const players: PlayerType[] = [player];
 
-  for (let i = 1; i <= count; i++) {
+  while (players.length <= count) {
     const id = Math.random().toString();
     const name = NAMES[getRandomInt(0, NAMES.length - 1)];
 
-    if (!names.includes(name) && !ids.includes(id)) {
+    if (!players.find((player) => player.name === name || player.id === id)) {
       players.push({
         id,
         name,

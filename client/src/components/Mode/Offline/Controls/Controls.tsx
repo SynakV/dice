@@ -27,6 +27,8 @@ export const Controls = () => {
   const ranking = getCurrentRanking(desk, player);
   const isPassing = isPass(ranking?.cubes.reroll);
 
+  const currentPlayer = desk.gameplay.current.player?.id === player?.id;
+
   const rounds = desk.gameplay.rounds;
   const currentRound = rounds[desk.gameplay.current.round];
   const currentStage = currentRound.stages[desk.gameplay.current.stage];
@@ -37,7 +39,8 @@ export const Controls = () => {
   const isCurrentPlayerThrew = currentStage.isPlayerThrew;
   const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
 
-  const isAllowedToRoll = isCurrentStageNotStarted && !isCurrentPlayerThrew;
+  const isAllowedToRoll =
+    isCurrentStageNotStarted && !isCurrentPlayerThrew && currentPlayer;
 
   return portal(
     <div className="controls">
