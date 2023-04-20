@@ -1,21 +1,18 @@
-import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
-import {
-  getCredentials,
-  getStorageObjectItem,
-} from "@utils/helpers/storage/storage.helper";
 import { getRankingsComparisonWinner } from "@utils/helpers/ranking/ranking.helper";
 import {
   DeskType,
   RerollType,
   SettingsType,
   RankingWithInfoType,
+  PlayerType,
 } from "@utils/common/types";
-import { getRandomNames } from "@utils/helpers/randomizer.helper";
+import { getRandomInt } from "@utils/helpers/randomizer.helper";
 import {
   DEFAULT_STAGE,
   DEFAULT_ROUND,
   DEFAULT_CURRENT,
 } from "@utils/common/constants";
+import { NAMES } from "@utils/constants";
 import { deepClone } from "@utils/common/helpers";
 
 export const afterStartGame = (prev: DeskType): DeskType => ({
@@ -23,6 +20,10 @@ export const afterStartGame = (prev: DeskType): DeskType => ({
   gameplay: {
     ...prev.gameplay,
     isGameStarted: true,
+    current: {
+      ...prev.gameplay.current,
+      player: prev.gameplay.players[0],
+    },
   },
 });
 
@@ -77,7 +78,7 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
-    prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
+    prev.gameplay.current.player?.id !== prev.gameplay.players.at(-1)?.id;
   const isRoundCompleted = isLastStage && !isLastPlayerDidntThrowYet;
 
   return {
@@ -189,7 +190,7 @@ export const afterSelectDice = (
 
         stage.rankings.map((ranking) => {
           const isPlayersRanking =
-            prev.gameplay.current.player?.name === ranking.player.name;
+            prev.gameplay.current.player?.id === ranking.player.id;
 
           if (isPlayersRanking) {
             ranking.cubes.reroll = selectedDice;
@@ -231,49 +232,61 @@ export const afterEndGame = (prev: DeskType): DeskType => ({
     isGameEnded: false,
     isGameStarted: false,
     rounds: [deepClone(DEFAULT_ROUND)],
-    current: {
-      ...deepClone(DEFAULT_CURRENT),
-      player: {
-        name: getCredentials().name,
-      },
-    },
+    current: deepClone(DEFAULT_CURRENT),
   },
 });
 
 export const afterChangeSettings = (
   prev: DeskType,
-  settings: SettingsType
-): DeskType => ({
-  ...prev,
-  gameplay: {
-    ...prev.gameplay,
-    isGameEnded: false,
-    rounds: [deepClone(DEFAULT_ROUND)],
-    max: {
-      wins: settings.wins,
-      stages: settings.stages,
-      players: settings.players,
-    },
-    players: [
-      {
-        name: getCredentials().name,
+  settings: SettingsType,
+  player: PlayerType
+): DeskType => {
+  return {
+    ...prev,
+    gameplay: {
+      ...prev.gameplay,
+      isGameEnded: false,
+      isGameStarted: false,
+      rounds: [deepClone(DEFAULT_ROUND)],
+      max: {
+        wins: settings.wins,
+        stages: settings.stages,
+        players: settings.players,
       },
-      ...getRandomNames(settings.players - 1).map((name) => ({
-        name,
-      })),
-    ],
-    current: {
-      ...deepClone(DEFAULT_CURRENT),
-      player: {
-        name: getCredentials().name,
-      },
+      players: getPlayers(settings.players - 1, player),
+      current: deepClone(DEFAULT_CURRENT),
     },
-  },
+  };
+};
+
+export const getPlayer = (name: string): PlayerType => ({
+  name,
+  id: Math.random().toString(),
 });
+
+export const getPlayers = (count: number, player: PlayerType) => {
+  const ids: string[] = [player.id];
+  const names: string[] = [player.name];
+  const players: PlayerType[] = [player];
+
+  for (let i = 1; i <= count; i++) {
+    const id = Math.random().toString();
+    const name = NAMES[getRandomInt(0, NAMES.length - 1)];
+
+    if (!names.includes(name) && !ids.includes(id)) {
+      players.push({
+        id,
+        name,
+      });
+    }
+  }
+
+  return players;
+};
 
 const getNextPlayer = (desk: DeskType) => {
   const currentPlayerIndex = desk.gameplay.players.findIndex(
-    (player) => player.name === desk.gameplay.current.player?.name
+    (player) => player.id === desk.gameplay.current.player?.id
   );
 
   const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];

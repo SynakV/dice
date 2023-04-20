@@ -4,9 +4,8 @@ import {
   SettingsType,
   RankingWithInfoType,
 } from "@utils/common/types";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import {
   afterStartGame,
@@ -18,28 +17,13 @@ import {
   afterCloseConclusion,
   afterEndGame,
   afterChangeSettings,
+  getPlayer,
 } from "@utils/helpers/gameplay/gameplay.offline.helper";
+import { useGame } from "./GameContext";
 
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
+  const { player, setPlayer } = useGame();
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
-
-  const player = {
-    name: getCredentials().name,
-  };
-
-  useEffect(() => {
-    setDesk((prev) => ({
-      ...prev,
-      creator: player,
-      gameplay: {
-        ...prev.gameplay,
-        current: {
-          ...prev.gameplay.current,
-          player,
-        },
-      },
-    }));
-  }, []);
 
   const startGame = () => {
     setDesk(afterStartGame);
@@ -74,7 +58,9 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   };
 
   const changeSettings = (settings: SettingsType) => {
-    setDesk((prev) => afterChangeSettings(prev, settings));
+    const newPlayer = getPlayer(player?.name || "");
+    setPlayer(newPlayer);
+    setDesk((prev) => afterChangeSettings(prev, settings, newPlayer));
   };
 
   return (

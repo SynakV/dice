@@ -101,7 +101,7 @@ export const afterFinishThrowDice = (
   const isLastStage =
     prev.gameplay.current.stage === prev.gameplay.max.stages - 1;
   const isLastPlayerDidntThrowYet =
-    prev.gameplay.current.player?.name !== prev.gameplay.players.at(-1)?.name;
+    prev.gameplay.current.player?.id !== prev.gameplay.players.at(-1)?.id;
 
   const desk = {
     ...prev,
@@ -235,7 +235,7 @@ export const afterSelectDice = (
 
           stage.rankings.map((ranking) => {
             const isPlayersRanking =
-              prev.gameplay.current.player?.name === ranking.player.name;
+              prev.gameplay.current.player?.id === ranking.player.id;
 
             if (isPlayersRanking) {
               ranking.cubes.reroll = selectedDice;
@@ -307,16 +307,14 @@ export const afterChangeSettings = (
     gameplay: {
       ...prev.gameplay,
       isGameEnded: false,
+      isGameStarted: false,
       rounds: [deepClone(DEFAULT_ROUND)],
       max: {
         wins: settings.wins,
         stages: settings.stages,
         players: settings.players,
       },
-      current: {
-        ...deepClone(DEFAULT_CURRENT),
-        player: prev.gameplay.players[0],
-      },
+      current: deepClone(DEFAULT_CURRENT),
     },
   } as DeskType);
 
@@ -325,7 +323,7 @@ export const afterChangeSettings = (
 
 const getNextPlayer = (desk: DeskType) => {
   const currentPlayerIndex = desk.gameplay.players.findIndex(
-    (player) => player.name === desk.gameplay.current.player?.name
+    (player) => player.id === desk.gameplay.current.player?.id
   );
 
   const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];

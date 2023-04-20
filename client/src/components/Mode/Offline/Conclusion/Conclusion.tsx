@@ -1,81 +1,58 @@
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import {
   getWinTotals,
   getGameWinner,
-  getWinnersNamesArray,
   getWinnersNounString,
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
+import {
+  getWinnerIcons,
+  playWinnerSound,
+} from "@components/Mode/Shared/Conclusion/Conclusion";
 
 export const Conclusion = () => {
-  const { handle, desk } = useDesk();
-  const { toggleGameOpen } = useGame();
+  const {
+    handle,
+    desk: {
+      gameplay: { rounds, current, max },
+    },
+  } = useDesk();
+  const { player, toggleGameOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 
-  const rounds = desk.gameplay.rounds;
+  const winners = rounds[current.round].winners;
 
-  const getWinnerIcons = (wins: number = 0) => {
-    return wins > 0 ? (
-      <div className="hand__wins">
-        <span className="hand__wins-counter">{wins}</span>
-        <Image
-          width={125}
-          height={125}
-          alt="winner"
-          src="/icons/winner.webp"
-          className="hand__wins-img"
-        />
-      </div>
-    ) : null;
-  };
+  const winnersNames = getWinnersNamesString(winners);
 
-  const playWinnerSound = (phase: "round" | "game") => {
-    const isGameWinner = phase === "game";
-
-    const winnersNames = getWinnersNamesArray(
-      desk.gameplay.rounds[desk.gameplay.current.round].winners
-    );
-
-    const isYouAmongWinners = winnersNames.includes(getCredentials().name);
-
-    if (isYouAmongWinners) {
-      playAudio(isGameWinner ? "gameWin" : "roundWin");
-    } else {
-      playAudio(isGameWinner ? "gameLoose" : "roundLoose");
-    }
-  };
+  const isYouAmongWinners = !!winners.find(
+    (winner) => winner.id === player?.id
+  );
 
   useEffect(() => {
-    const isRoundComplete =
-      desk.gameplay.rounds[desk.gameplay.current.round].isCompleted;
+    const isRoundComplete = rounds[current.round].isCompleted;
 
     if (isRoundComplete) {
-      const gameWinner = getGameWinner(
-        desk.gameplay.rounds,
-        desk.gameplay.max.wins
-      );
+      const gameWinner = getGameWinner(rounds, max.wins);
 
       if (gameWinner !== false) {
         setIsLastRound(true);
-        playWinnerSound("game");
+        playWinnerSound("game", isYouAmongWinners);
       } else {
         setIsLastRound(false);
-        playWinnerSound("round");
+        playWinnerSound("round", isYouAmongWinners);
       }
 
       setIsOpen(true);
     }
-  }, [desk]);
+  }, [rounds]);
 
   const handleClick = () => {
     setIsOpen(false);
@@ -88,21 +65,13 @@ export const Conclusion = () => {
 
   const winTotals = getWinTotals(rounds);
 
-  const winnersNames = getWinnersNamesString(
-    rounds[desk.gameplay.current.round].winners
-  );
-
   const title = getWinnersNounString(winnersNames);
 
-  const rankings =
-    rounds[desk.gameplay.current.round].stages[desk.gameplay.current.stage]
-      .rankings;
+  const rankings = rounds[current.round].stages[current.stage].rankings;
 
   return (
     <Modal className="conclusion" title={title} isOpen={isOpen}>
-      <span className="conclusion__round">
-        Round: {desk.gameplay.current.round + 1}
-      </span>
+      <span className="conclusion__round">Round: {current.round + 1}</span>
 
       <div className="conclusion__hands">
         {rankings.map((ranking, index) => (

@@ -1,7 +1,8 @@
 import React, { FC, useRef } from "react";
+import { CredentialsType } from "@utils/common/types";
+import { useGame } from "@utils/contexts/GameContext";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
-import { CredentialsType } from "@components/Shared/Credentials/utils/types";
+import { useNotification } from "@components/Shared/Notification/Notification";
 
 interface Props {
   isOpen: boolean;
@@ -16,15 +17,18 @@ export const Credentials: FC<Props> = ({
 }) => {
   const name = useRef<HTMLInputElement>(null);
 
+  const { player } = useGame();
+  const { notification } = useNotification();
+
   const handleSetCredentials = () => {
     const value = name.current?.value;
 
     if (value) {
       setCredentials({ name: value });
+    } else {
+      notification("Name should not be empty");
     }
   };
-
-  const defaultValue = getCredentials().name;
 
   return (
     <Modal isOpen={isOpen} title="Enter your name">
@@ -33,7 +37,7 @@ export const Credentials: FC<Props> = ({
         <input
           type="text"
           ref={name}
-          defaultValue={defaultValue}
+          defaultValue={player?.name}
           className="credentials__input"
         />
       </div>

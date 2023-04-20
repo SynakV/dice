@@ -65,18 +65,18 @@ export const History = () => {
                             {stageWinners})
                           </div>
                           {stage.rankings.map((ranking, rankingIndex) => {
-                            const { cubes, value, player } = ranking;
-                            const reroll =
-                              round.stages[stageIndex - 1]?.rankings[
-                                rankingIndex
-                              ]?.cubes.reroll;
+                            const {
+                              value,
+                              player,
+                              cubes: { roll, reroll },
+                            } = ranking;
                             return (
                               <Hand
                                 key={rankingIndex}
                                 ranking={value.name}
                                 player={player.name}
                               >
-                                {cubes.roll?.map((cube, index) => (
+                                {roll?.map((cube, index) => (
                                   <Cube
                                     isDisabled
                                     key={index}

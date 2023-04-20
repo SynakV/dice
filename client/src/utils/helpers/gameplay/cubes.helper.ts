@@ -42,20 +42,23 @@ export const getDiceForReroll = ({ roll, reroll }: CubesType) => {
   return newCubes;
 };
 
-export const getCurrentRanking = (desk: DeskType, player: PlayerType) => {
+export const getCurrentRanking = (
+  desk: DeskType,
+  player: PlayerType | null
+) => {
   const round = desk.gameplay.rounds[desk.gameplay.current.round];
   const stage = round.stages[desk.gameplay.current.stage];
 
   const ranking =
-    stage.rankings.find((ranking) => ranking.player.name === player.name) ||
+    stage.rankings.find((ranking) => ranking.player.id === player?.id) ||
     // if no ranking, show ranking from previous stage
     round.stages[desk.gameplay.current.stage - 1]?.rankings.find(
-      (ranking) => ranking.player.name === player.name
+      (ranking) => ranking.player.id === player?.id
     ) ||
     // if no ranking, show ranking from last stage of previous round
     desk.gameplay.rounds[desk.gameplay.current.round - 1]?.stages
       .at(-1)
-      ?.rankings.find((ranking) => ranking.player.name === player.name);
+      ?.rankings.find((ranking) => ranking.player.id === player?.id);
 
   return ranking;
 };

@@ -6,7 +6,6 @@ import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
@@ -33,9 +32,6 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
           wins: settings.wins,
           stages: settings.stages,
           players: settings.players,
-          creator: {
-            name: getCredentials().name,
-          },
         },
         { revalidate: false }
       );
