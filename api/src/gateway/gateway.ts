@@ -61,7 +61,7 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk },
-      { $push: { 'gameplay.players': { id: client.id, name: name } } },
+      { $push: { 'gameplay.players': { id: client.id, name } } },
       { new: true },
     );
 

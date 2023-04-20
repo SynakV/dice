@@ -24,7 +24,7 @@ export class DeskService {
   }
 
   async create(body: any): Promise<Desk | ErrorType> {
-    const { name, creator, wins, players, stages } = body;
+    const { name, wins, players, stages } = body;
 
     const existedDesk = await this.deskModel.findOne({ name });
 
@@ -36,7 +36,6 @@ export class DeskService {
       const createDesk = new this.deskModel({
         ...DEFAULT_DESK,
         name,
-        creator,
         gameplay: {
           ...DEFAULT_DESK.gameplay,
           max: {

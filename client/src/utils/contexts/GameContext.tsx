@@ -9,6 +9,7 @@ import {
   createContext,
   SetStateAction,
 } from "react";
+import { PlayerType } from "@utils/common/types";
 
 export enum GAME_OPEN {
   HISTORY,
@@ -21,6 +22,8 @@ interface GameContextType {
   gameOpen: GameOpenType;
   isInitSettings: boolean;
   isControlsLoading: boolean;
+  player: PlayerType | null;
+  setPlayer: (player: PlayerType) => void;
   toggleGameOpen: (key: GAME_OPEN) => void;
   setIsInitSettings: Dispatch<SetStateAction<boolean>>;
   setIsControlsLoading: Dispatch<SetStateAction<boolean>>;
@@ -37,8 +40,10 @@ const DEFAULT_GAME_OPEN = {
 };
 
 const DEFAULT_VALUES: GameContextType = {
+  player: null,
   isInitSettings: true,
   isControlsLoading: false,
+  setPlayer: () => {},
   toggleGameOpen: () => {},
   setIsInitSettings: () => {},
   setIsControlsLoading: () => {},
@@ -61,6 +66,8 @@ export const GameProvider: FC<Props> = ({ children }) => {
     DEFAULT_VALUES.isInitSettings
   );
 
+  const [player, setPlayer] = useState<PlayerType | null>(null);
+
   const isOnline = route.includes("online");
 
   const toggleGameOpen = (key: GAME_OPEN) => {
@@ -75,9 +82,17 @@ export const GameProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const handleSetPlayer = (player: PlayerType) => {
+    setPlayer((prev) => ({
+      ...prev,
+      ...player,
+    }));
+  };
+
   return (
     <GameContext.Provider
       value={{
+        player,
         gameOpen,
         isOnline,
         isInitSettings,
@@ -85,6 +100,7 @@ export const GameProvider: FC<Props> = ({ children }) => {
         toggleGameOpen,
         setIsInitSettings,
         setIsControlsLoading,
+        setPlayer: handleSetPlayer,
       }}
     >
       {children}

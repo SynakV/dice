@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { SETTINGS } from "@utils/constants";
 import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";

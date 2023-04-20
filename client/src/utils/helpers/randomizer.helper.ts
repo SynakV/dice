@@ -1,4 +1,4 @@
-import { DICE, NAMES } from "@utils/constants";
+import { DICE } from "@utils/constants";
 import { RANKING_OF_HANDS_KEYS } from "@utils/common/types";
 
 export const getRandomIntsFromInterval = (
@@ -111,18 +111,4 @@ export const shuffleArray = (arr: any[]) => {
   }
 
   return arr;
-};
-
-export const getRandomNames = (count: number = 1) => {
-  const names: string[] = [];
-
-  for (let i = 0; i < count; i++) {
-    const name = NAMES[getRandomInt(0, NAMES.length - 1)];
-
-    if (!names.includes(name)) {
-      names.push(name);
-    }
-  }
-
-  return names;
 };

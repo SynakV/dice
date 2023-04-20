@@ -1,10 +1,5 @@
-import { DeskType } from "@utils/common/types";
-import { useDesk } from "@utils/contexts/DeskContext";
-import {
-  getCredentials,
-  setCredentials,
-} from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
+import { useDesk } from "@utils/contexts/DeskContext";
 import React, { FC, useEffect, useState } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { Desk } from "@components/Mode/Shared/Desk/Desk";
@@ -20,18 +15,20 @@ import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { Controls } from "@components/Mode/Online/Controls/Controls";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 import { Conclusion } from "@components/Mode/Online/Conclusion/Conclusion";
-import { CredentialsType } from "@components/Shared/Credentials/utils/types";
+import { CredentialsType, DeskType, PlayerType } from "@utils/common/types";
 import { useNotification } from "@components/Shared/Notification/Notification";
+import {
+  getCredentials,
+  setCredentials,
+} from "@utils/helpers/storage/storage.helper";
 
 export const Online: FC = () => {
   const { push } = useRouter();
   const { notification } = useNotification();
   const { desk, socket, setDesk } = useDesk();
-  const { toggleGameOpen, setIsControlsLoading } = useGame();
+  const { player, setPlayer, toggleGameOpen, setIsControlsLoading } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const credentials: CredentialsType = getCredentials();
 
   const handleSameNameNotification = (
     data: DeskType,
@@ -39,7 +36,7 @@ export const Online: FC = () => {
   ) => {
     const playersNames = data.gameplay.players.map((player) => player.name);
 
-    if (playersNames?.includes(credentials.name || "")) {
+    if (playersNames.includes(credentials.name || "")) {
       notification(`Name ${credentials.name} already present in the desk`);
       return true;
     }
@@ -48,34 +45,30 @@ export const Online: FC = () => {
   };
 
   const handleSetCredentials = (credentials: CredentialsType) => {
-    if (!desk) {
-      return;
-    }
-
-    const isSameName = handleSameNameNotification(desk, credentials);
-
-    if (isSameName) {
+    if (handleSameNameNotification(desk, credentials)) {
       return;
     }
 
     setIsOpen(false);
-    handleInitializePlayer(credentials);
+    setPlayer(credentials as PlayerType);
     setCredentials(JSON.stringify(credentials));
   };
 
   useEffect(() => {
-    if (!desk) {
+    if (!player || player?.id) {
       return;
     }
 
-    if (!credentials.name || handleSameNameNotification(desk, credentials)) {
-      return setIsOpen(true);
+    if (!player.name || handleSameNameNotification(desk, player)) {
+      setIsOpen(true);
+    } else {
+      handleInitializePlayer(player);
     }
-
-    handleInitializePlayer(credentials);
-  }, []);
+  }, [player]);
 
   useEffect(() => {
+    setPlayer(getCredentials());
+
     if (!socket) {
       return;
     }
@@ -151,10 +144,11 @@ export const Online: FC = () => {
     };
   }, []);
 
-  const handleInitializePlayer = (credentials: CredentialsType) => {
+  const handleInitializePlayer = ({ name }: CredentialsType) => {
+    setPlayer({ id: socket?.id } as PlayerType);
     socket?.emit(MESSAGES.JOIN_DESK, {
       desk: desk._id,
-      name: credentials.name,
+      name,
     });
   };
 
@@ -162,9 +156,11 @@ export const Online: FC = () => {
     push("/online");
   };
 
+  const isShowGameDesk = desk && player?.id;
+
   return (
     <>
-      {desk ? (
+      {isShowGameDesk ? (
         <>
           <Status />
           <History />

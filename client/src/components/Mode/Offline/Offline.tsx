@@ -3,7 +3,6 @@ import { Settings } from "@components/Shared/Settings/Settings";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
-import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 import {
   getCredentials,
   setCredentials,
@@ -13,27 +12,36 @@ import { Desk } from "@components/Mode/Shared/Desk/Desk";
 import { Cubes } from "@components/Mode/Offline/Cubes/Cubes";
 import { Status } from "@components/Mode/Shared/Status/Status";
 import { History } from "@components/Mode/Shared/History/History";
+import { CredentialsType, PlayerType } from "@utils/common/types";
 import { Controls } from "@components/Mode/Offline/Controls/Controls";
 import { Conclusion } from "@components/Mode/Offline/Conclusion/Conclusion";
 
 export const Offline = () => {
   const { replace } = useRouter();
-  const { isInitSettings, toggleGameOpen } = useGame();
+  const { player, setPlayer, isInitSettings, toggleGameOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
 
-  const credentials = getCredentials();
+  useEffect(() => {
+    setPlayer(getCredentials());
+  }, []);
 
   useEffect(() => {
-    if (!credentials.name) {
+    if (!player) {
+      return;
+    }
+
+    if (!player.name) {
       setIsOpen(true);
-    } else {
+    }
+
+    if (player.name && !player.id) {
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }
-  }, []);
+  }, [player]);
 
   const handleSetCredentials = (credentials: CredentialsType) => {
     setIsOpen(false);
-    toggleGameOpen(GAME_OPEN.SETTINGS);
+    setPlayer(credentials as PlayerType);
     setCredentials(JSON.stringify(credentials));
   };
 
@@ -41,11 +49,13 @@ export const Offline = () => {
     replace("/");
   };
 
+  const isShowGameDesk = !isInitSettings && player?.id;
+
   return (
     <>
       <Settings />
       <Navigator text="Home" />
-      {!isInitSettings && (
+      {isShowGameDesk && (
         <>
           <Status />
           <History />

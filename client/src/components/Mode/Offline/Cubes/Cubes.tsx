@@ -17,20 +17,20 @@ import {
   getCurrentRanking,
   getDiceForReroll,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
 
 interface Props {
   player: PlayerType;
 }
 
 export const Cubes: FC<Props> = ({ player }) => {
+  const { player: you } = useGame();
   const { handle, desk } = useDesk();
 
-  const isOtherPlayer = player.name !== getCredentials().name;
+  const isOtherPlayer = player.id !== you?.id;
 
-  const isCurrentPlayerTurn =
-    desk.gameplay.current.player?.name === player.name;
+  const isCurrentPlayerTurn = desk.gameplay.current.player?.id === player.id;
 
   const round = desk.gameplay.rounds[desk.gameplay.current.round];
   const stage = round.stages[desk.gameplay.current.stage];

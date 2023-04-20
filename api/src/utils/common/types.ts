@@ -3,15 +3,15 @@
 export type DeskType = {
   _id?: string;
   name?: string;
-  creator?: PlayerType;
   gameplay: GameplayType;
 };
 
 export type PlayerType = {
-  id?: string;
+  id: string;
   name: string;
-  isCreator?: boolean;
 };
+
+export type CredentialsType = Partial<PlayerType>;
 
 export type GameplayType = {
   max: MaxType;

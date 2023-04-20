@@ -1,19 +1,19 @@
 import React from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
-import { getCredentials } from "@utils/helpers/storage/storage.helper";
-import { CredentialsType } from "@components/Shared/Credentials/utils/types";
+import { useGame } from "@utils/contexts/GameContext";
 
 export const Status = () => {
   const { desk } = useDesk();
   const portal = usePortal();
-
-  const player: CredentialsType = getCredentials();
+  const { player } = useGame();
 
   const isFirstStage = desk.gameplay.current.stage === 0;
 
+  const currentPlayersId = desk.gameplay.current.player?.id;
   const currentPlayersName = desk.gameplay.current.player?.name;
-  const isYouCurrentPlayer = currentPlayersName === player?.name;
+
+  const isYouCurrentPlayer = currentPlayersId === player?.id;
 
   const currentRound = desk.gameplay.rounds[desk.gameplay.current.round];
   const currentStage = currentRound.stages[desk.gameplay.current.stage];
@@ -29,7 +29,7 @@ export const Status = () => {
       }
 
       if (!desk.gameplay.isGameStarted) {
-        return player?.name === desk.creator?.name
+        return player?.id === desk.gameplay.players[0]?.id
           ? 'Click "Start game"'
           : "Waiting for game to start...";
       }
