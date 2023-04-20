@@ -5,9 +5,9 @@ import {
   setStorageItem,
 } from "@utils/helpers/storage/storage.helper";
 import { useRouter } from "next/router";
+import { CredentialsType } from "@utils/common/types";
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
-import { CredentialsType } from "@components/Shared/Credentials/utils/types";
 
 export const Mode = () => {
   const router = useRouter();
