@@ -43,12 +43,15 @@ export const afterStartThrowDice = (
     ...prev,
     gameplay: {
       ...prev.gameplay,
-      rounds: prev.gameplay.rounds.map((round) => {
-        round.stages.map((stage, index) => {
-          if (prev.gameplay.current.stage === index) {
-            stage.isStarted = true;
-          }
-        });
+      rounds: prev.gameplay.rounds.map((round, index) => {
+        if (prev.gameplay.current.round === index) {
+          round.stages.map((stage, index) => {
+            if (prev.gameplay.current.stage === index) {
+              stage.isStarted = true;
+            }
+            return stage;
+          });
+        }
         return round;
       }),
     },

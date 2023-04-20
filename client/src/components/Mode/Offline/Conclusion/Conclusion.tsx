@@ -83,7 +83,7 @@ export const Conclusion = () => {
             {ranking.cubes.roll?.map((cube, index) => (
               <Cube isDisabled key={index} value={cube} isSelected={false} />
             ))}
-            {getWinnerIcons(winTotals[ranking.player.name || ""])}
+            {getWinnerIcons(winTotals[ranking.player.id])}
           </Hand>
         ))}
       </div>
