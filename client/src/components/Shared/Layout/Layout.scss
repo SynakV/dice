@@ -28,7 +28,7 @@
                 transform: translate(-1%, -4%) scale(-1, 1);
             }
 
-            &[alt="mess"] {
+            &[alt="grunge-mess"] {
                 z-index: -2;
                 width: calc(100vw + 7%) !important;
                 height: calc(100vh + 6%) !important;
@@ -37,13 +37,18 @@
         }
     }
 
-    .light-source {
-        z-index: -2;
+    &__back {
+        top: 20px;
+        left: 25px;
+        opacity: 0.5;
+        cursor: pointer;
         position: absolute;
-        left: var(--cursorX);
-        top: var(--cursorY);
-        background: transparent;
-        box-shadow: 0 0 250px 40px white;
+        transform: scale(-1, -1);
+        transition: var(--transition-30);
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     &__content {
