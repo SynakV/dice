@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -37,7 +38,12 @@ export const Layout: FC<Props> = ({ children }) => {
   return (
     <NotificationProvider>
       <div className="layout">
-        <div className="layout__background" />
+        <div className="layout__background">
+          <Image fill alt="striga" src="/images/striga.jpeg" />
+          <Image fill alt="grunge-square" src="/images/grunge-square.png" />
+          <Image fill alt="mess" src="/images/grunge-mess.webp" />
+        </div>
+
         {isShowChildren && <div className="layout__content">{children}</div>}
         <Menu />
       </div>

@@ -14,6 +14,7 @@ import {
 } from "@utils/common/constants";
 import { NAMES } from "@utils/constants";
 import { deepClone } from "@utils/common/helpers";
+import { playAudio } from "@utils/helpers/audio.helper";
 
 export const afterStartGame = (prev: DeskType): DeskType => ({
   ...prev,
@@ -85,6 +86,12 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
     prev.gameplay.current.player?.id !== prev.gameplay.players.at(-1)?.id;
   const isRoundCompleted = isLastStage && !isLastPlayerDidntThrowYet;
 
+  const isRoundOnGoing = !isLastStage && !isLastPlayerDidntThrowYet;
+
+  if (isRoundOnGoing) {
+    playAudio("playerThinking");
+  }
+
   return {
     ...prev,
     gameplay: {
@@ -132,10 +139,9 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
       current: {
         ...prev.gameplay.current,
         player: nextPlayer,
-        stage:
-          !isLastStage && !isLastPlayerDidntThrowYet
-            ? ++prev.gameplay.current.stage
-            : prev.gameplay.current.stage,
+        stage: isRoundOnGoing
+          ? ++prev.gameplay.current.stage
+          : prev.gameplay.current.stage,
       },
     },
   };
