@@ -63,6 +63,7 @@
         animation: fadeIn 0.5s;
         min-width: fit-content;
         justify-content: center;
+        transition: transform var(--transition-30);
     }
 }
 

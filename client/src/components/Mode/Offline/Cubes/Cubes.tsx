@@ -18,7 +18,7 @@ import {
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
-import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
+import { Hand } from "@components/Mode/Shared/Hand/Hand";
 
 interface Props {
   player: PlayerType;

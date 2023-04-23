@@ -116,3 +116,30 @@ export const NAMES = [
   "Mr. Michael Perez",
   "James Lewis",
 ];
+
+export const ASSETS = {
+  IMAGES: [
+    "amulet.png",
+    "winner.webp",
+    "striga.jpeg",
+    "arrow-back.png",
+    "grunge-mess.webp",
+    "grunge-banner.png",
+    "grunge-corner.png",
+    "grunge-square.png",
+  ],
+  SOUNDS: [
+    "firstThrowResult",
+    "gameHover",
+    "gameLoose",
+    "gameWin",
+    "handMixDice",
+    "handThrowDice",
+    "hover",
+    "nextRoundStart",
+    "playerThinking",
+    "roundLoose",
+    "roundWin",
+    "selectDieForReroll",
+  ],
+};
