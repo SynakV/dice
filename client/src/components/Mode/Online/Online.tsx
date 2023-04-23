@@ -179,7 +179,7 @@ export const Online: FC = () => {
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />
-      <Navigator text="Desks" url="/online" />
+      <Navigator url="/online" />
     </>
   );
 };

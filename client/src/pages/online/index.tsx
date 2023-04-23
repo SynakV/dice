@@ -9,7 +9,7 @@ export default function Page() {
         <title>Dice | Online</title>
       </Head>
       <Desks />
-      <Navigator text="Home" />
+      <Navigator />
     </>
   );
 }

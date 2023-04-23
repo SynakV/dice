@@ -54,7 +54,7 @@ export const Offline = () => {
   return (
     <>
       <Settings />
-      <Navigator text="Home" />
+      <Navigator />
       {isShowGameDesk && (
         <>
           <Status />

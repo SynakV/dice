@@ -1,4 +1,4 @@
-import NextImage from "next/image";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { cacheAssets } from "@utils/helpers/common.helper";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
@@ -53,31 +53,13 @@ export const Layout: FC<Props> = ({ children }) => {
         {!isLoading ? (
           <>
             <div className="layout__background">
-              <NextImage fill alt="striga" src="/images/striga.jpeg" />
-              <NextImage
-                fill
-                alt="grunge-square"
-                src="/images/grunge-square.png"
-              />
-              <NextImage
-                fill
-                alt="grunge-mess"
-                src="/images/grunge-mess.webp"
-              />
+              <Image fill alt="striga" src="/images/striga.jpeg" />
+              <Image fill alt="grunge-square" src="/images/grunge-square.png" />
+              <Image fill alt="grunge-mess" src="/images/grunge-mess.webp" />
             </div>
 
-            {router.pathname !== "/" && (
-              <NextImage
-                width={50}
-                height={50}
-                alt="arrow-back"
-                className="layout__back"
-                src="/images/arrow-back.png"
-                onClick={() => router.back()}
-              />
-            )}
-
             <div className="layout__content">{children}</div>
+
             <Menu />
           </>
         ) : (
