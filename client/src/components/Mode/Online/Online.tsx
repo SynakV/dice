@@ -9,7 +9,6 @@ import { Loading } from "@components/Shared/Loading/Loading";
 import { Status } from "@components/Mode/Shared/Status/Status";
 import { Settings } from "@components/Shared/Settings/Settings";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
-import { Players } from "@components/Mode/Shared/Players/Players";
 import { History } from "@components/Mode/Shared/History/History";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import { Controls } from "@components/Mode/Online/Controls/Controls";
@@ -82,6 +81,7 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_START_GAME, (desk: DeskType) => {
       setDesk(desk);
       setIsControlsLoading(false);
+      playAudio("nextRoundStart");
     });
 
     socket.on(EVENTS.ON_START_THROW_DICE, (desk: DeskType) => {
@@ -101,6 +101,8 @@ export const Online: FC = () => {
 
       if (desk.gameplay.isShowConclusion) {
         toggleGameOpen(GAME_OPEN.CONCLUSION);
+      } else {
+        playAudio("playerThinking");
       }
     });
 
@@ -164,7 +166,6 @@ export const Online: FC = () => {
         <>
           <Status />
           <History />
-          <Players />
           <Controls />
           <Settings />
           <Conclusion />

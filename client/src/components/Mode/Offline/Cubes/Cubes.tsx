@@ -14,8 +14,8 @@ import { useDesk } from "@utils/contexts/DeskContext";
 import {
   DEFAULT_CUBES,
   getCubesReroll,
-  getCurrentRanking,
   getDiceForReroll,
+  getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
@@ -78,13 +78,13 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     const reRollIndexes = getReRollIndexes(ranking);
 
-    setTimeout(() => {
+    playAudio("playerThinking").onended = () => {
       if (reRollIndexes.length) {
         handle.startThrowDice();
       } else {
         handle.passThrowDice();
       }
-    }, 2000);
+    };
   }, [desk]);
 
   const handleRollDice = () => {

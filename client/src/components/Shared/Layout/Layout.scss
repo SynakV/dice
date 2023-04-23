@@ -1,5 +1,4 @@
-@import './Menu/Menu.scss';
-@import '../../Desks/Desks.scss', '../../Mode/Mode.scss';
+@import './Menu/Menu.scss', '../../Desks/Desks.scss', '../../Mode/Mode.scss';
 
 .layout {
     width: 100vw;
@@ -10,16 +9,46 @@
     background-color: var(--black-50);
 
     &__background {
-        top: 0;
-        left: 0;
-        z-index: -1;
         width: 100vw;
         height: 100vh;
+        overflow: hidden;
         position: absolute;
-        transform: scaleX(-1);
-        background-size: cover;
-        background-position-x: center;
-        background-image: url('../../../../public/images/striga.jpeg');
+
+        img {
+            &[alt="striga"] {
+                z-index: -3;
+                object-fit: cover;
+                transform: scaleX(-1);
+            }
+
+            &[alt="grunge-square"] {
+                z-index: -1;
+                width: calc(100vw + 7%) !important;
+                height: calc(100vh + 6%) !important;
+                transform: translate(-1%, -4%) scale(-1, 1);
+            }
+
+            &[alt="grunge-mess"] {
+                z-index: -2;
+                width: calc(100vw + 7%) !important;
+                height: calc(100vh + 6%) !important;
+                transform: translate(-1%, -4%) scale(-1, 1);
+            }
+        }
+    }
+
+    &__back {
+        top: 20px;
+        left: 25px;
+        opacity: 0.5;
+        cursor: pointer;
+        position: absolute;
+        transform: scale(-1, -1);
+        transition: var(--transition-30);
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     &__content {

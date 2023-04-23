@@ -1,7 +1,6 @@
 import { RANKING_OF_HANDS } from "@utils/constants";
 import {
   RANKING_OF_HANDS_KEYS,
-  RankingOfTypeValueType,
   RankingWithInfoType,
 } from "@utils/common/types";
 import {

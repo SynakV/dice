@@ -1,4 +1,3 @@
-import React from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -6,6 +5,8 @@ import {
   isPass,
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { playAudio } from "@utils/helpers/audio.helper";
+import { Button } from "@components/Mode/Shared/Controls/Controls";
 
 export const Controls = () => {
   const portal = usePortal();
@@ -14,6 +15,7 @@ export const Controls = () => {
 
   const handleGameStart = () => {
     handle.startGame();
+    playAudio("nextRoundStart");
   };
 
   const handleRollDice = () => {
@@ -26,6 +28,9 @@ export const Controls = () => {
 
   const ranking = getCurrentRanking(desk, player);
   const isPassing = isPass(ranking?.cubes.reroll);
+
+  const isShowHistory =
+    desk.gameplay.current.round > 0 || desk.gameplay.current.stage > 0;
 
   const currentPlayer = desk.gameplay.current.player?.id === player?.id;
 
@@ -44,41 +49,40 @@ export const Controls = () => {
 
   return portal(
     <div className="controls">
-      {!desk.gameplay.isGameStarted ? (
-        <span
-          className={`controls__start ${
-            isAllPlayersPresent ? "" : "controls__start--disabled"
-          }`}
-          onClick={isAllPlayersPresent ? () => handleGameStart() : () => {}}
-        >
-          Start game
-        </span>
-      ) : (
-        <span
-          onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
-          className={`controls__roll ${
-            isAllowedToRoll ? "" : "controls__roll--disabled"
-          }`}
-        >
-          {isFirstStageNotCompleted
-            ? "Roll dice"
-            : isPassing
-            ? "Pass"
-            : "Re-roll dice"}
-        </span>
-      )}
-      <span
-        className="controls__history"
-        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
-      >
-        History
-      </span>
-      <span
-        className="controls__settings"
+      <Button
+        position="left"
+        text="Settings"
         onClick={() => toggleGameOpen(GAME_OPEN.SETTINGS)}
-      >
-        Settings
-      </span>
+      />
+      <Button
+        text="History"
+        position="center"
+        isDiabled={!isShowHistory}
+        onClick={
+          isShowHistory ? () => toggleGameOpen(GAME_OPEN.HISTORY) : () => {}
+        }
+      />
+      {!desk.gameplay.isGameStarted ? (
+        <Button
+          text="Start game"
+          position="right"
+          isDiabled={!isAllPlayersPresent}
+          onClick={isAllPlayersPresent ? () => handleGameStart() : () => {}}
+        />
+      ) : (
+        <Button
+          text={
+            isFirstStageNotCompleted
+              ? "Roll dice"
+              : isPassing
+              ? "Pass"
+              : "Re-roll dice"
+          }
+          position="right"
+          isDiabled={!isAllowedToRoll || desk.gameplay.isShowConclusion}
+          onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
+        />
+      )}
     </div>
   );
 };

@@ -1,17 +1,28 @@
 .status {
+    top: 10%;
     left: 50%;
-    top: 150px;
-    width: 540px;
-    padding: 5px;
+    width: 550px;
+    height: 180px;
     cursor: default;
-    font-size: 40px;
+    font-size: 30px;
     position: absolute;
     text-align: center;
     color: var(--white-50);
     transform: translateX(-50%);
-    background: var(--black-50);
     transition: var(--transition-30);
-    box-shadow: 0 0 30px 40px var(--black-50);
+
+    img[alt="grunge-border"] {
+        z-index: -1;
+    }
+
+    &__text {
+        top: 50%;
+        left: 50%;
+        width: 75%;
+        margin-top: 5px;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
 }
 
 @media (min-width: 800px) or (max-width: 1400px) {

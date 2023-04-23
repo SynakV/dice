@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
@@ -72,5 +73,10 @@ export const Status = () => {
     }
   };
 
-  return portal(<div className="status">{getStatus()}</div>);
+  return portal(
+    <div className="status">
+      <Image fill alt="grunge-border" src="/images/grunge-banner.png" />
+      <div className="status__text">{getStatus()}</div>
+    </div>
+  );
 };
