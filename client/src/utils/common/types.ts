@@ -101,7 +101,6 @@ export type RankingOfHandsType = {
 export type RankingOfTypeValueType = {
   name: string;
   value: number;
-  description: string;
   function: (numbers: AppearedType) => AppearedType | false | any;
 };
 

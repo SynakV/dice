@@ -23,7 +23,7 @@ export const Desk: FC<Props> = ({ cubes: Cubes }) => {
         <Cubes key={player.id || index} player={player} />
       ))}
       {new Array(max.players - players.length).fill(null).map((_, index) => (
-        <Placeholder player={players.length + index + 1} />
+        <Placeholder key={index} player={players.length + index + 1} />
       ))}
     </div>
   );

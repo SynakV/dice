@@ -2,8 +2,8 @@ import React, { FC } from "react";
 
 interface Props {
   onClick?: Function;
-  isSelected: boolean;
   isDisabled: boolean;
+  isSelected?: boolean;
   value: number | null;
   rollAnimationNumber?: number | false;
 }

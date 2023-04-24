@@ -2,9 +2,11 @@
     display: flex;
     margin-top: 80px;
     align-items: center;
+    transform-origin: top;
     flex-direction: column;
     color: var(--white-50);
     padding: 0 25px 20px 20px;
+    transition: transform var(--transition-30);
     
     &__title {
         font-size: 50px;
@@ -31,5 +33,62 @@
         line-height: 25px;
         padding-left: 25px;
         text-align: justify;
+    }
+
+    &__rankings {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .ranking {
+        margin-top: 20px;
+
+        &__title {
+            font-size: 25px;
+        }
+
+        &__description {
+            width: 100%;
+            font-size: 20px;
+            text-align: justify;
+
+        }
+    }
+
+    .hand {
+        width: 100%;
+
+        &__header {
+            font-size: 20px;
+        }
+
+        &__cubes {
+            display: flex;
+            margin: 20px 0;
+            justify-content: space-between;
+        }
+
+        .cube-wrapper {
+            scale: 0.6;
+        }
+    }
+}
+
+@media (min-width: 900px) or (max-width: 1400px) {
+    .rules {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 450px) {
+    .rules {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 320px) {
+    .rules {
+        transform: scale(0.6);
     }
 }
