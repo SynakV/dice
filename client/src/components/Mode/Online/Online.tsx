@@ -158,7 +158,7 @@ export const Online: FC = () => {
     push("/online");
   };
 
-  const isShowGameDesk = desk && player?.id;
+  const isShowGameDesk = desk._id && player?.id;
 
   return (
     <>

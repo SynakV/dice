@@ -3,6 +3,7 @@ import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
+import { getNameFormatted } from "@utils/helpers/common.helper";
 
 export const Status = () => {
   const { desk } = useDesk();
@@ -12,7 +13,9 @@ export const Status = () => {
   const isFirstStage = desk.gameplay.current.stage === 0;
 
   const currentPlayersId = desk.gameplay.current.player?.id;
-  const currentPlayersName = desk.gameplay.current.player?.name;
+  const currentPlayersName = getNameFormatted(
+    desk.gameplay.current.player?.name || ""
+  );
 
   const isYouCurrentPlayer = currentPlayersId === player?.id;
 

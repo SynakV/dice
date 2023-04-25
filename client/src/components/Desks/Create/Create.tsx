@@ -4,14 +4,13 @@ import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { DesksModal } from "@components/Desks/utils/types";
 import { DeskType, SettingsType } from "@utils/common/types";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 interface Props {
   isOpen: boolean;
-  setIsOpen: (key: DesksModal) => void;
+  setIsOpen: () => void;
 }
 
 export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
@@ -19,10 +18,6 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const { notification } = useNotification();
   const { trigger } = useSWRMutation("desk", postRequest);
   const [settings, setSettings] = useState<SettingsType | null>(null);
-
-  const handleClose = () => {
-    setIsOpen("create");
-  };
 
   const handleCreateNewDesk = async () => {
     if (settings && isValid(settings, notification)) {
@@ -37,7 +32,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       );
 
       if (newDesk._id) {
-        handleClose();
+        setIsOpen();
         setTimeout(() => {
           router.push({
             pathname: "online/desk",
@@ -58,7 +53,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
         <Fields isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
-        <span className="create__close" onClick={handleClose}>
+        <span className="create__close" onClick={setIsOpen}>
           Close
         </span>
         <span className="create__create" onClick={handleCreateNewDesk}>

@@ -17,7 +17,6 @@
     "swr": "^2.1.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.2.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

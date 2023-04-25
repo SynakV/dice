@@ -40,7 +40,7 @@ export const Rules = () => {
               RANKING_OF_HANDS[RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND].name
             }
           >
-            {[1, 1, 1, 1, 2].map((cube, index) => (
+            {[1, 1, 1, 1, 1].map((cube, index) => (
               <Cube key={index} isDisabled value={cube} />
             ))}
           </Hand>

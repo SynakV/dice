@@ -26,3 +26,13 @@ export const cacheAssets = async () => {
     res(null);
   });
 };
+
+export const getNameFormatted = (name: string) => {
+  let newName = name;
+
+  if (name.length > 15) {
+    newName = `${name.substring(0, 8)}...`;
+  }
+
+  return name;
+};

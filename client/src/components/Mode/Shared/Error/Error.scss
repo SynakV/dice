@@ -1,0 +1,29 @@
+.error {
+    flex: 1;
+
+    &__text {
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        color: var(--white-50);
+    }
+
+    &__main {
+        flex: 1;
+        gap: 20px 0;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+
+        img {
+            opacity: 0.5;
+            transform: scale(-1);
+            transition: opacity var(--transition-30);
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+    }
+}
