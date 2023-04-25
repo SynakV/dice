@@ -176,6 +176,7 @@ export const Online: FC = () => {
       )}
       <Credentials
         isOpen={isOpen}
+        credentials={player}
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />

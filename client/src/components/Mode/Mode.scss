@@ -1,6 +1,10 @@
 @import './Shared/Shared.scss';
 
 .mode {
+    a {
+        text-decoration: none;
+    }
+
     gap: 20px 0;
     display: flex;
     flex-direction: column;

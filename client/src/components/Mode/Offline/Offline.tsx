@@ -66,6 +66,7 @@ export const Offline = () => {
       )}
       <Credentials
         isOpen={isOpen}
+        credentials={player}
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useFadeIn } from "@utils/hooks/useFadeIn";
-import { useGame } from "@utils/contexts/GameContext";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { CredentialsType, PlayerType } from "@utils/common/types";
+import { playAudio } from "@utils/helpers/audio.helper";
 import { Rules } from "@components/Shared/Layout/Menu/Rules/Rules";
 import { Amulet } from "@components/Shared/Layout/Menu/Amulet/Amulet";
-import { setCredentials } from "@utils/helpers/storage/storage.helper";
+import {
+  getCredentials,
+  setCredentials,
+} from "@utils/helpers/storage/storage.helper";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 
 export const Menu = () => {
@@ -13,8 +15,9 @@ export const Menu = () => {
     menu: false,
     credentials: false,
   });
-  const { player, setPlayer } = useGame();
   const { isShow, fadeInClass } = useFadeIn(isOpen.menu);
+
+  const player: PlayerType = getCredentials();
 
   const toggleOpen = (key: "menu" | "credentials") => {
     playAudio("hover");
@@ -26,7 +29,6 @@ export const Menu = () => {
 
   const handleSetCredentials = (credentials: CredentialsType) => {
     toggleOpen("credentials");
-    setPlayer(credentials as PlayerType);
     setCredentials(JSON.stringify(credentials));
   };
 
@@ -43,6 +45,7 @@ export const Menu = () => {
           </span>
           <Rules />
           <Credentials
+            credentials={player}
             isOpen={isOpen.credentials}
             setCredentials={handleSetCredentials}
             toggleIsOpen={() => toggleOpen("credentials")}
