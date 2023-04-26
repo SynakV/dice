@@ -8,10 +8,6 @@ export type Timers = {
   };
 };
 
-export type ErrorType = {
-  error: string;
-};
-
 export type DocumentDeskType = Document<unknown, any, Desk> &
   Omit<
     Desk & {

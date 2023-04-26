@@ -21,7 +21,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
 
   const handleCreateNewDesk = async () => {
     if (settings && isValid(settings, notification)) {
-      const newDesk: DeskType = await trigger(
+      const newDesk: DeskType & { message: string } = await trigger(
         {
           name: settings.name,
           wins: settings.wins,
@@ -42,7 +42,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
           });
         }, TIMEOUT_TRANSITION);
       } else {
-        notification("Desk with such name already exists");
+        notification(newDesk.message);
       }
     }
   };
