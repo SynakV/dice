@@ -6,9 +6,15 @@ export type DeskType = {
   gameplay: GameplayType;
 };
 
+export enum PLAYER_STATUS {
+  OFFLINE = "offline",
+  ONLINE = "online",
+}
+
 export type PlayerType = {
   id: string;
   name: string;
+  status: PLAYER_STATUS;
 };
 
 export type CredentialsType = Partial<PlayerType>;

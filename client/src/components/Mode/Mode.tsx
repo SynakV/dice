@@ -7,10 +7,8 @@ export const Mode = () => (
     <span className="mode__head-text">Select mode</span>
     <div className="mode__selector">
       {Object.entries(MODE).map(([key, { title, url }]) => (
-        <Link href={url}>
-          <span key={key} className="mode__option">
-            {title}
-          </span>
+        <Link className="mode__option" key={key} href={url}>
+          {title}
         </Link>
       ))}
     </div>

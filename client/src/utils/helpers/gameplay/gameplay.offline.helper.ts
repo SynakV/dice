@@ -5,6 +5,7 @@ import {
   SettingsType,
   RankingWithInfoType,
   PlayerType,
+  PLAYER_STATUS,
 } from "@utils/common/types";
 import { getRandomInt } from "@utils/helpers/randomizer.helper";
 import {
@@ -269,9 +270,20 @@ export const afterChangeSettings = (
   };
 };
 
+const getNextPlayer = (desk: DeskType) => {
+  const currentPlayerIndex = desk.gameplay.players.findIndex(
+    (player) => player.id === desk.gameplay.current.player?.id
+  );
+
+  const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];
+
+  return nextPlayer ? nextPlayer : desk.gameplay.players[0];
+};
+
 export const getPlayer = (name: string): PlayerType => ({
   name,
   id: Math.random().toString(),
+  status: PLAYER_STATUS.OFFLINE,
 });
 
 export const getPlayers = (count: number, player: PlayerType) => {
@@ -285,19 +297,10 @@ export const getPlayers = (count: number, player: PlayerType) => {
       players.push({
         id,
         name,
+        status: PLAYER_STATUS.OFFLINE,
       });
     }
   }
 
   return players;
-};
-
-const getNextPlayer = (desk: DeskType) => {
-  const currentPlayerIndex = desk.gameplay.players.findIndex(
-    (player) => player.id === desk.gameplay.current.player?.id
-  );
-
-  const nextPlayer = desk.gameplay.players[currentPlayerIndex + 1];
-
-  return nextPlayer ? nextPlayer : desk.gameplay.players[0];
 };

@@ -8,10 +8,10 @@ import { Desk } from 'src/desk/desk.model';
 import { Server, Socket } from 'socket.io';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
-import { DeskType } from 'src/utils/common/types';
 import { DocumentDeskType } from 'src/utils/types';
 import { deepClone } from 'src/utils/common/helpers';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
+import { DeskType, PLAYER_STATUS } from 'src/utils/common/types';
 import { HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
 import { DEFAULT_ROUND, EVENTS, MESSAGES } from 'src/utils/common/constants';
 
@@ -59,7 +59,15 @@ export class GatewayService implements OnModuleInit {
 
     const updatedDesk = await this.deskModel.findOneAndUpdate(
       { _id: desk },
-      { $push: { 'gameplay.players': { id: client.id, name } } },
+      {
+        $push: {
+          'gameplay.players': {
+            name,
+            id: client.id,
+            status: PLAYER_STATUS.ONLINE,
+          },
+        },
+      },
       { new: true },
     );
 
