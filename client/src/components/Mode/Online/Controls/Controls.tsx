@@ -7,6 +7,7 @@ import {
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
+import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const Controls = () => {
   const portal = usePortal();
@@ -45,7 +46,7 @@ export const Controls = () => {
   const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
   const isCurrentPlayer = desk.gameplay.current.player?.id === player?.id;
 
-  const isYouFirstPlayer = desk.gameplay.players[0]?.id === player?.id;
+  const isYouAdmin = getAdmin(desk)?.id === player?.id;
 
   const isAllowedToRoll =
     !isControlsLoading &&
@@ -54,11 +55,11 @@ export const Controls = () => {
     isCurrentPlayer;
 
   const isAllowToStartGame =
-    !isControlsLoading && isAllPlayersPresent && isYouFirstPlayer;
+    !isControlsLoading && isAllPlayersPresent && isYouAdmin;
 
   return portal(
     <div className="controls">
-      {isYouFirstPlayer && (
+      {isYouAdmin && (
         <Button
           position="left"
           text="Settings"
@@ -68,7 +69,7 @@ export const Controls = () => {
       <Button
         text="History"
         isDiabled={!isShowHistory}
-        position={isYouFirstPlayer ? "center" : "left"}
+        position={isYouAdmin ? "center" : "left"}
         onClick={
           isShowHistory ? () => toggleGameOpen(GAME_OPEN.HISTORY) : () => {}
         }

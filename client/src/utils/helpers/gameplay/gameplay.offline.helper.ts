@@ -1,11 +1,11 @@
 import { getRankingsComparisonWinner } from "@utils/helpers/ranking/ranking.helper";
 import {
   DeskType,
+  PlayerType,
   RerollType,
   SettingsType,
-  RankingWithInfoType,
-  PlayerType,
   PLAYER_STATUS,
+  RankingWithInfoType,
 } from "@utils/common/types";
 import { getRandomInt } from "@utils/helpers/randomizer.helper";
 import {

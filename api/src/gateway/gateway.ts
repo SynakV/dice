@@ -276,10 +276,7 @@ export class GatewayService implements OnModuleInit {
         isGameStarted: false,
         isShowConclusion: false,
         rounds: [deepClone(DEFAULT_ROUND)],
-        current: {
-          ...deepClone(DEFAULT_CURRENT),
-          player: updatedDesk.gameplay.players[0],
-        },
+        current: deepClone(DEFAULT_CURRENT),
       },
     });
   }

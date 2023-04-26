@@ -114,6 +114,8 @@ export const ASSETS = {
     "winner.webp",
     "striga.jpeg",
     "arrow-back.png",
+    "grunge-star.png",
+    "grunge-cross.png",
     "grunge-mess.webp",
     "grunge-banner.png",
     "grunge-corner.png",
