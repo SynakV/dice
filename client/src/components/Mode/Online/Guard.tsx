@@ -27,6 +27,13 @@ export const Guard: FC<Props> = ({ children }) => {
       return setError(ERRORS.GAME_ALREADY_STARTED);
     }
 
+    if (
+      desk.gameplay.players.length === desk.gameplay.max.players &&
+      !player?.id
+    ) {
+      return setError(ERRORS.GAME_FULL_OF_PLAYERS);
+    }
+
     if (desk._id) {
       setIsShowChildren(true);
     }

@@ -7,6 +7,7 @@ import React, { FC, ReactNode, useEffect, useState } from "react";
 export enum ERRORS {
   GAME_DOES_NOT_EXIST,
   GAME_ALREADY_STARTED,
+  GAME_FULL_OF_PLAYERS,
 }
 
 interface Props {
@@ -24,6 +25,7 @@ export const Error: FC<Props> = ({ type }) => {
   return portal(
     <Modal className="error" title="Oops..." isOpen={isOpen}>
       {type === ERRORS.GAME_DOES_NOT_EXIST && <GameDoesNotExist />}
+      {type === ERRORS.GAME_FULL_OF_PLAYERS && <GameFullOfPlayers />}
       {type === ERRORS.GAME_ALREADY_STARTED && <GameAlreadyStarted />}
     </Modal>
   );
@@ -45,12 +47,12 @@ const ErrorBody = ({ text }: { text: ReactNode }) => {
   );
 };
 
-const GameAlreadyStarted = () => {
+const GameDoesNotExist = () => {
   return (
     <ErrorBody
       text={
         <>
-          <p>Sorry, you're late. Game already started.</p>
+          <p>Sorry, seems like desk does not exist anymore.</p>
           <p>Go to home page and join/create another desk.</p>
         </>
       }
@@ -58,12 +60,25 @@ const GameAlreadyStarted = () => {
   );
 };
 
-const GameDoesNotExist = () => {
+const GameFullOfPlayers = () => {
   return (
     <ErrorBody
       text={
         <>
-          <p>Sorry, seems like desk does not exist anymore.</p>
+          <p>Sorry, game is already full of players.</p>
+          <p>Go to home page and join/create another desk.</p>
+        </>
+      }
+    />
+  );
+};
+
+const GameAlreadyStarted = () => {
+  return (
+    <ErrorBody
+      text={
+        <>
+          <p>Sorry, you're late. Game already started.</p>
           <p>Go to home page and join/create another desk.</p>
         </>
       }

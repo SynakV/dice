@@ -219,11 +219,23 @@ export class GatewayService implements OnModuleInit {
 
     client.leave(room);
 
-    const updatedDesk = await this.deskModel.findOneAndUpdate(
-      { _id: room },
-      { $pull: { 'gameplay.players': { id: client.id } } },
-      { new: true },
-    );
+    const desk = await this.deskModel.findById(room);
+
+    let updatedDesk;
+
+    if (desk?.gameplay.isGameStarted) {
+      updatedDesk = await this.deskModel.findOneAndUpdate(
+        { _id: room, 'gameplay.players.id': client.id },
+        { $set: { 'gameplay.players.$.status': PLAYER_STATUS.OFFLINE } },
+        { new: true },
+      );
+    } else {
+      updatedDesk = await this.deskModel.findOneAndUpdate(
+        { _id: room },
+        { $pull: { 'gameplay.players': { id: client.id } } },
+        { new: true },
+      );
+    }
 
     client
       .to(room)

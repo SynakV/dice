@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import { getRequest } from "@utils/api/api";
 import useSWRImmutable from "swr/immutable";
 import { FC, useEffect, useState } from "react";
 import { DEFAULT_DESK } from "@utils/common/constants";
 import { useSocket } from "@utils/contexts/SocketContext";
+import { IMMUTABLE_SWR_CONFIGS, getRequest } from "@utils/api/api";
 import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import {
   DeskType,
@@ -31,11 +31,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
   const { data } = useSWRImmutable(
     () => (query.id ? `desk/${query.id}` : null),
     getRequest<DeskType>,
-    {
-      onErrorRetry() {
-        return;
-      },
-    }
+    IMMUTABLE_SWR_CONFIGS
   );
 
   useEffect(() => {

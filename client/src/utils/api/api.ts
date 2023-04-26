@@ -16,3 +16,12 @@ export const postRequest = async <T>(url: string, { arg }: { arg: T }) => {
     },
   }).then((res) => res.json());
 };
+
+export const IMMUTABLE_SWR_CONFIGS = {
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+  refreshWhenOffline: false,
+  refreshWhenHidden: false,
+  revalidateOnMount: true,
+  refreshInterval: 0,
+};
