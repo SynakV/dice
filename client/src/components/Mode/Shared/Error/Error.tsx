@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
-import React, { FC, useEffect, useState } from "react";
 import { Modal } from "@components/Shared/Modal/Modal";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 
 export enum ERRORS {
+  GAME_DOES_NOT_EXIST,
   GAME_ALREADY_STARTED,
 }
 
@@ -22,18 +23,16 @@ export const Error: FC<Props> = ({ type }) => {
 
   return portal(
     <Modal className="error" title="Oops..." isOpen={isOpen}>
+      {type === ERRORS.GAME_DOES_NOT_EXIST && <GameDoesNotExist />}
       {type === ERRORS.GAME_ALREADY_STARTED && <GameAlreadyStarted />}
     </Modal>
   );
 };
 
-const GameAlreadyStarted = () => {
+const ErrorBody = ({ text }: { text: ReactNode }) => {
   return (
     <div className="error__main">
-      <span className="error__text">
-        <p>Sorry, you're late. Game already started.</p>
-        <p>Got home page and join/create another desk.</p>
-      </span>
+      <span className="error__text">{text}</span>
       <Link href="/online">
         <Image
           width={50}
@@ -43,5 +42,31 @@ const GameAlreadyStarted = () => {
         />
       </Link>
     </div>
+  );
+};
+
+const GameAlreadyStarted = () => {
+  return (
+    <ErrorBody
+      text={
+        <>
+          <p>Sorry, you're late. Game already started.</p>
+          <p>Go to home page and join/create another desk.</p>
+        </>
+      }
+    />
+  );
+};
+
+const GameDoesNotExist = () => {
+  return (
+    <ErrorBody
+      text={
+        <>
+          <p>Sorry, seems like desk does not exist anymore.</p>
+          <p>Go to home page and join/create another desk.</p>
+        </>
+      }
+    />
   );
 };

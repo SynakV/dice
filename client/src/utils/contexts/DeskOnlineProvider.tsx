@@ -22,6 +22,7 @@ import {
   afterEndGame,
   afterChangeSettings,
 } from "@utils/helpers/gameplay/gameplay.online.helper";
+import { Guard } from "@components/Mode/Online/Guard";
 
 export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
@@ -29,7 +30,12 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
   const { query } = useRouter();
   const { data } = useSWRImmutable(
     () => (query.id ? `desk/${query.id}` : null),
-    getRequest<DeskType>
+    getRequest<DeskType>,
+    {
+      onErrorRetry() {
+        return;
+      },
+    }
   );
 
   useEffect(() => {
@@ -74,7 +80,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
     setDesk((prev) => afterChangeSettings(prev, settings, socket));
   };
 
-  return desk._id ? (
+  return (
     <DeskProvider
       handle={{
         startGame,
@@ -90,7 +96,8 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
       desk={desk}
       socket={socket}
       setDesk={setDesk}
-      children={children}
-    />
-  ) : null;
+    >
+      <Guard>{children}</Guard>
+    </DeskProvider>
+  );
 };

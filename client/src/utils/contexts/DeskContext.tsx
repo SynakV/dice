@@ -63,7 +63,7 @@ export const DeskProvider: FC<DeskCommonProps & DeskContext> = ({
 }) => {
   return (
     <DeskContext.Provider value={{ setDesk, handle, socket, desk }}>
-      {desk && children}
+      {children}
     </DeskContext.Provider>
   );
 };

@@ -6,13 +6,13 @@ import {
 import { Model } from 'mongoose';
 import { Desk } from 'src/desk/desk.model';
 import { Server, Socket } from 'socket.io';
-import { OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
 import { DeskType } from 'src/utils/common/types';
+import { DocumentDeskType } from 'src/utils/types';
 import { deepClone } from 'src/utils/common/helpers';
-import { DocumentDeskType, Timers } from 'src/utils/types';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
+import { HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
 import { DEFAULT_ROUND, EVENTS, MESSAGES } from 'src/utils/common/constants';
 
 @WebSocketGateway({
@@ -26,8 +26,6 @@ import { DEFAULT_ROUND, EVENTS, MESSAGES } from 'src/utils/common/constants';
 })
 export class GatewayService implements OnModuleInit {
   constructor(@InjectModel('Desk') private readonly deskModel: Model<Desk>) {}
-
-  private readonly timers: Timers = {};
 
   @WebSocketServer()
   server: Server;
@@ -65,7 +63,9 @@ export class GatewayService implements OnModuleInit {
       { new: true },
     );
 
-    this.server.to(desk).emit(EVENTS.ON_JOIN_DESK, updatedDesk);
+    this.server
+      .to(desk)
+      .emit(EVENTS.ON_JOIN_DESK, this.getMessageBody(updatedDesk));
   }
 
   @SubscribeMessage(MESSAGES.START_GAME)
@@ -77,7 +77,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_START_GAME, updatedDesk);
+      this.server
+        .to(desk._id)
+        .emit(EVENTS.ON_START_GAME, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -90,7 +92,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_START_THROW_DICE, updatedDesk);
+      this.server
+        .to(desk._id)
+        .emit(EVENTS.ON_START_THROW_DICE, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -103,7 +107,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_THROW_DICE, updatedDesk);
+      this.server
+        .to(desk._id)
+        .emit(EVENTS.ON_THROW_DICE, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -121,7 +127,7 @@ export class GatewayService implements OnModuleInit {
 
     this.server
       .to(updatedDesk.id)
-      .emit(EVENTS.ON_FINISH_THROW_DICE, updatedDesk);
+      .emit(EVENTS.ON_FINISH_THROW_DICE, this.getMessageBody(updatedDesk));
 
     if (
       updatedDesk.gameplay.rounds[updatedDesk.gameplay.current.round]
@@ -140,7 +146,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (updatedDesk) {
-      this.server.to(updatedDesk.id).emit(EVENTS.ON_SELECT_DICE, updatedDesk);
+      this.server
+        .to(updatedDesk.id)
+        .emit(EVENTS.ON_SELECT_DICE, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -162,7 +170,7 @@ export class GatewayService implements OnModuleInit {
       } else {
         this.server
           .to(updatedDesk.id)
-          .emit(EVENTS.ON_CLOSE_CONCLUSION, updatedDesk);
+          .emit(EVENTS.ON_CLOSE_CONCLUSION, this.getMessageBody(updatedDesk));
       }
     }, 5000);
   }
@@ -176,7 +184,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_END_GAME, updatedDesk);
+      this.server
+        .to(desk._id)
+        .emit(EVENTS.ON_END_GAME, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -189,7 +199,9 @@ export class GatewayService implements OnModuleInit {
     );
 
     if (desk._id) {
-      this.server.to(desk._id).emit(EVENTS.ON_CHANGE_SETTINGS, updatedDesk);
+      this.server
+        .to(desk._id)
+        .emit(EVENTS.ON_CHANGE_SETTINGS, this.getMessageBody(updatedDesk));
     }
   }
 
@@ -205,7 +217,9 @@ export class GatewayService implements OnModuleInit {
       { new: true },
     );
 
-    client.to(room).emit(EVENTS.ON_LEAVE_DESK, updatedDesk);
+    client
+      .to(room)
+      .emit(EVENTS.ON_LEAVE_DESK, this.getMessageBody(updatedDesk));
   }
 
   async handleFinishStageAfterCloseConclusion(
@@ -248,5 +262,13 @@ export class GatewayService implements OnModuleInit {
         },
       },
     });
+  }
+
+  getMessageBody(body: DocumentDeskType | null) {
+    if (body) {
+      return body;
+    } else {
+      return new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
   }
 }
