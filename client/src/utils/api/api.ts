@@ -6,7 +6,7 @@ export const server =
 export const getRequest = <T>(url: string): Promise<T> =>
   fetch(`${server}/${url}`).then((r) => r.json());
 
-export const postRequest = async <T>(url: string, { arg }: { arg: T }) => {
+export const postRequest = async <T>(url: string, arg: T) => {
   return fetch(`${server}/${url}`, {
     method: "POST",
     body: JSON.stringify(arg),
@@ -15,13 +15,4 @@ export const postRequest = async <T>(url: string, { arg }: { arg: T }) => {
       "Content-Type": "application/json",
     },
   }).then((res) => res.json());
-};
-
-export const IMMUTABLE_SWR_CONFIGS = {
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
-  refreshWhenOffline: false,
-  refreshWhenHidden: false,
-  revalidateOnMount: true,
-  refreshInterval: 0,
 };

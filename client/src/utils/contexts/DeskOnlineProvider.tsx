@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import useSWRImmutable from "swr/immutable";
+import { getRequest } from "@utils/api/api";
 import { FC, useEffect, useState } from "react";
+import { Guard } from "@components/Mode/Online/Guard";
 import { DEFAULT_DESK } from "@utils/common/constants";
 import { useSocket } from "@utils/contexts/SocketContext";
-import { IMMUTABLE_SWR_CONFIGS, getRequest } from "@utils/api/api";
 import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import {
   DeskType,
@@ -22,23 +22,18 @@ import {
   afterEndGame,
   afterChangeSettings,
 } from "@utils/helpers/gameplay/gameplay.online.helper";
-import { Guard } from "@components/Mode/Online/Guard";
 
 export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
-  const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
   const socket = useSocket();
   const { query } = useRouter();
-  const { data } = useSWRImmutable(
-    () => (query.id ? `desk/${query.id}` : null),
-    getRequest<DeskType>,
-    IMMUTABLE_SWR_CONFIGS
-  );
+
+  const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
 
   useEffect(() => {
-    if (data) {
-      setDesk(data);
-    }
-  }, [data]);
+    (async () => {
+      setDesk(await getRequest<DeskType>("desk/" + query.id));
+    })();
+  }, []);
 
   const startGame = () => {
     setDesk((prev) => afterStartGame(prev, socket));

@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import { getRequest } from "@utils/api/api";
 import { DeskType } from "@utils/common/types";
@@ -10,15 +9,17 @@ import { useNotification } from "@components/Shared/Notification/Notification";
 export const Desks = () => {
   const router = useRouter();
   const { notification } = useNotification();
-  const { data, isLoading } = useSWR<DeskType[]>("desk", getRequest);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [desks, setDesks] = useState<DeskType[]>([]);
 
   useEffect(() => {
-    if (data?.length) {
-      setDesks(data);
-    }
-  }, [data]);
+    (async () => {
+      setIsLoading(true);
+      setDesks(await getRequest<DeskType[]>("desk"));
+      setIsLoading(false);
+    })();
+  }, []);
 
   const [isModalOpen, setIsMOdalOpen] = useState(false);
 

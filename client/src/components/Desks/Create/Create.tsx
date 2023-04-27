@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import useSWRMutation from "swr/mutation";
 import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
@@ -16,19 +15,19 @@ interface Props {
 export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const { notification } = useNotification();
-  const { trigger } = useSWRMutation("desk", postRequest);
+
   const [settings, setSettings] = useState<SettingsType | null>(null);
 
   const handleCreateNewDesk = async () => {
     if (settings && isValid(settings, notification)) {
-      const newDesk: DeskType & { message: string } = await trigger(
+      const newDesk: DeskType & { message: string } = await postRequest(
+        "desk",
         {
           name: settings.name,
           wins: settings.wins,
           stages: settings.stages,
           players: settings.players,
-        },
-        { revalidate: false }
+        }
       );
 
       if (newDesk._id) {
