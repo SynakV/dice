@@ -121,25 +121,24 @@
             z-index: -1;
             display: block;
             position: absolute;
-            width: var(--square);
-            height: var(--square);
             transition: var(--transition-30);
-            background-color: var(--black-50);
-            box-shadow: 0 0 10px 10px var(--black-50);
-            transform: translate(0px, -50px) rotateX(45deg) rotateZ(45deg);
+            width: calc(var(--square) + var(--half-square));
+            height: calc(var(--square) + var(--half-square));
+            transform: translate(-15px, -65px) rotateX(45deg) rotateZ(45deg);
 
             &__selected {
-                background-color: var(--white-35);
-                box-shadow: 0 0 10px 10px var(--white-35);
+                filter: invert(1);
             }
         }
     }
 
     &__selected {
+        transition: var(--transition-30);
         transform: translate(0px, -10px);
 
         .cube-status {
-            transform: translate(0px, calc(var(--half-square) * -1)) rotateX(45deg) rotateZ(45deg);
+            opacity: 0.5;
+            transform: translate(-15px, -55px) rotateX(45deg) rotateZ(45deg);
         }
     }
 }
