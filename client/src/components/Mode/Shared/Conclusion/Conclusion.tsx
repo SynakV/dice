@@ -7,10 +7,10 @@ export const getWinnerIcons = (wins: number = 0) => {
     <div className="hand__wins">
       <span className="hand__wins-counter">{wins}</span>
       <Image
-        width={125}
-        height={125}
-        alt="winner"
-        src="/images/winner.webp"
+        width={75}
+        height={75}
+        alt="wreath"
+        src="/images/wreath.png"
         className="hand__wins-img"
       />
     </div>

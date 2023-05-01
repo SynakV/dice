@@ -11,6 +11,7 @@ interface Props {
 export const Guard: FC<Props> = ({ children }) => {
   const { player } = useGame();
   const { desk }: { desk: DeskType & { status?: number } } = useDesk();
+
   const [error, setError] = useState<ERRORS | null>(null);
   const [isShowChildren, setIsShowChildren] = useState(false);
 

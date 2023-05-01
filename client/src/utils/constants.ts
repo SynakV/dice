@@ -111,7 +111,7 @@ export const NAMES = [
 export const ASSETS = {
   IMAGES: [
     "amulet.png",
-    "winner.webp",
+    "wreath.png",
     "striga.jpeg",
     "arrow-back.png",
     "grunge-star.png",

@@ -77,22 +77,19 @@
     .hand {
         &__wins {
             top: 35px;
-            left: -120px;
-            width: 150px;
+            left: -80px;
             height: 75px;
+            opacity: 0.5;
             display: flex;
             font-size: 25px;
+            filter: invert(1);
             position: absolute;
-            text-align: center;
-            align-items: center;
-            color: var(--white-50);
-            justify-content: center;
     
             &-counter {
                 top: 20px;
                 font-size: 20px;
                 position: absolute;
-                left: calc(50% - 6px);
+                left: calc(50% - 4px);
             }
         }
     }
