@@ -11,6 +11,9 @@ export const Desk: FC<Props> = ({ cubes: Cubes }) => {
 
   const { players, max, isGameEnded } = desk.gameplay;
 
+  const placeholderPlayers =
+    max.players - players.length < 0 ? 0 : max.players - players.length;
+
   useEffect(() => {
     if (isGameEnded) {
       handle.endGame();
@@ -22,7 +25,7 @@ export const Desk: FC<Props> = ({ cubes: Cubes }) => {
       {players.map((player, index) => (
         <Cubes key={player.id || index} player={player} />
       ))}
-      {new Array(max.players - players.length).fill(null).map((_, index) => (
+      {new Array(placeholderPlayers).fill(null).map((_, index) => (
         <Placeholder key={index} player={players.length + index + 1} />
       ))}
     </div>

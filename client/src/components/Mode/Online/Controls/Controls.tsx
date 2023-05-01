@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -6,6 +6,7 @@ import {
   isPass,
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { PLAYER_STATUS } from "@utils/common/types";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
 import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
@@ -29,6 +30,37 @@ export const Controls = () => {
     setIsControlsLoading(true);
   };
 
+  useEffect(() => {
+    const currentPlayer = desk.gameplay.current.player;
+
+    const isCurrentPlayerOffline =
+      desk.gameplay.players.find((player) => player.id === currentPlayer?.id)
+        ?.status === PLAYER_STATUS.OFFLINE;
+
+    if (
+      isCurrentRoundCompleted ||
+      !isCurrentPlayerOffline ||
+      isCurrentStageStarted ||
+      isCurrentPlayerThrew ||
+      !isYouAdmin
+    ) {
+      return;
+    }
+
+    const offlinePlayerRanking = getCurrentRanking(desk, currentPlayer);
+
+    if (
+      isPass(offlinePlayerRanking?.cubes.reroll) &&
+      desk.gameplay.current.stage !== 0
+    ) {
+      handle.passThrowDice();
+    } else {
+      handle.startThrowDice();
+    }
+
+    setIsControlsLoading(true);
+  }, [desk.gameplay.players]);
+
   const ranking = getCurrentRanking(desk, player);
   const isPassing = isPass(ranking?.cubes.reroll);
 
@@ -41,10 +73,12 @@ export const Controls = () => {
   const isAllPlayersPresent =
     desk.gameplay.players.length === desk.gameplay.max.players;
 
-  const isCurrentPlayerThrew = currentStage.isPlayerThrew;
+  const isCurrentRoundCompleted = currentRound.isCompleted;
+
   const isCurrentStageStarted = currentStage.isStarted;
+  const isCurrentPlayerThrew = currentStage.isPlayerThrew;
   const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
-  const isCurrentPlayer = desk.gameplay.current.player?.id === player?.id;
+  const isYouCurrentPlayer = desk.gameplay.current.player?.id === player?.id;
 
   const isYouAdmin = getAdmin(desk)?.id === player?.id;
 
@@ -52,7 +86,7 @@ export const Controls = () => {
     !isControlsLoading &&
     !isCurrentStageStarted &&
     !isCurrentPlayerThrew &&
-    isCurrentPlayer;
+    isYouCurrentPlayer;
 
   const isAllowToStartGame =
     !isControlsLoading && isAllPlayersPresent && isYouAdmin;

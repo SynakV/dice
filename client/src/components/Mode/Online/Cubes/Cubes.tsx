@@ -1,8 +1,8 @@
 import { DICE } from "@utils/constants";
 import React, { FC, useEffect } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
-import { CubesType, PlayerType } from "@utils/common/types";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
+import { CubesType, PLAYER_STATUS, PlayerType } from "@utils/common/types";
 import {
   getNonEqualInt,
   getRandomIntsFromInterval,
@@ -14,8 +14,8 @@ import {
 import { useDesk } from "@utils/contexts/DeskContext";
 import {
   getCubesReroll,
-  getCurrentRanking,
   getDiceForReroll,
+  getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
@@ -31,6 +31,10 @@ export const Cubes: FC<Props> = ({ player }) => {
   const { player: you, setIsControlsLoading } = useGame();
 
   const isOtherPlayer = player.id !== you?.id;
+  const isCurrentPlayerOnline =
+    desk.gameplay.players.find(
+      (player) => player.id === desk.gameplay.current.player?.id
+    )?.status === PLAYER_STATUS.ONLINE;
 
   const isCurrentPlayerTurn = desk.gameplay.current.player?.id === player.id;
 
@@ -46,7 +50,7 @@ export const Cubes: FC<Props> = ({ player }) => {
       !stage.isStarted ||
       stage.isCompleted ||
       !isCurrentPlayerTurn ||
-      isOtherPlayer
+      (isOtherPlayer && isCurrentPlayerOnline)
     ) {
       return;
     }
@@ -83,7 +87,7 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     const newCubes = getDiceForReroll(cubes || ranking.cubes) || [];
 
-    playAudio("handMixDice").onended = () => {
+    playAudio("handMixDice", true).onended = () => {
       handleSetRoll(newCubes);
     };
   };
