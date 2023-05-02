@@ -30,5 +30,9 @@
         position: absolute;
         color: var(--white-50);
         transition: var(--transition-30);
+
+        &:hover {
+            color: var(--white-80);
+        }
     }
 }

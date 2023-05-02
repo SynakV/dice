@@ -82,14 +82,13 @@ export const Controls = () => {
 
   const isYouAdmin = getAdmin(desk)?.id === player?.id;
 
+  const isAllowToStartGame = isAllPlayersPresent && isYouAdmin;
+
   const isAllowedToRoll =
-    !isControlsLoading &&
     !isCurrentStageStarted &&
     !isCurrentPlayerThrew &&
-    isYouCurrentPlayer;
-
-  const isAllowToStartGame =
-    !isControlsLoading && isAllPlayersPresent && isYouAdmin;
+    isYouCurrentPlayer &&
+    !desk.gameplay.isShowConclusion;
 
   return portal(
     <div className="controls">
@@ -127,7 +126,7 @@ export const Controls = () => {
           }
           position="right"
           isLoading={isControlsLoading}
-          isDiabled={!isAllowedToRoll || desk.gameplay.isShowConclusion}
+          isDiabled={!isAllowedToRoll}
           onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
         />
       )}

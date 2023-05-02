@@ -149,7 +149,7 @@ export const Rules = () => {
               RANKING_OF_HANDS[RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND].name
             }
           >
-            {[1, 1, 1, 2, 6].map((cube, index) => (
+            {[1, 1, 1, 2, 3].map((cube, index) => (
               <Cube key={index} isDisabled value={cube} />
             ))}
           </Hand>
@@ -172,7 +172,7 @@ export const Rules = () => {
             player="Player"
             ranking={RANKING_OF_HANDS[RANKING_OF_HANDS_KEYS.TWO_PAIRS].name}
           >
-            {[1, 1, 2, 2, 6].map((cube, index) => (
+            {[1, 1, 2, 2, 3].map((cube, index) => (
               <Cube key={index} isDisabled value={cube} />
             ))}
           </Hand>
@@ -195,7 +195,7 @@ export const Rules = () => {
             player="Player"
             ranking={RANKING_OF_HANDS[RANKING_OF_HANDS_KEYS.PAIR].name}
           >
-            {[1, 1, 3, 4, 6].map((cube, index) => (
+            {[1, 1, 2, 3, 4].map((cube, index) => (
               <Cube key={index} isDisabled value={cube} />
             ))}
           </Hand>

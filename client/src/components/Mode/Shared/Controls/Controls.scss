@@ -67,26 +67,6 @@
             cursor: default;
         }
 
-    //     &--loading {
-    //         &:before, &:after {
-    //             content: '';
-    //             position: absolute;
-    //             left: -1px;
-    //             top: -1px;
-    //             background: linear-gradient(45deg, #000000, #484848, #787878,#b8b8b8, #ffffff, #000000, 
-    //                 #484848, #787878,#b8b8b8, #ffffff);
-    //             background-size: 400%;
-    //             width: calc(100% + 5px);
-    //             height: 49px;
-    //             z-index: -1;
-    //             animation: steam 10s linear infinite;
-    //         }
-    
-    //         &:after {
-    //             filter: blur(2px);
-    //         }
-    //     }
-
         &:hover:not(&--disabled) {
             opacity: 0.8;
         }
