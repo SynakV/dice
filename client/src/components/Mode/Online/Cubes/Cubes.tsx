@@ -62,7 +62,7 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     // LAST STAGE (Re-Roll)
     else {
-      if (!isOtherPlayer) {
+      if (!isOtherPlayer || !isCurrentPlayerOnline) {
         return handleReRollDice();
       }
 
