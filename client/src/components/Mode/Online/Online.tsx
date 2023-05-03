@@ -65,6 +65,18 @@ export const Online: FC = () => {
     }
   }, [player]);
 
+  const handleInitializePlayer = ({ name }: CredentialsType) => {
+    setPlayer({ id: socket?.id } as PlayerType);
+    socket?.emit(MESSAGES.JOIN_DESK, {
+      desk: desk._id,
+      name,
+    });
+  };
+
+  const handleCloseCredentials = () => {
+    push("/online");
+  };
+
   useEffect(() => {
     setPlayer(getCredentials());
 
@@ -145,18 +157,6 @@ export const Online: FC = () => {
       });
     };
   }, []);
-
-  const handleInitializePlayer = ({ name }: CredentialsType) => {
-    setPlayer({ id: socket?.id } as PlayerType);
-    socket?.emit(MESSAGES.JOIN_DESK, {
-      desk: desk._id,
-      name,
-    });
-  };
-
-  const handleCloseCredentials = () => {
-    push("/online");
-  };
 
   const isShowGameDesk = desk._id && player?.id;
 
