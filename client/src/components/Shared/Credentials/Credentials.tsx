@@ -1,23 +1,23 @@
 import React, { FC, useRef } from "react";
 import { CredentialsType } from "@utils/common/types";
-import { useGame } from "@utils/contexts/GameContext";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 interface Props {
   isOpen: boolean;
   toggleIsOpen: () => void;
+  credentials: CredentialsType | null;
   setCredentials: (credentials: CredentialsType) => void;
 }
 
 export const Credentials: FC<Props> = ({
   isOpen,
+  credentials,
   toggleIsOpen,
   setCredentials,
 }) => {
   const name = useRef<HTMLInputElement>(null);
 
-  const { player } = useGame();
   const { notification } = useNotification();
 
   const handleSetCredentials = () => {
@@ -37,7 +37,7 @@ export const Credentials: FC<Props> = ({
         <input
           type="text"
           ref={name}
-          defaultValue={player?.name}
+          defaultValue={credentials?.name}
           className="credentials__input"
         />
       </div>

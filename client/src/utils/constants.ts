@@ -16,55 +16,46 @@ export const RANKING_OF_HANDS: RankingOfHandsType = {
     value: 0,
     name: "Nothing",
     function: isNothing,
-    description: "five mismatched dice forming no sequence longer than four.",
   },
   [RANKING_OF_HANDS_KEYS.PAIR]: {
     value: 1,
     name: "Pair",
     function: isPair,
-    description: "two dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.TWO_PAIRS]: {
     value: 2,
     name: "Two pairs",
     function: isTwoPairs,
-    description: "two pairs of dice, each showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.THREE_OF_A_KIND]: {
     value: 3,
     name: "Three of a kind",
     function: isThreeOfAKind,
-    description: "three dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.FIVE_HIGH_STRAIGHT]: {
     value: 4,
     name: "Five high straight",
     function: isFiveHighStraight,
-    description: "dice showing values from 1 through 5, inclusive.",
   },
   [RANKING_OF_HANDS_KEYS.SIX_HIGH_STRAIGHT]: {
     value: 5,
     name: "Six high straight",
     function: isSixHighStraight,
-    description: "dice showing values from 2 through 6, inclusive.",
   },
   [RANKING_OF_HANDS_KEYS.FULL_HOUSE]: {
     value: 6,
     name: "Full house",
     function: isFullHouse,
-    description: "Pair of one value and Three-of-a-Kind of another.",
   },
   [RANKING_OF_HANDS_KEYS.FOUR_OF_A_KIND]: {
     value: 7,
     name: "Four of a kind",
     function: isFourOfAKind,
-    description: "four dice showing the same value.",
   },
   [RANKING_OF_HANDS_KEYS.FIVE_OF_A_KIND]: {
     value: 8,
     name: "Five of a kind",
     function: isFiveOfAKind,
-    description: "all five dice showing the same value.",
   },
 };
 
@@ -116,3 +107,32 @@ export const NAMES = [
   "Mr. Michael Perez",
   "James Lewis",
 ];
+
+export const ASSETS = {
+  IMAGES: [
+    "amulet.png",
+    "wreath.png",
+    "striga.jpeg",
+    "arrow-back.png",
+    "grunge-star.png",
+    "grunge-cross.png",
+    "grunge-mess.webp",
+    "grunge-banner.png",
+    "grunge-corner.png",
+    "grunge-square.png",
+  ],
+  SOUNDS: [
+    "firstThrowResult",
+    "gameHover",
+    "gameLoose",
+    "gameWin",
+    "handMixDice",
+    "handThrowDice",
+    "hover",
+    "nextRoundStart",
+    "playerThinking",
+    "roundLoose",
+    "roundWin",
+    "selectDieForReroll",
+  ],
+};

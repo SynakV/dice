@@ -6,9 +6,15 @@ export type DeskType = {
   gameplay: GameplayType;
 };
 
+export enum PLAYER_STATUS {
+  OFFLINE = "offline",
+  ONLINE = "online",
+}
+
 export type PlayerType = {
   id: string;
   name: string;
+  status: PLAYER_STATUS;
 };
 
 export type CredentialsType = Partial<PlayerType>;
@@ -101,7 +107,6 @@ export type RankingOfHandsType = {
 export type RankingOfTypeValueType = {
   name: string;
   value: number;
-  description: string;
   function: (numbers: AppearedType) => AppearedType | false | any;
 };
 

@@ -1,0 +1,20 @@
+.placeholder {
+    --square: 80px;
+
+    &__wrapper {
+        width: var(--square);
+        height: var(--square);
+    }
+
+    &__cube {
+        z-index: -1;
+        display: block;
+        position: absolute;
+        width: var(--square);
+        height: var(--square);
+        transition: var(--transition-30);
+        background-color: var(--black-50);
+        box-shadow: 0 0 10px 10px var(--black-50);
+        transform: translate(0px, 30px) rotateX(45deg) rotateZ(45deg);
+    }
+}

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
+import { getNameFormatted } from "@utils/helpers/common.helper";
+import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const Status = () => {
   const { desk } = useDesk();
@@ -12,9 +14,12 @@ export const Status = () => {
   const isFirstStage = desk.gameplay.current.stage === 0;
 
   const currentPlayersId = desk.gameplay.current.player?.id;
-  const currentPlayersName = desk.gameplay.current.player?.name;
+  const currentPlayersName = getNameFormatted(
+    desk.gameplay.current.player?.name || ""
+  );
 
   const isYouCurrentPlayer = currentPlayersId === player?.id;
+  const isYouAdmin = getAdmin(desk)?.id === player?.id;
 
   const currentRound = desk.gameplay.rounds[desk.gameplay.current.round];
   const currentStage = currentRound.stages[desk.gameplay.current.stage];
@@ -30,7 +35,7 @@ export const Status = () => {
       }
 
       if (!desk.gameplay.isGameStarted) {
-        return player?.id === desk.gameplay.players[0]?.id
+        return isYouAdmin
           ? 'Click "Start game"'
           : "Waiting for game to start...";
       }
@@ -75,7 +80,7 @@ export const Status = () => {
 
   return portal(
     <div className="status">
-      <Image fill alt="grunge-border" src="/images/grunge-banner.png" />
+      <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />
       <div className="status__text">{getStatus()}</div>
     </div>
   );

@@ -1,18 +1,24 @@
 import Link from "next/link";
+import Image from "next/image";
 import React, { FC } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 
 interface Props {
   url?: string;
-  text: string;
 }
 
-export const Navigator: FC<Props> = ({ url, text }) => {
+export const Navigator: FC<Props> = ({ url }) => {
   const portal = usePortal();
 
   return portal(
     <Link href={url || "/"}>
-      <div className="navigator">{text}</div>
+      <Image
+        width={50}
+        height={50}
+        alt="arrow-back"
+        className="navigator"
+        src="/images/arrow-back.png"
+      />
     </Link>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -6,7 +6,9 @@ import {
   isPass,
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
+import { PLAYER_STATUS } from "@utils/common/types";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
+import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const Controls = () => {
   const portal = usePortal();
@@ -28,6 +30,37 @@ export const Controls = () => {
     setIsControlsLoading(true);
   };
 
+  useEffect(() => {
+    const currentPlayer = desk.gameplay.current.player;
+
+    const isCurrentPlayerOffline =
+      desk.gameplay.players.find((player) => player.id === currentPlayer?.id)
+        ?.status === PLAYER_STATUS.OFFLINE;
+
+    if (
+      isCurrentRoundCompleted ||
+      !isCurrentPlayerOffline ||
+      isCurrentStageStarted ||
+      isCurrentPlayerThrew ||
+      !isYouAdmin
+    ) {
+      return;
+    }
+
+    const offlinePlayerRanking = getCurrentRanking(desk, currentPlayer);
+
+    if (
+      isPass(offlinePlayerRanking?.cubes.reroll) &&
+      desk.gameplay.current.stage !== 0
+    ) {
+      handle.passThrowDice();
+    } else {
+      handle.startThrowDice();
+    }
+
+    setIsControlsLoading(true);
+  }, [desk.gameplay.players]);
+
   const ranking = getCurrentRanking(desk, player);
   const isPassing = isPass(ranking?.cubes.reroll);
 
@@ -40,25 +73,26 @@ export const Controls = () => {
   const isAllPlayersPresent =
     desk.gameplay.players.length === desk.gameplay.max.players;
 
-  const isCurrentPlayerThrew = currentStage.isPlayerThrew;
-  const isCurrentStageStarted = currentStage.isStarted;
-  const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
-  const isCurrentPlayer = desk.gameplay.current.player?.id === player?.id;
+  const isCurrentRoundCompleted = currentRound.isCompleted;
 
-  const isYouFirstPlayer = desk.gameplay.players[0]?.id === player?.id;
+  const isCurrentStageStarted = currentStage.isStarted;
+  const isCurrentPlayerThrew = currentStage.isPlayerThrew;
+  const isFirstStageNotCompleted = !currentRound.stages[0].isCompleted;
+  const isYouCurrentPlayer = desk.gameplay.current.player?.id === player?.id;
+
+  const isYouAdmin = getAdmin(desk)?.id === player?.id;
+
+  const isAllowToStartGame = isAllPlayersPresent && isYouAdmin;
 
   const isAllowedToRoll =
-    !isControlsLoading &&
     !isCurrentStageStarted &&
     !isCurrentPlayerThrew &&
-    isCurrentPlayer;
-
-  const isAllowToStartGame =
-    !isControlsLoading && isAllPlayersPresent && isYouFirstPlayer;
+    isYouCurrentPlayer &&
+    !desk.gameplay.isShowConclusion;
 
   return portal(
     <div className="controls">
-      {isYouFirstPlayer && (
+      {isYouAdmin && (
         <Button
           position="left"
           text="Settings"
@@ -68,7 +102,7 @@ export const Controls = () => {
       <Button
         text="History"
         isDiabled={!isShowHistory}
-        position={isYouFirstPlayer ? "center" : "left"}
+        position={isYouAdmin ? "center" : "left"}
         onClick={
           isShowHistory ? () => toggleGameOpen(GAME_OPEN.HISTORY) : () => {}
         }
@@ -92,7 +126,7 @@ export const Controls = () => {
           }
           position="right"
           isLoading={isControlsLoading}
-          isDiabled={!isAllowedToRoll || desk.gameplay.isShowConclusion}
+          isDiabled={!isAllowedToRoll}
           onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
         />
       )}

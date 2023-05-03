@@ -31,6 +31,7 @@
         display: flex;
         overflow-y: auto;
         max-height: 40vh;
+        overflow-x: hidden;
         align-items: center;
         flex-direction: column;
     }

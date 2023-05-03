@@ -10,7 +10,7 @@ import {
   getWinnersNamesString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
-import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
+import { Hand } from "@components/Mode/Shared/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import {
   getWinnerIcons,

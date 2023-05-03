@@ -22,7 +22,7 @@ export const Button: FC<Button> = ({
     } ${isDiabled ? "controls__button--disabled" : ""} ${
       isLoading ? "controls__button--loading" : ""
     }`}
-    onClick={onClick}
+    onClick={!isDiabled && !isLoading ? onClick : () => {}}
   >
     {position !== "center" && (
       <Image

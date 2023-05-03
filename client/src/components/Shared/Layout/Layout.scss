@@ -37,20 +37,6 @@
         }
     }
 
-    &__back {
-        top: 20px;
-        left: 25px;
-        opacity: 0.5;
-        cursor: pointer;
-        position: absolute;
-        transform: scale(-1, -1);
-        transition: var(--transition-30);
-
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-
     &__content {
         gap: 40px 0;
         height: auto;
@@ -63,6 +49,7 @@
         animation: fadeIn 0.5s;
         min-width: fit-content;
         justify-content: center;
+        transition: transform var(--transition-30);
     }
 }
 

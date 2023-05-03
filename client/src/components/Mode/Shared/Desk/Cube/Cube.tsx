@@ -1,9 +1,10 @@
+import Image from "next/image";
 import React, { FC } from "react";
 
 interface Props {
   onClick?: Function;
-  isSelected: boolean;
   isDisabled: boolean;
+  isSelected?: boolean;
   value: number | null;
   rollAnimationNumber?: number | false;
 }
@@ -62,7 +63,13 @@ export const Cube: FC<Props> = ({
           <span className="dot dot6" />
         </div>
       </div>
-      <span className={`cube-status ${cubeStatus}`} />
+      <Image
+        width={100}
+        height={100}
+        alt="grunge-square-filled"
+        src="/images/grunge-square-filled.png"
+        className={`cube-status ${cubeStatus}`}
+      />
     </div>
   );
 };

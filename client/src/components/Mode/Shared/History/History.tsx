@@ -5,7 +5,7 @@ import {
   getWinnersNamesString,
   getWinnersNounString,
 } from "@utils/helpers/ranking/ranking.helper";
-import { Hand } from "@components/Mode/Shared/Desk/Hand/Hand";
+import { Hand } from "@components/Mode/Shared/Hand/Hand";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 

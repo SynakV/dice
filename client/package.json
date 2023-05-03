@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
-    "tauri": "tauri",
     "lint": "next lint",
     "test": "jest --watch"
   },
@@ -15,11 +13,9 @@
     "next": "13.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "socket.io-client": "^4.6.1",
-    "swr": "^2.1.0"
+    "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.2.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

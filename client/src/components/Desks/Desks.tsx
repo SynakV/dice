@@ -1,36 +1,30 @@
-import useSWR from "swr";
 import { useRouter } from "next/router";
 import { getRequest } from "@utils/api/api";
 import { DeskType } from "@utils/common/types";
 import React, { useEffect, useState } from "react";
 import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
-import { DesksModal } from "@components/Desks/utils/types";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
   const router = useRouter();
   const { notification } = useNotification();
-  const { data, isLoading } = useSWR<DeskType[]>("desk", getRequest);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [desks, setDesks] = useState<DeskType[]>([]);
 
   useEffect(() => {
-    if (data?.length) {
-      setDesks(data);
-    }
-  }, [data]);
+    (async () => {
+      setIsLoading(true);
+      setDesks(await getRequest<DeskType[]>("desk"));
+      setIsLoading(false);
+    })();
+  }, []);
 
-  const [isOpenModal, setIsOpenModal] = useState({
-    create: false,
-    join: false,
-  });
+  const [isModalOpen, setIsMOdalOpen] = useState(false);
 
-  const handleOpenModal = (key: DesksModal) => {
-    setIsOpenModal((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+  const handleToggleOpenModal = () => {
+    setIsMOdalOpen((prev) => !prev);
   };
 
   const handleJoin = (id?: string) => {
@@ -52,10 +46,7 @@ export const Desks = () => {
       <div className="desks">
         <div className="desks__header">
           <span className="desks__title">Desks</span>
-          <span
-            className="desks__create"
-            onClick={() => handleOpenModal("create")}
-          >
+          <span className="desks__create" onClick={handleToggleOpenModal}>
             Create desk
           </span>
         </div>
@@ -66,7 +57,8 @@ export const Desks = () => {
                 max: desk.gameplay.max.players,
                 current: desk.gameplay.players.length,
               };
-              const isFullOfPlayers = players.current === players.max;
+              const isDisableToJoin =
+                players.current === players.max || desk.gameplay.isGameStarted;
               return (
                 <div key={index} className="list__desk">
                   <span className="list__title">{desk.name}</span>
@@ -81,10 +73,10 @@ export const Desks = () => {
                   </span>
                   <span
                     className={`list__join ${
-                      isFullOfPlayers ? "list__join--disabled" : ""
+                      isDisableToJoin ? "list__join--disabled" : ""
                     }`}
                     onClick={
-                      isFullOfPlayers ? () => {} : () => handleJoin(desk?._id)
+                      isDisableToJoin ? () => {} : () => handleJoin(desk?._id)
                     }
                   >
                     Join
@@ -99,7 +91,7 @@ export const Desks = () => {
           <span className="desks__empty">No desks</span>
         )}
       </div>
-      <Create isOpen={isOpenModal.create} setIsOpen={handleOpenModal} />
+      <Create isOpen={isModalOpen} setIsOpen={handleToggleOpenModal} />
     </>
   );
 };

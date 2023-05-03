@@ -1,9 +1,8 @@
 import { Model } from 'mongoose';
 import { Desk } from 'src/desk/desk.model';
-import { ErrorType } from 'src/utils/types';
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DEFAULT_DESK } from 'src/utils/common/constants';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DeskService {
@@ -13,25 +12,26 @@ export class DeskService {
     return this.deskModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Desk | null> {
+  async findOne(id: string): Promise<Desk | HttpException> {
     const desk = await this.deskModel.findById(id);
 
     if (desk) {
       return desk;
     } else {
-      return null;
+      return new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
   }
 
-  async create(body: any): Promise<Desk | ErrorType> {
+  async create(body: any): Promise<Desk | HttpException> {
     const { name, wins, players, stages } = body;
 
     const existedDesk = await this.deskModel.findOne({ name });
 
     if (existedDesk) {
-      return {
-        error: 'Desk with such name already exists',
-      };
+      return new HttpException(
+        'Desk with such name already exists',
+        HttpStatus.CONFLICT,
+      );
     } else {
       const createDesk = new this.deskModel({
         ...DEFAULT_DESK,

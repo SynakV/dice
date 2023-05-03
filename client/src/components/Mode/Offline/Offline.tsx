@@ -54,7 +54,7 @@ export const Offline = () => {
   return (
     <>
       <Settings />
-      <Navigator text="Home" />
+      <Navigator />
       {isShowGameDesk && (
         <>
           <Status />
@@ -66,6 +66,7 @@ export const Offline = () => {
       )}
       <Credentials
         isOpen={isOpen}
+        credentials={player}
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />

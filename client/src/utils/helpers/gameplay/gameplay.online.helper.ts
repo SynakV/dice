@@ -7,6 +7,7 @@ import {
   DeskType,
   RerollType,
   SettingsType,
+  PLAYER_STATUS,
   RankingWithInfoType,
 } from "@utils/common/types";
 import {
@@ -333,3 +334,8 @@ const getNextPlayer = (desk: DeskType) => {
 
   return nextPlayer ? nextPlayer : desk.gameplay.players[0];
 };
+
+export const getAdmin = (desk: DeskType) =>
+  desk.gameplay.players.find(
+    (player) => player.status === PLAYER_STATUS.ONLINE
+  );

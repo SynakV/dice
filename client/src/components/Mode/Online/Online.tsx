@@ -158,7 +158,7 @@ export const Online: FC = () => {
     push("/online");
   };
 
-  const isShowGameDesk = desk && player?.id;
+  const isShowGameDesk = desk._id && player?.id;
 
   return (
     <>
@@ -176,10 +176,11 @@ export const Online: FC = () => {
       )}
       <Credentials
         isOpen={isOpen}
+        credentials={player}
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />
-      <Navigator text="Desks" url="/online" />
+      <Navigator url="/online" />
     </>
   );
 };
