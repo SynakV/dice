@@ -4,10 +4,10 @@ export const server =
     : "http://localhost:3001";
 
 export const getRequest = <T>(url: string): Promise<T> =>
-  fetch(`${server}/${url}`).then((r) => r.json());
+  fetch(getUrl(url)).then((r) => r.json());
 
 export const postRequest = async <T>(url: string, arg: T) => {
-  return fetch(`${server}/${url}`, {
+  return fetch(getUrl(url), {
     method: "POST",
     body: JSON.stringify(arg),
     headers: {
@@ -16,3 +16,5 @@ export const postRequest = async <T>(url: string, arg: T) => {
     },
   }).then((res) => res.json());
 };
+
+const getUrl = (url: string) => `${server}/${url}`;
