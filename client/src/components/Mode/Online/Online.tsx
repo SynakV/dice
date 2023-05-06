@@ -63,7 +63,7 @@ export const Online: FC = () => {
     } else {
       handleInitializePlayer(player);
     }
-  }, [player]);
+  }, [player, socket]);
 
   const handleInitializePlayer = ({ name }: CredentialsType) => {
     setPlayer({ id: socket?.id } as PlayerType);
