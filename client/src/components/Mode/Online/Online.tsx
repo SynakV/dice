@@ -54,7 +54,7 @@ export const Online: FC = () => {
   };
 
   useEffect(() => {
-    if (!player || player?.id) {
+    if (!player || player?.id || !socket) {
       return;
     }
 

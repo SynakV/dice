@@ -16,6 +16,7 @@
     "incremental": true,
     "paths": {
       "@utils/*": ["./src//utils/*"],
+      "@pages/*": ["./src//pages/*"],
       "@styles/*": ["./src//styles/*"],
       "@components/*": ["./src//components/*"]
     }
