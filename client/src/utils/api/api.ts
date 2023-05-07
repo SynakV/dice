@@ -1,5 +1,5 @@
 export const server =
-  process.env.NODE_ENV !== "production"
+  process.env.NODE_ENV === "production"
     ? "https://dice-production.up.railway.app"
     : "http://localhost:3001";
 
