@@ -54,7 +54,7 @@ export const Online: FC = () => {
   };
 
   useEffect(() => {
-    if (!player || player?.id || !socket?.id) {
+    if (!player || player?.id) {
       return;
     }
 
@@ -63,7 +63,7 @@ export const Online: FC = () => {
     } else {
       handleInitializePlayer(player);
     }
-  }, [player, socket]);
+  }, [player]);
 
   const handleInitializePlayer = ({ name }: CredentialsType) => {
     setPlayer({ id: socket?.id } as PlayerType);
@@ -78,10 +78,16 @@ export const Online: FC = () => {
   };
 
   useEffect(() => {
-    setPlayer(getCredentials());
-
     if (!socket) {
       return;
+    }
+
+    if (socket.connected) {
+      setPlayer(getCredentials());
+    } else {
+      socket.on("connect", () => {
+        setPlayer(getCredentials());
+      });
     }
 
     [EVENTS.ON_JOIN_DESK, EVENTS.ON_LEAVE_DESK].forEach((event) => {

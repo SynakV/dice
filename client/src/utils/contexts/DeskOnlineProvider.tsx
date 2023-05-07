@@ -3,6 +3,7 @@ import { getRequest } from "@utils/api/api";
 import { FC, useEffect, useState } from "react";
 import { Guard } from "@components/Mode/Online/Guard";
 import { DEFAULT_DESK } from "@utils/common/constants";
+import { useSocket } from "@utils/contexts/SocketContext";
 import { DeskCommonProps, DeskProvider } from "@utils/contexts/DeskContext";
 import {
   DeskType,
@@ -22,10 +23,8 @@ import {
   afterChangeSettings,
 } from "@utils/helpers/gameplay/gameplay.online.helper";
 
-export const DeskOnlineProvider: FC<DeskCommonProps & { socket: any }> = ({
-  socket,
-  children,
-}) => {
+export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
+  const socket = useSocket();
   const { query } = useRouter();
 
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
