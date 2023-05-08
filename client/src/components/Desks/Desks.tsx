@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { getRequest } from "@utils/api/api";
 import { DeskType } from "@utils/common/types";
+import { usePortal } from "@utils/hooks/usePortal";
 import React, { useEffect, useState } from "react";
 import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
@@ -8,6 +10,7 @@ import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
   const router = useRouter();
+  const portal = usePortal();
   const { notification } = useNotification();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -44,12 +47,6 @@ export const Desks = () => {
   return (
     <>
       <div className="desks">
-        <div className="desks__header">
-          <span className="desks__title">Desks</span>
-          <span className="desks__create" onClick={handleToggleOpenModal}>
-            Create desk
-          </span>
-        </div>
         {desks.length ? (
           <div className="desks__list">
             {desks.map((desk, index) => {
@@ -60,26 +57,32 @@ export const Desks = () => {
               const isDisableToJoin =
                 players.current === players.max || desk.gameplay.isGameStarted;
               return (
-                <div key={index} className="list__desk">
+                <div
+                  key={index}
+                  className={`list__desk ${
+                    isDisableToJoin ? "list__desk--disabled" : ""
+                  }`}
+                >
+                  <Image
+                    fill
+                    alt="grunge-brush-stroke"
+                    className="list__background"
+                    src="/images/grunge-brush-stroke.png"
+                    onClick={
+                      isDisableToJoin ? () => {} : () => handleJoin(desk?._id)
+                    }
+                  />
                   <span className="list__title">{desk.name}</span>
                   <span className="list__players">
                     {players.current}/{players.max}
                   </span>
                   <span
                     className="list__share"
-                    onClick={() => handleShare(desk?._id)}
-                  >
-                    Share
-                  </span>
-                  <span
-                    className={`list__join ${
-                      isDisableToJoin ? "list__join--disabled" : ""
-                    }`}
                     onClick={
-                      isDisableToJoin ? () => {} : () => handleJoin(desk?._id)
+                      isDisableToJoin ? () => {} : () => handleShare(desk?._id)
                     }
                   >
-                    Join
+                    Share
                   </span>
                 </div>
               );
@@ -88,9 +91,25 @@ export const Desks = () => {
         ) : null}
         {isLoading && <Loading />}
         {!isLoading && !desks.length && (
-          <span className="desks__empty">No desks</span>
+          <Image
+            width={200}
+            height={180}
+            alt="grunge-no-sign"
+            className="desks__empty"
+            src="/images/grunge-no-sign.png"
+          />
         )}
       </div>
+      {portal(
+        <Image
+          width={50}
+          height={50}
+          alt="grunge-plus"
+          className="desks__create"
+          src="/images/grunge-plus.png"
+          onClick={handleToggleOpenModal}
+        />
+      )}
       <Create isOpen={isModalOpen} setIsOpen={handleToggleOpenModal} />
     </>
   );

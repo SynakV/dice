@@ -1,32 +1,36 @@
 @import './Shared/Shared.scss';
 
 .mode {
-    gap: 20px 0;
+    gap: 0 200px;
     display: flex;
-    flex-direction: column;
-
-    &__head-text {
-        font-size: 50px;
-        text-align: center;
-        color: var(--white-50);
-    }
-
-    &__selector {
-        gap: 10px 0;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
 
     &__option {
-        font-size: 35px;
-        cursor: pointer;
-        text-decoration: none;
-        color: var(--white-50);
-        transition: var(--transition-30);
+        position: relative;
 
         &:hover {
-            color: rgba(255, 255, 255, 0.8);
+            img {
+                opacity: 0.8;
+            }
+        }
+    }
+
+    img {
+        opacity: 0.5;
+        filter: invert(1);
+        transition: var(--transition-30);
+
+        &[alt="grunge-line-1"], &[alt="grunge-line-2"] {
+            left: 50%;
+            position: absolute;
+            top: calc(50% - 10px);
+        }
+
+        &[alt="grunge-line-1"] {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &[alt="grunge-line-2"] {
+            transform: translate(-50%, -50%) rotate(-45deg);
         }
     }
 }
