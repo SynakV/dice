@@ -1,5 +1,7 @@
 .placeholder {
     --square: 80px;
+    --half-square: calc(var(--square) / 2);
+    --cube: calc(var(--square) + var(--half-square));
 
     &__wrapper {
         width: var(--square);
@@ -10,11 +12,8 @@
         z-index: -1;
         display: block;
         position: absolute;
-        width: var(--square);
-        height: var(--square);
-        transition: var(--transition-30);
-        background-color: var(--black-50);
-        box-shadow: 0 0 10px 10px var(--black-50);
-        transform: translate(0px, 30px) rotateX(45deg) rotateZ(45deg);
+        width: var(--cube);
+        height: var(--cube);
+        transform: translate(-15px, 15px) rotateX(45deg) rotateZ(45deg);
     }
 }

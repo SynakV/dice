@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { cacheAssets } from "@utils/helpers/common.helper";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
 import { Loading } from "@components/Shared/Loading/Loading";
+import { Cursor } from "@components/Shared/Layout/Cursor/Cursor";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { NotificationProvider } from "@components/Shared/Notification/Notification";
 
@@ -65,6 +66,7 @@ export const Layout: FC<Props> = ({ children }) => {
         ) : (
           <Loading />
         )}
+        <Cursor />
       </div>
     </NotificationProvider>
   );
