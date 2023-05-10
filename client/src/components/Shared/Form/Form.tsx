@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC, ReactNode } from "react";
 
 interface Form {}
@@ -26,11 +27,19 @@ interface Text extends Input {
 }
 
 export const Text: FC<Text> = ({ value, setValue }) => (
-  <input
-    value={value}
-    className="form__input"
-    onChange={(e) => setValue(e.target.value.toString())}
-  />
+  <div className="form__input">
+    <Image
+      fill
+      alt="grunge-line"
+      className="form__line"
+      src="/images/grunge-line.png"
+    />
+    <input
+      value={value}
+      className="form__input form__input--text"
+      onChange={(e) => setValue(e.target.value.toString())}
+    />
+  </div>
 );
 
 interface Number extends Input {
@@ -40,16 +49,45 @@ interface Number extends Input {
   setValue: (value: number) => void;
 }
 
-const Number: FC<Number> = ({ min, max, value, setValue }) => (
-  <input
-    min={min}
-    max={max}
-    type="number"
-    value={value}
-    className="form__input form__input--number"
-    onChange={(e) => setValue(+e.target.value)}
-  />
-);
+const Number: FC<Number> = ({ min, max, value, setValue }) => {
+  const handleSetValue = (value: number) => {
+    if (value >= min && value <= max) {
+      setValue(value);
+    }
+  };
+
+  return (
+    <div className="form__input">
+      <span className="form__value">{value}</span>
+      <Image
+        fill
+        alt="grunge-line"
+        className="form__line"
+        src="/images/grunge-line.png"
+      />
+      <Image
+        width={20}
+        height={20}
+        alt="arrow-up"
+        src="/images/grunge-arrow-right.png"
+        onClick={() => handleSetValue(value + 1)}
+        className={`form__arrow form__arrow--up ${
+          value >= max ? "form__arrow--disabled" : ""
+        }`}
+      />
+      <Image
+        width={20}
+        height={20}
+        alt="arrow-down"
+        src="/images/grunge-arrow-right.png"
+        onClick={() => handleSetValue(value - 1)}
+        className={`form__arrow form__arrow--down ${
+          value <= min ? "form__arrow--disabled" : ""
+        }`}
+      />
+    </div>
+  );
+};
 
 Form.Input = Input;
 Form.Field = Field;
