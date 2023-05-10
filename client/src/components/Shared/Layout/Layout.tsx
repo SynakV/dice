@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { cacheAssets } from "@utils/helpers/common.helper";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
+import { HintProvider } from "@utils/contexts/HintProvider";
 import { Loading } from "@components/Shared/Loading/Loading";
 import { Cursor } from "@components/Shared/Layout/Cursor/Cursor";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -49,25 +50,31 @@ export const Layout: FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <NotificationProvider>
-      <div className="layout">
-        {!isLoading ? (
-          <>
-            <div className="layout__background">
-              <Image fill alt="striga" src="/images/striga.jpeg" />
-              <Image fill alt="grunge-square" src="/images/grunge-square.png" />
-              <Image fill alt="grunge-mess" src="/images/grunge-mess.webp" />
-            </div>
+    <HintProvider>
+      <NotificationProvider>
+        <div className="layout">
+          {!isLoading ? (
+            <>
+              <div className="layout__background">
+                <Image fill alt="striga" src="/images/striga.jpeg" />
+                <Image
+                  fill
+                  alt="grunge-square"
+                  src="/images/grunge-square.png"
+                />
+                <Image fill alt="grunge-mess" src="/images/grunge-mess.webp" />
+              </div>
 
-            <div className="layout__content">{children}</div>
+              <div className="layout__content">{children}</div>
 
-            <Menu />
-          </>
-        ) : (
-          <Loading />
-        )}
-        <Cursor />
-      </div>
-    </NotificationProvider>
+              <Menu />
+            </>
+          ) : (
+            <Loading />
+          )}
+          <Cursor />
+        </div>
+      </NotificationProvider>
+    </HintProvider>
   );
 };

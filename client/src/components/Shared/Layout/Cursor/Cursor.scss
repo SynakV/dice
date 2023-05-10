@@ -3,14 +3,46 @@
     z-index: 9999999;
     will-change: transform;
 
-    img {
+    img[alt="cursor"] {
         top: -15px;
         left: -15px;
-        opacity: 0.5;
         filter: invert(1);
         position: absolute;
         transform: rotate(-135deg);
+        opacity: var(--cursor-opacity);
+        transition: opacity var(--transition-30);
     }
+
+    &__hint {
+        top: 10px;
+        left: 10px;
+        height: 50px;
+        padding: 0 35px;
+        min-width: 150px;
+        position: absolute;
+        display: var(--cursor-hint-display);
+    }
+
+    &__text {
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        position: relative;
+        align-items: center;
+        color: var(--white-50);
+        justify-content: center;
+
+        &::before {
+            content: var(--cursor-hint-text);
+        }
+    }
+}
+
+:root {
+    --cursor-opacity: 0.5;
+    --cursor-hint-text: '';
+    --cursor-hint-display: none;
 }
 
 * {

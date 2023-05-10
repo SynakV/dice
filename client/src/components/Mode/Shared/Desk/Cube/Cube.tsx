@@ -18,11 +18,14 @@ export const Cube: FC<Props> = ({
 }) => {
   const cubeStatus = isSelected ? "cube-status__selected" : "";
   const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
+  const cubeWrapperDisabled = isDisabled ? "cube-wrapper__disabled" : "";
 
   const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
 
   return (
-    <div className={`cube-wrapper ${cubeWrapperSelected}`}>
+    <div
+      className={`cube-wrapper ${cubeWrapperDisabled} ${cubeWrapperSelected}`}
+    >
       <div
         onClick={cubeClick}
         className={`cube cube-${rollAnimationNumber || value} ${

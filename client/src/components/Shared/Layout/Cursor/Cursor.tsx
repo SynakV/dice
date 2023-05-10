@@ -21,6 +21,14 @@ export const Cursor = () => {
         alt="cursor"
         src="/images/grunge-cursor.png"
       />
+      <div id="cursor__hint">
+        <Image
+          fill
+          alt="grunge-brush-stroke"
+          src="/images/grunge-brush-stroke.png"
+        />
+        <div id="cursor__text" />
+      </div>
     </div>
   );
 };
