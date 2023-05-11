@@ -6,9 +6,11 @@ import { usePortal } from "@utils/hooks/usePortal";
 import React, { useEffect, useState } from "react";
 import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
+  const hint = useCursor();
   const router = useRouter();
   const portal = usePortal();
   const { notification } = useNotification();
@@ -97,6 +99,11 @@ export const Desks = () => {
             alt="grunge-no-sign"
             className="desks__empty"
             src="/images/grunge-no-sign.png"
+            // {...hint({
+            //   text: "No desks",
+            //   highlight: false,
+            //   position: "top-left",
+            // })}
           />
         )}
       </div>

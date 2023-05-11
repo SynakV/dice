@@ -2,9 +2,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { cacheAssets } from "@utils/helpers/common.helper";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
-import { HintProvider } from "@utils/contexts/HintProvider";
 import { Loading } from "@components/Shared/Loading/Loading";
-import { Cursor } from "@components/Shared/Layout/Cursor/Cursor";
+import { CursorProvider } from "@utils/contexts/CursorProvider";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { NotificationProvider } from "@components/Shared/Notification/Notification";
 
@@ -50,7 +49,7 @@ export const Layout: FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <HintProvider>
+    <CursorProvider>
       <NotificationProvider>
         <div className="layout">
           {!isLoading ? (
@@ -72,9 +71,8 @@ export const Layout: FC<Props> = ({ children }) => {
           ) : (
             <Loading />
           )}
-          <Cursor />
         </div>
       </NotificationProvider>
-    </HintProvider>
+    </CursorProvider>
   );
 };

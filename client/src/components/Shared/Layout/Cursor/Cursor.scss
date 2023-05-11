@@ -1,16 +1,24 @@
 #cursor {
+    top: 0;
+    left: 0;
     position: fixed;
     z-index: 9999999;
     will-change: transform;
+    transform: var(--cursor-position);
 
-    img[alt="cursor"] {
-        top: -15px;
-        left: -15px;
-        filter: invert(1);
-        position: absolute;
-        transform: rotate(-135deg);
-        opacity: var(--cursor-opacity);
-        transition: opacity var(--transition-30);
+    &__rotate {
+        transform: rotate(var(--cursor-rotate));
+        transition: transform var(--transition-30);
+
+        img {
+            top: -15px;
+            left: -15px;
+            filter: invert(1);
+            position: absolute;
+            transform: rotate(-135deg);
+            opacity: var(--cursor-opacity);
+            transition: opacity var(--transition-30);
+        }
     }
 
     &__hint {
@@ -40,9 +48,11 @@
 }
 
 :root {
+    --cursor-rotate: 0deg;
     --cursor-opacity: 0.5;
     --cursor-hint-text: '';
     --cursor-hint-display: none;
+    --cursor-position: translate(0px, 0px);
 }
 
 * {

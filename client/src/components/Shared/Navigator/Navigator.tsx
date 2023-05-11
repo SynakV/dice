@@ -2,14 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { FC } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
-import { useHint } from "@utils/contexts/HintProvider";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Props {
   url?: string;
 }
 
 export const Navigator: FC<Props> = ({ url }) => {
-  const getHint = useHint();
+  const hint = useCursor();
   const portal = usePortal();
 
   return portal(
@@ -18,9 +18,9 @@ export const Navigator: FC<Props> = ({ url }) => {
         width={50}
         height={50}
         alt="arrow-back"
-        // {...getHint("Back")}
         className="navigator"
         src="/images/arrow-back.png"
+        {...hint({ text: "Back" })}
       />
     </Link>
   );
