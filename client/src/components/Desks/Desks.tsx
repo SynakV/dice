@@ -87,7 +87,7 @@ export const Desks = () => {
                   </span>
                   <Cursor
                     hint="Share"
-                    position="left"
+                    position="bottom"
                     isDisable={isDisableToJoin}
                     id={`share-${desk?._id || Math.random()}`}
                   >
