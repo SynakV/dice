@@ -93,8 +93,8 @@ export const Controls = () => {
       ) : (
         <Cursor
           hint={rollText}
-          id="controls-roll"
           position="top-left"
+          id="controls-start-game"
           isDisable={isDisableToRoll}
         >
           <Button

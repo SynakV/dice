@@ -132,6 +132,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   };
 
   const isDisableCube =
+    !isCurrentPlayerTurn ||
     isOtherPlayer ||
     !round.stages[0].isCompleted ||
     stage.isStarted ||
