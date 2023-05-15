@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React, { FC } from "react";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Props {
+  index?: number;
   onClick?: Function;
   isDisabled: boolean;
   isSelected?: boolean;
@@ -10,19 +12,24 @@ interface Props {
 }
 
 export const Cube: FC<Props> = ({
+  index,
   value,
   onClick,
   isSelected,
   isDisabled,
   rollAnimationNumber,
 }) => {
+  const Cursor = useCursor();
   const cubeStatus = isSelected ? "cube-status__selected" : "";
   const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
+  const cubeWrapperDisabled = isDisabled ? "cube-wrapper__disabled" : "";
 
   const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
 
   return (
-    <div className={`cube-wrapper ${cubeWrapperSelected}`}>
+    <div
+      className={`cube-wrapper ${cubeWrapperDisabled} ${cubeWrapperSelected}`}
+    >
       <div
         onClick={cubeClick}
         className={`cube cube-${rollAnimationNumber || value} ${

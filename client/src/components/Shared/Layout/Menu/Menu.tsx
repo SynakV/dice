@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useFadeIn } from "@utils/hooks/useFadeIn";
-import { CredentialsType, PlayerType } from "@utils/common/types";
 import { playAudio } from "@utils/helpers/audio.helper";
+import { CredentialsType, PlayerType } from "@utils/common/types";
 import { Rules } from "@components/Shared/Layout/Menu/Rules/Rules";
 import { Amulet } from "@components/Shared/Layout/Menu/Amulet/Amulet";
 import {
   getCredentials,
   setCredentials,
 } from "@utils/helpers/storage/storage.helper";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 
 export const Menu = () => {
@@ -16,6 +17,7 @@ export const Menu = () => {
     credentials: false,
   });
   const { isShow, fadeInClass } = useFadeIn(isOpen.menu);
+  const Cursor = useCursor();
 
   const player: PlayerType = getCredentials();
 
@@ -37,12 +39,15 @@ export const Menu = () => {
       <Amulet toggleOpen={() => toggleOpen("menu")} />
       {isShow && (
         <div className={`menu__overlay ${fadeInClass}`}>
-          <span
-            className={`menu__text`}
-            onClick={() => toggleOpen("credentials")}
-          >
-            {player?.name}
-          </span>
+          <Cursor id="manage-name" hint="Manage name" position="bottom">
+            <span
+              className={`menu__text`}
+              onClick={() => toggleOpen("credentials")}
+            >
+              {player?.name}
+            </span>
+          </Cursor>
+
           <Rules />
           <Credentials
             credentials={player}

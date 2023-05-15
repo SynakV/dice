@@ -1,6 +1,7 @@
 import React, { FC, useRef } from "react";
 import { CredentialsType } from "@utils/common/types";
 import { Modal } from "@components/Shared/Modal/Modal";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 interface Props {
@@ -18,6 +19,7 @@ export const Credentials: FC<Props> = ({
 }) => {
   const name = useRef<HTMLInputElement>(null);
 
+  const Cursor = useCursor();
   const { notification } = useNotification();
 
   const handleSetCredentials = () => {
@@ -42,12 +44,19 @@ export const Credentials: FC<Props> = ({
         />
       </div>
       <div className="credentials__footer">
-        <span className="credentials__close" onClick={toggleIsOpen}>
-          Close
-        </span>
-        <span className="credentials__continue" onClick={handleSetCredentials}>
-          Continue
-        </span>
+        <Cursor id="credentials-close" hint="Close" position="bottom">
+          <span className="credentials__close" onClick={toggleIsOpen}>
+            Close
+          </span>
+        </Cursor>
+        <Cursor id="credentials-continue" hint="Close" position="bottom">
+          <span
+            className="credentials__continue"
+            onClick={handleSetCredentials}
+          >
+            Continue
+          </span>
+        </Cursor>
       </div>
     </Modal>
   );

@@ -25,10 +25,7 @@
     }
 
     &__history {
-        bottom: 40px;
         font-size: 16px;
-        cursor: pointer;
-        position: absolute;
         color: var(--white-50);
         transition: var(--transition-30);
 
@@ -38,16 +35,8 @@
     }
 
     &__button {
-        left: 50%;
-        bottom: 5px;
-        width: 100px;
-        display: flex;
-        cursor: pointer;
-        position: absolute;
-        align-items: center;
+        font-size: 16px;
         color: var(--white-50);
-        justify-content: center;
-        transform: translateX(-50%);
         transition: var(--transition-30);
 
         &:hover {

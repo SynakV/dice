@@ -1,16 +1,62 @@
 #cursor {
+    top: 0;
+    left: 0;
     position: fixed;
     z-index: 9999999;
     will-change: transform;
+    transform: var(--cursor-position);
 
-    img {
-        top: -15px;
-        left: -15px;
-        opacity: 0.5;
-        filter: invert(1);
-        position: absolute;
-        transform: rotate(-135deg);
+    &__rotate {
+        transform-origin: -10px -10px;
+        transform: rotate(var(--cursor-rotate));
+        transition: transform var(--transition-30);
+
+        img {
+            top: -15px;
+            left: -15px;
+            filter: invert(1);
+            position: absolute;
+            transform: rotate(-135deg);
+            opacity: var(--cursor-opacity);
+            transition: opacity var(--transition-30);
+        }
     }
+
+    &__hint {
+        width: 200px;
+        height: 70px;
+        padding: 0 35px;
+        position: absolute;
+        display: var(--cursor-hint-display);
+        top: var(--cursor-hint-position-top);
+        left: var(--cursor-hint-position-left);
+    }
+
+    &__text {
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        font-size: 20px;
+        position: relative;
+        align-items: center;
+        color: var(--white-50);
+        justify-content: center;
+
+        &::before {
+            content: var(--cursor-hint-text);
+        }
+    }
+}
+
+:root {
+    --cursor-rotate: 0deg;
+    --cursor-opacity: 0.5;
+    --cursor-hint-text: '';
+    --cursor-hint-display: none;
+    --cursor-hint-position-top: 10px;
+    --cursor-hint-position-left: 10px;
+    --cursor-position: translate(0px, 0px);
 }
 
 * {

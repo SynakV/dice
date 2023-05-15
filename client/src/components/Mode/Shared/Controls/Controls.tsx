@@ -15,6 +15,7 @@ export const Button: FC<Button> = ({
   isDiabled,
   isLoading,
   onClick,
+  ...rest
 }) => (
   <div
     className={`controls__button ${
@@ -23,6 +24,7 @@ export const Button: FC<Button> = ({
       isLoading ? "controls__button--loading" : ""
     }`}
     onClick={!isDiabled && !isLoading ? onClick : () => {}}
+    {...rest}
   >
     {position !== "center" && (
       <Image

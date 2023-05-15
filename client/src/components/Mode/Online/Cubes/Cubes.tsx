@@ -142,6 +142,7 @@ export const Cubes: FC<Props> = ({ player }) => {
           <Cube
             key={index}
             value={cube}
+            index={index}
             isDisabled={isDisableCube}
             isSelected={!!reroll?.[index]}
             onClick={() => handleSelectDie(index)}

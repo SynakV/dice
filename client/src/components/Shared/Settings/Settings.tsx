@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { SettingsType } from "@utils/common/types";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Settings = () => {
+  const Cursor = useCursor();
   const { back } = useRouter();
   const { handle, desk } = useDesk();
   const { notification } = useNotification();
@@ -60,12 +62,16 @@ export const Settings = () => {
           <Fields desk={desk} setForm={setSettings} />
         </div>
         <div className="settings__buttons">
-          <div className="settings__button" onClick={handleClose}>
-            Close
-          </div>
-          <div className="settings__button" onClick={handleApply}>
-            Apply
-          </div>
+          <Cursor id="settings-close" hint="Close" position="bottom">
+            <div className="settings__button" onClick={handleClose}>
+              Close
+            </div>
+          </Cursor>
+          <Cursor id="settings-apply" hint="Apply" position="bottom">
+            <div className="settings__button" onClick={handleApply}>
+              Apply
+            </div>
+          </Cursor>
         </div>
       </Modal>
       <Confirm

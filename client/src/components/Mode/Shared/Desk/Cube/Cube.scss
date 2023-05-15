@@ -3,10 +3,6 @@
     width: var(--square);
     height: var(--square);
     transform-style: preserve-3d;
-    
-    &:hover {
-        cursor: pointer;
-    }
 
     &-1, &-null {
         transform: rotateX(45deg) rotateZ(45deg);
@@ -127,7 +123,15 @@
             transform: translate(-15px, -65px) rotateX(45deg) rotateZ(45deg);
 
             &__selected {
-                filter: invert(1);
+                filter: invert(1) !important;
+            }
+        }
+    }
+
+    &:not(&__disabled) {
+        &:hover  {
+            .cube-status {
+                filter: invert(0.5);
             }
         }
     }

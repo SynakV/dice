@@ -125,6 +125,7 @@ export const ASSETS = {
     "grunge-square.png",
     "grunge-cursor.png",
     "grunge-no-sign.png",
+    "grunge-arrow-right.png",
     "grunge-brush-stroke.png",
   ],
   SOUNDS: [

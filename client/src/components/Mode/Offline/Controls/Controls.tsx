@@ -6,10 +6,12 @@ import {
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { playAudio } from "@utils/helpers/audio.helper";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
 
 export const Controls = () => {
   const portal = usePortal();
+  const Cursor = useCursor();
   const { handle, desk } = useDesk();
   const { player, toggleGameOpen } = useGame();
 
@@ -47,41 +49,61 @@ export const Controls = () => {
   const isAllowedToRoll =
     isCurrentStageNotStarted && !isCurrentPlayerThrew && currentPlayer;
 
+  const isDisableToRoll = !isAllowedToRoll || desk.gameplay.isShowConclusion;
+
+  const rollText = isFirstStageNotCompleted
+    ? "Roll dice"
+    : isPassing
+    ? "Pass"
+    : "Re-roll dice";
+
   return portal(
     <div className="controls">
-      <Button
-        position="left"
-        text="Settings"
-        onClick={() => toggleGameOpen(GAME_OPEN.SETTINGS)}
-      />
-      <Button
-        text="History"
-        position="center"
-        isDiabled={!isShowHistory}
-        onClick={
-          isShowHistory ? () => toggleGameOpen(GAME_OPEN.HISTORY) : () => {}
-        }
-      />
-      {!desk.gameplay.isGameStarted ? (
+      <Cursor hint="Settings" position="top-right" id="controls-settings">
         <Button
-          text="Start game"
-          position="right"
-          isDiabled={!isAllPlayersPresent}
-          onClick={isAllPlayersPresent ? () => handleGameStart() : () => {}}
+          position="left"
+          text="Settings"
+          onClick={() => toggleGameOpen(GAME_OPEN.SETTINGS)}
         />
-      ) : (
+      </Cursor>
+      <Cursor
+        position="top"
+        hint="History"
+        id="controls-history"
+        isDisable={!isShowHistory}
+      >
         <Button
-          text={
-            isFirstStageNotCompleted
-              ? "Roll dice"
-              : isPassing
-              ? "Pass"
-              : "Re-roll dice"
+          text="History"
+          position="center"
+          isDiabled={!isShowHistory}
+          onClick={
+            isShowHistory ? () => toggleGameOpen(GAME_OPEN.HISTORY) : () => {}
           }
-          position="right"
-          isDiabled={!isAllowedToRoll || desk.gameplay.isShowConclusion}
-          onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
         />
+      </Cursor>
+      {!desk.gameplay.isGameStarted ? (
+        <Cursor id="controls-start-game" position="top-left" hint="Start game">
+          <Button
+            position="right"
+            text="Start game"
+            isDiabled={!isAllPlayersPresent}
+            onClick={isAllPlayersPresent ? () => handleGameStart() : () => {}}
+          />
+        </Cursor>
+      ) : (
+        <Cursor
+          hint={rollText}
+          position="top-left"
+          id="controls-start-game"
+          isDisable={isDisableToRoll}
+        >
+          <Button
+            text={rollText}
+            position="right"
+            isDiabled={isDisableToRoll}
+            onClick={isAllowedToRoll ? () => handleRollDice() : () => {}}
+          />
+        </Cursor>
       )}
     </div>
   );

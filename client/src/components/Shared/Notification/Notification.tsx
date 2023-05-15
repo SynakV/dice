@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { usePortal } from "@utils/hooks/usePortal";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Props {
   children: ReactNode;
@@ -30,11 +31,12 @@ export const NotificationContext = createContext<INotification>(DEFAULT_VALUES);
 
 export const NotificationProvider: FC<Props> = ({ children }) => {
   const portal = usePortal();
+  const Cursor = useCursor();
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
 
   const notification = (text: string, delay: number = 3000) => {
     const key = Math.random().toString();
-    setNotifications((prev) => [
+    setNotifications(() => [
       {
         key,
         text,
@@ -84,10 +86,12 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
                   }`}
                 >
                   {text}
-                  <span
-                    onClick={() => handleClose(key)}
-                    className="notifications__close"
-                  />
+                  <Cursor id={key} hint="Close" position="bottom">
+                    <span
+                      onClick={() => handleClose(key)}
+                      className="notifications__close"
+                    />
+                  </Cursor>
                 </div>
               ))}
             </div>

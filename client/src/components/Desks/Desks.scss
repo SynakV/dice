@@ -21,7 +21,6 @@
         left: 50%;
         bottom: 25px;
         opacity: 0.5;
-        cursor: pointer;
         filter: invert(1);
         position: absolute;
         transform: translateX(-50%);
@@ -45,7 +44,6 @@
     &__empty {
         top: 50%;
         left: 50%;
-        cursor: default;
         position: absolute;
         transform: translate(-50%, -50%);
     }
@@ -66,12 +64,6 @@
 
         &--disabled {
             opacity: 0.5;
-
-            .list {
-                &__background, &__share {
-                    cursor: default;
-                }
-            }  
         }
 
         &:hover:not(&--disabled) {
@@ -86,7 +78,6 @@
 
                 &__share {
                     &--disabled {
-                        cursor: default;
                         color: var(--black-20);
                     }
 
@@ -100,7 +91,6 @@
 
     &__background {
         z-index: -1;
-        cursor: pointer;
         transform: rotate(-0.5deg);
         transition: var(--transition-30);
     }
@@ -117,19 +107,12 @@
         text-overflow: ellipsis;
     }
 
-    &__title, &__players {
-        cursor: default;
-    }
-
     &__players {
         margin-left: auto;
     }
 
     &__share {
-        cursor: pointer;
-
         &--disabled {
-            cursor: default;
             color: var(--white-20);
         }
 

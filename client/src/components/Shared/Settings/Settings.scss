@@ -1,7 +1,7 @@
 .settings {
     &__main {
         flex: 1;
-        gap: 10px 0;
+        gap: 20px 0;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -16,7 +16,6 @@
 
     &__button {
         display: flex;
-        cursor: pointer;
         color: var(--white-50);
         transition: var(--transition-30);
 

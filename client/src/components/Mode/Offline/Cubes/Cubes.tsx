@@ -132,6 +132,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   };
 
   const isDisableCube =
+    !isCurrentPlayerTurn ||
     isOtherPlayer ||
     !round.stages[0].isCompleted ||
     stage.isStarted ||
@@ -154,6 +155,7 @@ export const Cubes: FC<Props> = ({ player }) => {
           <Cube
             key={index}
             value={cube}
+            index={index}
             isDisabled={isDisableCube}
             isSelected={!!reroll?.[index]}
             onClick={() => handleSelectDie(index)}

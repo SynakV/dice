@@ -2,23 +2,60 @@
     &__field {
         width: 200px;
         display: flex;
+        justify-content: space-between;
     }
 
     &__label {
         color: var(--white-50);
     }
 
-    &__input {
-        border: 0;
-        width: 115px;
-        outline: none;
-        margin-left: auto;
-        color: var(--white-50);
-        border: 1px solid var(--white-50);
-        background-color: rgba(0, 0, 0, 0.1);
+    &__value {
+        flex: 1;
+    }
 
-        &--number {
-            
+    &__input {
+        width: 115px;
+        display: flex;
+        position: relative;
+        align-items: center;
+        color: var(--white-50);
+
+        &--text {
+            padding: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+    }
+
+    &__line {
+        opacity: 0.5;
+        filter: invert(1);
+        top: 100% !important;
+        height: 5px !important;
+        left: -4px !important;
+        width: calc(100% + 8px) !important;
+    }
+
+    &__arrow {
+        opacity: 0.5;
+        filter: invert(1);
+        transition: var(--transition-30);
+
+        &--disabled {
+            opacity: 0.2;
+        }
+
+        &:hover:not(&--disabled) {
+            opacity: 0.8;
+        }
+
+        &--up {
+            transform: rotate(-90deg);
+        }
+
+        &--down {
+            transform: rotate(90deg);
         }
     }
 }
