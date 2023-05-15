@@ -63,9 +63,7 @@ export const Layout: FC<Props> = ({ children }) => {
                 />
                 <Image fill alt="grunge-mess" src="/images/grunge-mess.webp" />
               </div>
-
               <div className="layout__content">{children}</div>
-
               <Menu />
             </>
           ) : (

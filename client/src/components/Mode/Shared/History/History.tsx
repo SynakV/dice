@@ -6,11 +6,13 @@ import {
   getWinnersNounString,
 } from "@utils/helpers/ranking/ranking.helper";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 
 export const History = () => {
   const { desk } = useDesk();
+  const Cursor = useCursor();
   const { gameOpen, toggleGameOpen } = useGame();
 
   const rounds = desk.gameplay.rounds;
@@ -100,12 +102,14 @@ export const History = () => {
         <span className="history__no-data">No data</span>
       )}
 
-      <div
-        className="history__button"
-        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
-      >
-        Close
-      </div>
+      <Cursor id="history-close" hint="Close" position="bottom">
+        <div
+          className="history__button"
+          onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
+        >
+          Close
+        </div>
+      </Cursor>
     </Modal>
   );
 };

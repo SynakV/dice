@@ -9,19 +9,20 @@ interface Props {
 }
 
 export const Navigator: FC<Props> = ({ url }) => {
-  const hint = useCursor();
+  const Cursor = useCursor();
   const portal = usePortal();
 
   return portal(
     <Link href={url || "/"}>
-      <Image
-        width={50}
-        height={50}
-        alt="arrow-back"
-        className="navigator"
-        src="/images/arrow-back.png"
-        {...hint({ text: "Back" })}
-      />
+      <Cursor hint="Back" id="navigator-back">
+        <Image
+          width={50}
+          height={50}
+          alt="arrow-back"
+          className="navigator"
+          src="/images/arrow-back.png"
+        />
+      </Cursor>
     </Link>
   );
 };

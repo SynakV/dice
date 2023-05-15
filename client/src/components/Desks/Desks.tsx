@@ -10,7 +10,7 @@ import { useCursor } from "@utils/contexts/CursorProvider";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
-  const hint = useCursor();
+  const Cursor = useCursor();
   const router = useRouter();
   const portal = usePortal();
   const { notification } = useNotification();
@@ -65,27 +65,43 @@ export const Desks = () => {
                     isDisableToJoin ? "list__desk--disabled" : ""
                   }`}
                 >
-                  <Image
-                    fill
-                    alt="grunge-brush-stroke"
-                    className="list__background"
-                    src="/images/grunge-brush-stroke.png"
-                    onClick={
-                      isDisableToJoin ? () => {} : () => handleJoin(desk?._id)
-                    }
-                  />
+                  <Cursor
+                    hint="Join"
+                    position="bottom"
+                    isDisable={isDisableToJoin}
+                    id={`desk-${desk?._id || Math.random()}`}
+                  >
+                    <Image
+                      fill
+                      alt="grunge-brush-stroke"
+                      className="list__background"
+                      src="/images/grunge-brush-stroke.png"
+                      onClick={
+                        isDisableToJoin ? () => {} : () => handleJoin(desk?._id)
+                      }
+                    />
+                  </Cursor>
                   <span className="list__title">{desk.name}</span>
                   <span className="list__players">
                     {players.current}/{players.max}
                   </span>
-                  <span
-                    className="list__share"
-                    onClick={
-                      isDisableToJoin ? () => {} : () => handleShare(desk?._id)
-                    }
+                  <Cursor
+                    hint="Share"
+                    position="left"
+                    isDisable={isDisableToJoin}
+                    id={`share-${desk?._id || Math.random()}`}
                   >
-                    Share
-                  </span>
+                    <span
+                      className="list__share"
+                      onClick={
+                        isDisableToJoin
+                          ? () => {}
+                          : () => handleShare(desk?._id)
+                      }
+                    >
+                      Share
+                    </span>
+                  </Cursor>
                 </div>
               );
             })}
@@ -93,29 +109,28 @@ export const Desks = () => {
         ) : null}
         {isLoading && <Loading />}
         {!isLoading && !desks.length && (
-          <Image
-            width={200}
-            height={180}
-            alt="grunge-no-sign"
-            className="desks__empty"
-            src="/images/grunge-no-sign.png"
-            // {...hint({
-            //   text: "No desks",
-            //   highlight: false,
-            //   position: "top-left",
-            // })}
-          />
+          <Cursor hint="No desks" highlight={false} id="no-desks">
+            <Image
+              width={200}
+              height={180}
+              alt="grunge-no-sign"
+              className="desks__empty"
+              src="/images/grunge-no-sign.png"
+            />
+          </Cursor>
         )}
       </div>
       {portal(
-        <Image
-          width={50}
-          height={50}
-          alt="grunge-plus"
-          className="desks__create"
-          src="/images/grunge-plus.png"
-          onClick={handleToggleOpenModal}
-        />
+        <Cursor id="create-new-desk" hint="Create new desk" position="top">
+          <Image
+            width={50}
+            height={50}
+            alt="grunge-plus"
+            className="desks__create"
+            src="/images/grunge-plus.png"
+            onClick={handleToggleOpenModal}
+          />
+        </Cursor>
       )}
       <Create isOpen={isModalOpen} setIsOpen={handleToggleOpenModal} />
     </>

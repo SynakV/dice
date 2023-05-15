@@ -3,10 +3,6 @@
     width: var(--square);
     height: var(--square);
     transform-style: preserve-3d;
-    
-    &:hover {
-        cursor: pointer;
-    }
 
     &-1, &-null {
         transform: rotateX(45deg) rotateZ(45deg);

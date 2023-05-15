@@ -52,6 +52,7 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
       )}
       <Form.Field label="Players">
         <Form.Input.Number
+          id="players"
           value={settings.players}
           min={SETTINGS.MIN.PLAYERS}
           max={SETTINGS.MAX.PLAYERS}
@@ -60,6 +61,7 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
       </Form.Field>
       <Form.Field label="Max wins">
         <Form.Input.Number
+          id="wins"
           value={settings.wins}
           min={SETTINGS.MIN.WINS}
           max={SETTINGS.MAX.WINS}
@@ -68,6 +70,7 @@ export const Fields: FC<Props> = ({ isWithName, desk, setForm }) => {
       </Form.Field>
       <Form.Field label="Rolls">
         <Form.Input.Number
+          id="rolls"
           value={settings.stages}
           min={SETTINGS.MIN.STAGES}
           max={SETTINGS.MAX.STAGES}

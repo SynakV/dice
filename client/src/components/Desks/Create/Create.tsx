@@ -3,6 +3,7 @@ import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
 import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { DeskType, SettingsType } from "@utils/common/types";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
@@ -14,6 +15,7 @@ interface Props {
 
 export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
+  const Cursor = useCursor();
   const { notification } = useNotification();
 
   const [settings, setSettings] = useState<SettingsType | null>(null);
@@ -52,12 +54,16 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
         <Fields isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
-        <span className="create__close" onClick={setIsOpen}>
-          Close
-        </span>
-        <span className="create__create" onClick={handleCreateNewDesk}>
-          Create
-        </span>
+        <Cursor id="modal-create-desk-close" position="right" hint="Close">
+          <span className="create__close" onClick={setIsOpen}>
+            Close
+          </span>
+        </Cursor>
+        <Cursor id="modal-create-desk-create" position="left" hint="Create">
+          <span className="create__create" onClick={handleCreateNewDesk}>
+            Create
+          </span>
+        </Cursor>
       </div>
     </Modal>
   );

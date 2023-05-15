@@ -16,6 +16,7 @@ import {
   getWinnerIcons,
   playWinnerSound,
 } from "@components/Mode/Shared/Conclusion/Conclusion";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 export const Conclusion = () => {
   const {
@@ -24,6 +25,7 @@ export const Conclusion = () => {
       gameplay: { rounds, current, max },
     },
   } = useDesk();
+  const Cursor = useCursor();
   const { player, toggleGameOpen } = useGame();
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
@@ -69,6 +71,8 @@ export const Conclusion = () => {
 
   const rankings = rounds[current.round].stages[current.stage].rankings;
 
+  const closeConclusionText = isLastRound ? "Close" : "Next round";
+
   return (
     <Modal className="conclusion" title={title} isOpen={isOpen}>
       <span className="conclusion__round">Round: {current.round + 1}</span>
@@ -87,15 +91,25 @@ export const Conclusion = () => {
           </Hand>
         ))}
       </div>
-      <span onClick={handleClick} className="conclusion__button">
-        {isLastRound ? "Close" : "Next round"}
-      </span>
-      <span
-        className="conclusion__history"
-        onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
-      >
-        History
-      </span>
+      <div className="modal__footer">
+        <Cursor id="conclusion-history" position="right" hint="History">
+          <span
+            className="conclusion__history"
+            onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
+          >
+            History
+          </span>
+        </Cursor>
+        <Cursor
+          position="left"
+          id="conclusion-close"
+          hint={closeConclusionText}
+        >
+          <span onClick={handleClick} className="conclusion__button">
+            {closeConclusionText}
+          </span>
+        </Cursor>
+      </div>
     </Modal>
   );
 };

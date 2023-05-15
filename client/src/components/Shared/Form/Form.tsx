@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { FC, ReactNode } from "react";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Form {}
 
@@ -43,13 +44,15 @@ export const Text: FC<Text> = ({ value, setValue }) => (
 );
 
 interface Number extends Input {
+  id: string;
   min: number;
   max: number;
   value: number;
   setValue: (value: number) => void;
 }
 
-const Number: FC<Number> = ({ min, max, value, setValue }) => {
+const Number: FC<Number> = ({ id, min, max, value, setValue }) => {
+  const Cursor = useCursor();
   const handleSetValue = (value: number) => {
     if (value >= min && value <= max) {
       setValue(value);
@@ -65,26 +68,40 @@ const Number: FC<Number> = ({ min, max, value, setValue }) => {
         className="form__line"
         src="/images/grunge-line.png"
       />
-      <Image
-        width={20}
-        height={20}
-        alt="arrow-up"
-        src="/images/grunge-arrow-right.png"
-        onClick={() => handleSetValue(value + 1)}
-        className={`form__arrow form__arrow--up ${
-          value >= max ? "form__arrow--disabled" : ""
-        }`}
-      />
-      <Image
-        width={20}
-        height={20}
-        alt="arrow-down"
-        src="/images/grunge-arrow-right.png"
-        onClick={() => handleSetValue(value - 1)}
-        className={`form__arrow form__arrow--down ${
-          value <= min ? "form__arrow--disabled" : ""
-        }`}
-      />
+      <Cursor
+        hint="Increase"
+        id={`${id}-inc`}
+        position="bottom"
+        isDisable={value >= max}
+      >
+        <Image
+          width={20}
+          height={20}
+          alt="arrow-up"
+          src="/images/grunge-arrow-right.png"
+          onClick={() => handleSetValue(value + 1)}
+          className={`form__arrow form__arrow--up ${
+            value >= max ? "form__arrow--disabled" : ""
+          }`}
+        />
+      </Cursor>
+      <Cursor
+        position="top"
+        hint="Decrease"
+        id={`${id}-dec`}
+        isDisable={value <= min}
+      >
+        <Image
+          width={20}
+          height={20}
+          alt="arrow-down"
+          src="/images/grunge-arrow-right.png"
+          onClick={() => handleSetValue(value - 1)}
+          className={`form__arrow form__arrow--down ${
+            value <= min ? "form__arrow--disabled" : ""
+          }`}
+        />
+      </Cursor>
     </div>
   );
 };

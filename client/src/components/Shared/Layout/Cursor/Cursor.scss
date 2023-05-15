@@ -7,6 +7,7 @@
     transform: var(--cursor-position);
 
     &__rotate {
+        transform-origin: -10px -10px;
         transform: rotate(var(--cursor-rotate));
         transition: transform var(--transition-30);
 
@@ -22,13 +23,13 @@
     }
 
     &__hint {
-        top: 10px;
-        left: 10px;
-        height: 50px;
+        width: 200px;
+        height: 70px;
         padding: 0 35px;
-        min-width: 150px;
         position: absolute;
         display: var(--cursor-hint-display);
+        top: var(--cursor-hint-position-top);
+        left: var(--cursor-hint-position-left);
     }
 
     &__text {
@@ -36,6 +37,7 @@
         width: 100%;
         height: 100%;
         display: flex;
+        font-size: 20px;
         position: relative;
         align-items: center;
         color: var(--white-50);
@@ -52,6 +54,8 @@
     --cursor-opacity: 0.5;
     --cursor-hint-text: '';
     --cursor-hint-display: none;
+    --cursor-hint-position-top: 10px;
+    --cursor-hint-position-left: 10px;
     --cursor-position: translate(0px, 0px);
 }
 

@@ -3,10 +3,12 @@ import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import { getNameFormatted } from "@utils/helpers/common.helper";
 import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 export const Status = () => {
+  const Cursor = useCursor();
   const { desk } = useDesk();
   const portal = usePortal();
   const { player } = useGame();
@@ -79,9 +81,11 @@ export const Status = () => {
   };
 
   return portal(
-    <div className="status">
-      <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />
-      <div className="status__text">{getStatus()}</div>
-    </div>
+    <Cursor hint="Status" highlight={false} id="status-banner">
+      <div className="status">
+        <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />
+        <div className="status__text">{getStatus()}</div>
+      </div>
+    </Cursor>
   );
 };
