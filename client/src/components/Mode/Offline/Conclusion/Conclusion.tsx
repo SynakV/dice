@@ -92,7 +92,7 @@ export const Conclusion = () => {
         ))}
       </div>
       <div className="modal__footer">
-        <Cursor id="conclusion-history" position="right" hint="History">
+        <Cursor id="conclusion-history" position="bottom" hint="History">
           <span
             className="conclusion__history"
             onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
@@ -101,7 +101,7 @@ export const Conclusion = () => {
           </span>
         </Cursor>
         <Cursor
-          position="left"
+          position="bottom"
           id="conclusion-close"
           hint={closeConclusionText}
         >

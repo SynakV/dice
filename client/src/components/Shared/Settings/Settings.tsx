@@ -62,12 +62,12 @@ export const Settings = () => {
           <Fields desk={desk} setForm={setSettings} />
         </div>
         <div className="settings__buttons">
-          <Cursor id="settings-close" hint="Close" position="right">
+          <Cursor id="settings-close" hint="Close" position="bottom">
             <div className="settings__button" onClick={handleClose}>
               Close
             </div>
           </Cursor>
-          <Cursor id="settings-apply" hint="Apply" position="left">
+          <Cursor id="settings-apply" hint="Apply" position="bottom">
             <div className="settings__button" onClick={handleApply}>
               Apply
             </div>

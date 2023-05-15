@@ -86,9 +86,9 @@ const Number: FC<Number> = ({ id, min, max, value, setValue }) => {
         />
       </Cursor>
       <Cursor
-        position="top"
         hint="Decrease"
         id={`${id}-dec`}
+        position="bottom"
         isDisable={value <= min}
       >
         <Image

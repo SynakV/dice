@@ -54,12 +54,12 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
         <Fields isWithName setForm={setSettings} />
       </div>
       <div className="create__footer">
-        <Cursor id="modal-create-desk-close" position="right" hint="Close">
+        <Cursor id="modal-create-desk-close" position="bottom" hint="Close">
           <span className="create__close" onClick={setIsOpen}>
             Close
           </span>
         </Cursor>
-        <Cursor id="modal-create-desk-create" position="left" hint="Create">
+        <Cursor id="modal-create-desk-create" position="bottom" hint="Create">
           <span className="create__create" onClick={handleCreateNewDesk}>
             Create
           </span>
