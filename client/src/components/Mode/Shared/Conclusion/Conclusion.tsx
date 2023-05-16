@@ -2,17 +2,11 @@ import React from "react";
 import Image from "next/image";
 import { playAudio } from "@utils/helpers/audio.helper";
 
-export const getWinnerIcons = (wins: number = 0) => {
+export const getWinnerIcons = (wins: number = 0, isCurrent: boolean) => {
   return wins > 0 ? (
-    <div className="hand__wins">
-      <span className="hand__wins-counter">{wins}</span>
-      <Image
-        width={75}
-        height={75}
-        alt="wreath"
-        src="/images/wreath.png"
-        className="hand__wins-img"
-      />
+    <div className={`hand__wins ${isCurrent ? "hand__wins--current" : ""}`}>
+      <span className="hand__counter">{wins}</span>
+      <Image width={75} height={75} alt="wreath" src="/images/wreath.png" />
     </div>
   ) : null;
 };
