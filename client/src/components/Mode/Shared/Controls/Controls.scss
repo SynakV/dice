@@ -7,6 +7,14 @@
     position: absolute;
     transition: var(--transition-30);
 
+    &__image {
+        margin-bottom: 15px;
+    }
+
+    &__corner {
+        position: absolute;
+    }
+
     &__button {
         height: 100%;
         opacity: 0.5;
@@ -17,16 +25,12 @@
         align-items: center;
         transition: transform var(--transition-30), opacity var(--transition-30);
 
-        img {
-            position: absolute;
-        }
-
         &--left {
             left: 0;
             padding-left: 30px;
             transform-origin: left bottom;
 
-            img {
+            .controls__corner {
                 left: 0;
                 transform: scaleY(-1);
             }
@@ -38,7 +42,7 @@
             translate: -50% -50%;
             transform-origin: bottom;
 
-            img {
+            .controls__corner {
                 &:nth-child(1) {
                     right: 50%;
                     transform: scale(-1, -1);
@@ -55,7 +59,7 @@
             padding-right: 30px;
             transform-origin: right bottom;
 
-            img {
+            .controls__corner {
                 right: 0;
                 transform: scale(-1, -1);
             }

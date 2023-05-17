@@ -5,15 +5,9 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
-    }
 
-    &__button {
-        display: flex;
-        color: var(--white-50);
-        transition: var(--transition-30);
-
-        &:hover {
-            color: var(--white-35);
+        img {
+            @include modal-button-img;
         }
     }
 }

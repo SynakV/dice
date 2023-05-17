@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC, useState } from "react";
 import { Form } from "@components/Shared/Form/Form";
 import { CredentialsType } from "@utils/common/types";
@@ -40,17 +41,22 @@ export const Credentials: FC<Props> = ({
       </div>
       <div className="credentials__footer">
         <Cursor id="credentials-close" hint="Close" position="bottom">
-          <span className="credentials__close" onClick={toggleIsOpen}>
-            Close
-          </span>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-cross"
+            onClick={toggleIsOpen}
+            src="/images/grunge-cross.png"
+          />
         </Cursor>
-        <Cursor id="credentials-continue" hint="Close" position="bottom">
-          <span
-            className="credentials__continue"
+        <Cursor id="credentials-apply" hint="Apply" position="bottom">
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-check-mark"
             onClick={handleSetCredentials}
-          >
-            Continue
-          </span>
+            src="/images/grunge-check-mark.png"
+          />
         </Cursor>
       </div>
     </Modal>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC } from "react";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { useCursor } from "@utils/contexts/CursorProvider";
@@ -23,14 +24,22 @@ export const Confirm: FC<Props> = ({
     <Modal isOpen={isOpen} title={title} className="confirm">
       <div className="confirm__buttons">
         <Cursor id="confirm-cancel" hint={cancel} position="bottom">
-          <div className="confirm__button" onClick={() => onConfirm(false)}>
-            {cancel}
-          </div>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-cross"
+            src="/images/grunge-cross.png"
+            onClick={() => onConfirm(false)}
+          />
         </Cursor>
         <Cursor id="confirm-ok" hint={ok} position="bottom">
-          <div className="confirm__button" onClick={() => onConfirm(true)}>
-            {ok}
-          </div>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-check-mark"
+            onClick={() => onConfirm(true)}
+            src="/images/grunge-check-mark.png"
+          />
         </Cursor>
       </div>
     </Modal>

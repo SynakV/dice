@@ -1,3 +1,13 @@
+@mixin modal-button-img {
+    opacity: 0.5;
+    filter: invert(1);
+    transition: var(--transition-30);
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
 @import '../components/Shared/Shared.scss', './animations.scss';
 
 body {
