@@ -16,4 +16,12 @@
     &__cubes {
         display: flex;
     }
+
+    .caretaker {
+        top: 2px;
+        left: -35px;
+        opacity: 0.5;
+        filter: invert(1);
+        position: absolute;
+    }
 }

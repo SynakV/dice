@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { DICE } from "@utils/constants";
 import React, { FC, useEffect } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
@@ -19,6 +20,8 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
+import { useCursor } from "@utils/contexts/CursorProvider";
+import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
 const DEFAULT_CUBES = new Array(DICE.COUNT).fill(null);
 
@@ -27,6 +30,7 @@ interface Props {
 }
 
 export const Cubes: FC<Props> = ({ player }) => {
+  const Cursor = useCursor();
   const { handle, desk } = useDesk();
   const { player: you, setIsControlsLoading } = useGame();
 
@@ -35,6 +39,8 @@ export const Cubes: FC<Props> = ({ player }) => {
     desk.gameplay.players.find(
       (player) => player.id === desk.gameplay.current.player?.id
     )?.status === PLAYER_STATUS.ONLINE;
+
+  const isYouAdmin = getAdmin(desk)?.id === player?.id;
 
   const isCurrentPlayerTurn = desk.gameplay.current.player?.id === player.id;
 
@@ -129,6 +135,17 @@ export const Cubes: FC<Props> = ({ player }) => {
 
   return (
     <Hand player={player.name} ranking={ranking?.value.name}>
+      {isYouAdmin && (
+        <Cursor id="caretaker" hint="Caretaker" highlight={false}>
+          <Image
+            width={30}
+            height={30}
+            className="caretaker"
+            alt="grunge-caretaker"
+            src="/images/grunge-caretaker.png"
+          />
+        </Cursor>
+      )}
       {(roll || DEFAULT_CUBES).map((cube, index) => {
         const isAllowSelectedAnimation =
           !!reroll?.[index] || desk.gameplay.current.stage === 0;
