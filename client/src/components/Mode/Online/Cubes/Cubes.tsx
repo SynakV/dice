@@ -146,6 +146,14 @@ export const Cubes: FC<Props> = ({ player }) => {
           />
         </Cursor>
       )}
+      <Image
+        fill
+        alt="grunge-rect"
+        className={`hand__rect ${
+          isCurrentPlayerTurn ? "hand__rect--highlight" : ""
+        }`}
+        src="/images/grunge-rect.png"
+      />
       {(roll || DEFAULT_CUBES).map((cube, index) => {
         const isAllowSelectedAnimation =
           !!reroll?.[index] || desk.gameplay.current.stage === 0;

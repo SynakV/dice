@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { FC, useEffect } from "react";
 import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
@@ -142,6 +143,14 @@ export const Cubes: FC<Props> = ({ player }) => {
 
   return (
     <Hand player={player.name} ranking={ranking?.value.name}>
+      <Image
+        fill
+        alt="grunge-rect"
+        className={`hand__rect ${
+          isCurrentPlayerTurn ? "hand__rect--highlight" : ""
+        }`}
+        src="/images/grunge-rect.png"
+      />
       {(roll || DEFAULT_CUBES).map((cube, index) => {
         const isAllowSelectedAnimation =
           !!reroll?.[index] || desk.gameplay.current.stage === 0;

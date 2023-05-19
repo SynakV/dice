@@ -9,6 +9,7 @@
         width: 100%;
         display: flex;
         text-align: start;
+        position: relative;
         color: var(--white-50);
         justify-content: space-between;
     }
@@ -18,8 +19,8 @@
     }
 
     .caretaker {
-        top: 2px;
-        left: -35px;
+        top: 3px;
+        left: -65px;
         opacity: 0.5;
         filter: invert(1);
         position: absolute;

@@ -104,6 +104,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     setRoot(document.querySelector(":root") as RootType);
+    // console.log(window.matchMedia("(pointer:fine)").matches);
   }, []);
 
   useEffect(() => {

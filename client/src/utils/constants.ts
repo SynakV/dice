@@ -116,6 +116,7 @@ export const ASSETS = {
     "arrow-back.png",
     "grunge-line.png",
     "grunge-plus.png",
+    "grunge-rect.png",
     "grunge-cross.png",
     "grunge-mess.webp",
     "grunge-wifi.webp",
