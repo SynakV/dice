@@ -94,6 +94,7 @@ let currentId = "";
 
 export const CursorProvider: FC<Props> = ({ children }) => {
   const [root, setRoot] = useState<RootType>(null);
+  const [isCursor, setIsCursor] = useState<boolean | null>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
     root?.style.setProperty(
@@ -104,7 +105,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     setRoot(document.querySelector(":root") as RootType);
-    // console.log(window.matchMedia("(pointer:fine)").matches);
+    setIsCursor(window.matchMedia("(pointer:fine)").matches);
   }, []);
 
   useEffect(() => {
@@ -244,35 +245,41 @@ export const CursorProvider: FC<Props> = ({ children }) => {
       }
     }
 
-    return cloneElement(children, {
-      onMouseUp: handleMouseUp.bind(this, options),
-      onMouseDown: handleMouseDown.bind(this, options),
-      onMouseEnter: handleMouseEnter.bind(this, options),
-      onMouseLeave: handleMouseLeave.bind(this, options),
-    });
+    if (isCursor) {
+      return cloneElement(children, {
+        onMouseUp: handleMouseUp.bind(this, options),
+        onMouseDown: handleMouseDown.bind(this, options),
+        onMouseEnter: handleMouseEnter.bind(this, options),
+        onMouseLeave: handleMouseLeave.bind(this, options),
+      });
+    } else {
+      return children;
+    }
   };
 
   return (
     <CursorContext.Provider value={Cursor}>
       {children}
-      <div id="cursor">
-        <div id="cursor__rotate">
-          <Image
-            width={50}
-            height={50}
-            alt="cursor"
-            src="/images/grunge-cursor.png"
-          />
+      {isCursor && (
+        <div id="cursor">
+          <div id="cursor__rotate">
+            <Image
+              width={50}
+              height={50}
+              alt="cursor"
+              src="/images/grunge-cursor.png"
+            />
+          </div>
+          <div id="cursor__hint">
+            <Image
+              fill
+              alt="grunge-brush-stroke"
+              src="/images/grunge-brush-stroke.png"
+            />
+            <div id="cursor__text" />
+          </div>
         </div>
-        <div id="cursor__hint">
-          <Image
-            fill
-            alt="grunge-brush-stroke"
-            src="/images/grunge-brush-stroke.png"
-          />
-          <div id="cursor__text" />
-        </div>
-      </div>
+      )}
     </CursorContext.Provider>
   );
 };
