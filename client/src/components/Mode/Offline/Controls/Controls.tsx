@@ -82,7 +82,11 @@ export const Controls = () => {
         />
       </Cursor>
       {!desk.gameplay.isGameStarted ? (
-        <Cursor id="controls-start-game" position="top-left" hint="Start game">
+        <Cursor
+          hint="Start game"
+          position="top-left"
+          id="controls-right-corner"
+        >
           <Button
             position="right"
             text="Start game"
@@ -94,7 +98,7 @@ export const Controls = () => {
         <Cursor
           hint={rollText}
           position="top-left"
-          id="controls-start-game"
+          id="controls-right-corner"
           isDisable={isDisableToRoll}
         >
           <Button

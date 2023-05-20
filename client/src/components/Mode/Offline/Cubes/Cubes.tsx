@@ -20,12 +20,14 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
+import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Props {
   player: PlayerType;
 }
 
 export const Cubes: FC<Props> = ({ player }) => {
+  const Cursor = useCursor();
   const { player: you } = useGame();
   const { handle, desk } = useDesk();
 
@@ -172,6 +174,7 @@ export const Cubes: FC<Props> = ({ player }) => {
             index={index}
             isDisabled={isDisableCube}
             isSelected={!!reroll?.[index]}
+            Cursor={isOtherPlayer ? null : Cursor}
             onClick={() => handleSelectDie(index)}
             rollAnimationNumber={rollAnimationNumber}
           />

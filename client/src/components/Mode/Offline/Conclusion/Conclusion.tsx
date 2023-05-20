@@ -72,8 +72,6 @@ export const Conclusion = () => {
 
   const rankings = rounds[current.round].stages[current.stage].rankings;
 
-  const closeConclusionText = isLastRound ? "Close" : "Next round";
-
   return (
     <Modal className="conclusion" title={title} isOpen={isOpen}>
       <span className="conclusion__round">Round: {current.round + 1}</span>
