@@ -42,3 +42,11 @@
         }
     }
 }
+
+@-moz-document url-prefix() {
+    .desk {
+        .hand__rect {
+            top: -27px !important;
+        }
+    }
+}
