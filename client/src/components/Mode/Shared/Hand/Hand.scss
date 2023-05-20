@@ -23,7 +23,7 @@
         left: -65px;
         opacity: 0.8;
         position: absolute;
-        transition: var(--transition-30);
+        transition: filter var(--transition-30);
 
         &--highlight {
             filter: invert(0.65);
