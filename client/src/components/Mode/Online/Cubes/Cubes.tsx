@@ -133,7 +133,8 @@ export const Cubes: FC<Props> = ({ player }) => {
 
   const isRollAnimationNumber = stage.isStarted && isCurrentPlayerTurn;
 
-  const isHighlightPlayer = isCurrentPlayerTurn && stage.isStarted;
+  const isHighlightPlayer =
+    isCurrentPlayerTurn && !desk.gameplay.isShowConclusion;
 
   return (
     <Hand
@@ -146,9 +147,11 @@ export const Cubes: FC<Props> = ({ player }) => {
           <Image
             width={30}
             height={30}
-            className="caretaker"
             alt="grunge-caretaker"
             src="/images/grunge-caretaker.png"
+            className={`caretaker ${
+              isHighlightPlayer ? "caretaker--highlight" : ""
+            }`}
           />
         </Cursor>
       )}
