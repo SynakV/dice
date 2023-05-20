@@ -177,6 +177,7 @@ export const Cubes: FC<Props> = ({ player }) => {
             index={index}
             isDisabled={isDisableCube}
             isSelected={!!reroll?.[index]}
+            Cursor={isOtherPlayer ? null : Cursor}
             onClick={() => handleSelectDie(index)}
             rollAnimationNumber={rollAnimationNumber}
           />

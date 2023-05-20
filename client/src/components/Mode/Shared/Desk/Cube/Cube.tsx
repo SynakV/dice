@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { FC } from "react";
-import { useCursor } from "@utils/contexts/CursorProvider";
+import type { CursorContextType } from "@utils/contexts/CursorProvider";
 
 interface Props {
   index?: number;
@@ -8,25 +8,26 @@ interface Props {
   isDisabled: boolean;
   isSelected?: boolean;
   value: number | null;
+  Cursor?: CursorContextType | null;
   rollAnimationNumber?: number | false;
 }
 
 export const Cube: FC<Props> = ({
   index,
   value,
+  Cursor,
   onClick,
   isSelected,
   isDisabled,
   rollAnimationNumber,
 }) => {
-  const Cursor = useCursor();
   const cubeStatus = isSelected ? "cube-status__selected" : "";
   const cubeWrapperSelected = isSelected ? "cube-wrapper__selected" : "";
   const cubeWrapperDisabled = isDisabled ? "cube-wrapper__disabled" : "";
 
   const cubeClick = isDisabled ? () => {} : () => onClick && onClick();
 
-  return (
+  const Component = (
     <div
       className={`cube-wrapper ${cubeWrapperDisabled} ${cubeWrapperSelected}`}
     >
@@ -78,5 +79,18 @@ export const Cube: FC<Props> = ({
         className={`cube-status ${cubeStatus}`}
       />
     </div>
+  );
+
+  return Cursor ? (
+    <Cursor
+      position="bottom"
+      id={`cube-${index}`}
+      isDisable={isDisabled}
+      hint={isSelected ? "Unselect" : "Select"}
+    >
+      {Component}
+    </Cursor>
+  ) : (
+    Component
   );
 };

@@ -128,7 +128,7 @@ export const Controls = () => {
         <Cursor
           hint="Start game"
           position="top-left"
-          id="controls-start-game"
+          id="controls-right-corner"
           isDisable={!isAllowToStartGame}
         >
           <Button
@@ -143,7 +143,7 @@ export const Controls = () => {
         <Cursor
           hint={rollText}
           position="top-left"
-          id="controls-start-game"
+          id="controls-right-corner"
           isDisable={!isAllowedToRoll}
         >
           <Button

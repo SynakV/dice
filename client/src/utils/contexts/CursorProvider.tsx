@@ -11,7 +11,7 @@ import {
 
 const DEFAULT_VALUE = () => <></>;
 
-type CursorContextType = FC<OptionsWithChildren>;
+export type CursorContextType = FC<OptionsWithChildren>;
 
 export const CursorContext = createContext<CursorContextType>(DEFAULT_VALUE);
 
