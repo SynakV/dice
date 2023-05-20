@@ -18,9 +18,10 @@ import { DEFAULT_ROUND, EVENTS, MESSAGES } from 'src/utils/common/constants';
 @WebSocketGateway({
   cors: {
     origin: [
-      'http://localhost:3000',
-      'https://admin.socket.io/',
-      'https://dice-tan.vercel.app',
+      'http://localhost:3000', // local
+      'https://admin.socket.io/', // admin panel
+      'https://dice-tan.vercel.app', // production
+      'https://dice-synakv.vercel.app', // development
     ],
   },
 })
