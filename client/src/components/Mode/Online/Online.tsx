@@ -20,14 +20,16 @@ import {
   getCredentials,
   setCredentials,
 } from "@utils/helpers/storage/storage.helper";
+import { Confirm } from "@components/Shared/Confirm/Confirm";
 
 export const Online: FC = () => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const { notification } = useNotification();
   const { desk, socket, setDesk } = useDesk();
   const { player, setPlayer, toggleGameOpen, setIsControlsLoading } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleSameNameNotification = (
     data: DeskType,
@@ -74,7 +76,7 @@ export const Online: FC = () => {
   };
 
   const handleCloseCredentials = () => {
-    push("/online");
+    replace("/online");
   };
 
   useEffect(() => {
@@ -164,6 +166,18 @@ export const Online: FC = () => {
     };
   }, []);
 
+  const handleNavigate = () => {
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirm = (isConfirmed: boolean) => {
+    if (isConfirmed) {
+      replace("/");
+    } else {
+      setIsConfirmOpen(false);
+    }
+  };
+
   const isShowGameDesk = desk._id && player?.id;
 
   return (
@@ -186,7 +200,19 @@ export const Online: FC = () => {
         setCredentials={handleSetCredentials}
         toggleIsOpen={handleCloseCredentials}
       />
-      <Navigator url="/online" />
+      <Navigator
+        url="/online"
+        onNavigate={
+          desk.gameplay.isGameStarted ? () => handleNavigate() : undefined
+        }
+      />
+      <Confirm
+        ok="Yes"
+        cancel="No"
+        isOpen={isConfirmOpen}
+        onConfirm={handleConfirm}
+        title="Do you want to exit?"
+      />
     </>
   );
 };
