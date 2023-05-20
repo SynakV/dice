@@ -141,14 +141,19 @@ export const Cubes: FC<Props> = ({ player }) => {
 
   const isRollAnimationNumber = stage.isStarted && isCurrentPlayerTurn;
 
+  const isHighlightPlayer =
+    isCurrentPlayerTurn && !desk.gameplay.isShowConclusion;
+
   return (
-    <Hand player={player.name} ranking={ranking?.value.name}>
+    <Hand
+      player={player.name}
+      ranking={ranking?.value.name}
+      className={`${isHighlightPlayer ? "hand--highlight" : ""}`}
+    >
       <Image
         fill
         alt="grunge-rect"
-        className={`hand__rect ${
-          isCurrentPlayerTurn ? "hand__rect--highlight" : ""
-        }`}
+        className="hand__rect"
         src="/images/grunge-rect.png"
       />
       {(roll || DEFAULT_CUBES).map((cube, index) => {

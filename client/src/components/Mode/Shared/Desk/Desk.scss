@@ -10,6 +10,7 @@
     .hand {
         &__header {
             font-size: 30px;
+            transition: var(--transition-30);
         }
 
         &__cubes {
@@ -20,15 +21,23 @@
 
         &__rect {
             z-index: -1;
-            opacity: 0.5;
+            opacity: 0.9;
             top: -20px !important;
             left: -40px !important;
             height: 80px !important;
             width: calc(100% + 80px) !important;
-            transition: opacity var(--transition-30);
+            transition: filter var(--transition-30);
+        }
 
-            &--highlight {
-                opacity: 0.9;
+        &--highlight {
+            .hand {
+                &__rect {
+                    filter: invert(0.6);
+                }
+
+                &__header {
+                    color: var(--black-50);
+                }
             }
         }
     }
