@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
@@ -106,11 +107,18 @@ export const Conclusion = () => {
         <Cursor
           position="bottom"
           id="conclusion-close"
-          hint={closeConclusionText}
+          hint={isLastRound ? "Close" : "Next round"}
         >
-          <span onClick={handleClick} className="conclusion__button">
-            {closeConclusionText}
-          </span>
+          <Image
+            height={30}
+            onClick={handleClick}
+            width={isLastRound ? 30 : 50}
+            className="conclusion__button"
+            alt={`${isLastRound ? "grunge-cross" : "grunge-arrow-right"}`}
+            src={`/images/${
+              isLastRound ? "grunge-cross" : "grunge-arrow-right"
+            }.png`}
+          />
         </Cursor>
       </div>
     </Modal>

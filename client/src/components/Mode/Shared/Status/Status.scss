@@ -10,14 +10,11 @@
     transform: translateX(-50%);
     transition: var(--transition-30);
 
-    img[alt="grunge-border"] {
-        z-index: -1;
-    }
-
     &__text {
         top: 50%;
         left: 50%;
         width: 75%;
+        z-index: 1;
         margin-top: 5px;
         position: absolute;
         transform: translate(-50%, -50%);

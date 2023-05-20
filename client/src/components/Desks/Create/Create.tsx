@@ -7,6 +7,7 @@ import { useCursor } from "@utils/contexts/CursorProvider";
 import { DeskType, SettingsType } from "@utils/common/types";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
+import Image from "next/image";
 
 interface Props {
   isOpen: boolean;
@@ -55,14 +56,22 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       </div>
       <div className="create__footer">
         <Cursor id="modal-create-desk-close" position="bottom" hint="Close">
-          <span className="create__close" onClick={setIsOpen}>
-            Close
-          </span>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-cross"
+            onClick={setIsOpen}
+            src="/images/grunge-cross.png"
+          />
         </Cursor>
         <Cursor id="modal-create-desk-create" position="bottom" hint="Create">
-          <span className="create__create" onClick={handleCreateNewDesk}>
-            Create
-          </span>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-check-mark"
+            onClick={handleCreateNewDesk}
+            src="/images/grunge-check-mark.png"
+          />
         </Cursor>
       </div>
     </Modal>

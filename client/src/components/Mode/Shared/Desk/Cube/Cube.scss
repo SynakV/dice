@@ -123,7 +123,8 @@
             transform: translate(-15px, -65px) rotateX(45deg) rotateZ(45deg);
 
             &__selected {
-                filter: invert(1) !important;
+                opacity: 0.8;
+                filter: invert(0.6) !important;
             }
         }
     }
@@ -131,17 +132,16 @@
     &:not(&__disabled) {
         &:hover  {
             .cube-status {
-                filter: invert(0.5);
+                opacity: 0.8;
+                filter: invert(0.6);
             }
         }
     }
 
     &__selected {
-        transition: var(--transition-30);
         transform: translate(0px, -10px);
 
         .cube-status {
-            opacity: 0.5;
             transform: translate(-15px, -55px) rotateX(45deg) rotateZ(45deg);
         }
     }

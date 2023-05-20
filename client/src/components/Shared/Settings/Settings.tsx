@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { SettingsType } from "@utils/common/types";
@@ -63,14 +64,22 @@ export const Settings = () => {
         </div>
         <div className="settings__buttons">
           <Cursor id="settings-close" hint="Close" position="bottom">
-            <div className="settings__button" onClick={handleClose}>
-              Close
-            </div>
+            <Image
+              width={30}
+              height={30}
+              alt="grunge-cross"
+              onClick={handleClose}
+              src="/images/grunge-cross.png"
+            />
           </Cursor>
           <Cursor id="settings-apply" hint="Apply" position="bottom">
-            <div className="settings__button" onClick={handleApply}>
-              Apply
-            </div>
+            <Image
+              width={30}
+              height={30}
+              onClick={handleApply}
+              alt="grunge-check-mark"
+              src="/images/grunge-check-mark.png"
+            />
           </Cursor>
         </div>
       </Modal>

@@ -9,6 +9,7 @@ import { Hand } from "@components/Mode/Shared/Hand/Hand";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
+import Image from "next/image";
 
 export const History = () => {
   const { desk } = useDesk();
@@ -103,12 +104,14 @@ export const History = () => {
       )}
 
       <Cursor id="history-close" hint="Close" position="bottom">
-        <div
+        <Image
+          width={30}
+          height={30}
+          alt="grunge-cross"
           className="history__button"
+          src="/images/grunge-cross.png"
           onClick={() => toggleGameOpen(GAME_OPEN.HISTORY)}
-        >
-          Close
-        </div>
+        />
       </Cursor>
     </Modal>
   );

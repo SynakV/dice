@@ -1,4 +1,6 @@
-import React, { FC, useRef } from "react";
+import Image from "next/image";
+import React, { FC, useState } from "react";
+import { Form } from "@components/Shared/Form/Form";
 import { CredentialsType } from "@utils/common/types";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { useCursor } from "@utils/contexts/CursorProvider";
@@ -17,16 +19,14 @@ export const Credentials: FC<Props> = ({
   toggleIsOpen,
   setCredentials,
 }) => {
-  const name = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState(credentials?.name || "");
 
   const Cursor = useCursor();
   const { notification } = useNotification();
 
   const handleSetCredentials = () => {
-    const value = name.current?.value;
-
-    if (value) {
-      setCredentials({ name: value });
+    if (name) {
+      setCredentials({ name });
     } else {
       notification("Name should not be empty");
     }
@@ -35,27 +35,28 @@ export const Credentials: FC<Props> = ({
   return (
     <Modal isOpen={isOpen} title="Enter your name">
       <div className="credentials__main">
-        <span className="credentials__name">Name:</span>
-        <input
-          type="text"
-          ref={name}
-          defaultValue={credentials?.name}
-          className="credentials__input"
-        />
+        <Form.Field label="Name">
+          <Form.Input.Text value={name} setValue={setName} />
+        </Form.Field>
       </div>
       <div className="credentials__footer">
         <Cursor id="credentials-close" hint="Close" position="bottom">
-          <span className="credentials__close" onClick={toggleIsOpen}>
-            Close
-          </span>
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-cross"
+            onClick={toggleIsOpen}
+            src="/images/grunge-cross.png"
+          />
         </Cursor>
-        <Cursor id="credentials-continue" hint="Close" position="bottom">
-          <span
-            className="credentials__continue"
+        <Cursor id="credentials-apply" hint="Apply" position="bottom">
+          <Image
+            width={30}
+            height={30}
+            alt="grunge-check-mark"
             onClick={handleSetCredentials}
-          >
-            Continue
-          </span>
+            src="/images/grunge-check-mark.png"
+          />
         </Cursor>
       </div>
     </Modal>

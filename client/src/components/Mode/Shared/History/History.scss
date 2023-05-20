@@ -10,20 +10,10 @@
 
     &__button {
         left: 50%;
-        width: 100px;
-        height: 30px;
-        bottom: 20px;
-        display: flex;
+        bottom: 0px;
         position: absolute;
-        align-items: center;
-        color: var(--white-50);
-        justify-content: center;
         transform: translateX(-50%);
-        transition: var(--transition-30);
-
-        &:hover {
-            color: var(--white-35);
-        }
+        @include modal-button-img;
     }
 
     &__rounds {

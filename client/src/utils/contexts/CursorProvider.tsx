@@ -104,6 +104,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     setRoot(document.querySelector(":root") as RootType);
+    // console.log(window.matchMedia("(pointer:fine)").matches);
   }, []);
 
   useEffect(() => {
@@ -177,6 +178,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
         return;
       }
       if (highlight) {
+        root?.style.setProperty("--cursor-scale", "1");
         root.style.setProperty("--cursor-opacity", "0.5");
       }
       root.style.setProperty(
@@ -196,14 +198,16 @@ export const CursorProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const handleMouseDown = ({ highlight }: OptionsType) => {
-    if (highlight) {
+  const handleMouseDown = ({ highlight, isDisable }: OptionsType) => {
+    if (highlight && !isDisable) {
+      root?.style.setProperty("--cursor-scale", "0.8");
       root?.style.setProperty("--cursor-opacity", "1");
     }
   };
 
-  const handleMouseUp = ({ highlight }: OptionsType) => {
-    if (highlight) {
+  const handleMouseUp = ({ highlight, isDisable }: OptionsType) => {
+    if (highlight && !isDisable) {
+      root?.style.setProperty("--cursor-scale", "1");
       root?.style.setProperty("--cursor-opacity", "0.8");
     }
   };

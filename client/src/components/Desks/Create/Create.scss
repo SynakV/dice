@@ -18,14 +18,9 @@
         align-items: center;
         color: var(--white-50);
         justify-content: space-around;
-    }
 
-    &__create, &__close {
-        color: var(--white-50);
-        transition: var(--transition-30);
-
-        &:hover {
-            color: var(--white-35);
+        img {
+            @include modal-button-img;
         }
     }
 }

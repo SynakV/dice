@@ -16,9 +16,9 @@
             left: -15px;
             filter: invert(1);
             position: absolute;
-            transform: rotate(-135deg);
             opacity: var(--cursor-opacity);
-            transition: opacity var(--transition-30);
+            transition: var(--transition-30);
+            transform: rotate(-135deg) scale(var(--cursor-scale));
         }
     }
 
@@ -50,6 +50,7 @@
 }
 
 :root {
+    --cursor-scale: 1;
     --cursor-rotate: 0deg;
     --cursor-opacity: 0.5;
     --cursor-hint-text: '';

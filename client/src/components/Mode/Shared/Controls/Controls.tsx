@@ -31,6 +31,7 @@ export const Button: FC<Button> = ({
         width={85}
         height={85}
         alt="corner"
+        className="controls__corner"
         src="/images/grunge-corner.png"
       />
     )}
