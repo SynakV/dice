@@ -120,7 +120,6 @@ export const ASSETS = {
     "grunge-cross.png",
     "grunge-mess.webp",
     "grunge-wifi.webp",
-    "grunge-banner.png",
     "grunge-corner.png",
     "grunge-square.png",
     "grunge-cursor.png",
