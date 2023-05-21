@@ -81,7 +81,7 @@ export const Status = () => {
   };
 
   return portal(
-    <Cursor hint="Status" highlight={false} id="status-banner">
+    <Cursor hint="Status" id="status-banner" highlight={false}>
       <div className="status">
         <div className="status__text">{getStatus()}</div>
         <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />

@@ -1,9 +1,8 @@
 .status {
-    top: 10%;
+    top: 0;
     left: 50%;
     width: 550px;
-    height: 180px;
-    font-size: 30px;
+    height: 80px;
     position: absolute;
     text-align: center;
     color: var(--white-50);
@@ -13,9 +12,9 @@
     &__text {
         top: 50%;
         left: 50%;
-        width: 75%;
+        width: 85%;
         z-index: 1;
-        margin-top: 5px;
+        font-size: 24px;
         position: absolute;
         transform: translate(-50%, -50%);
     }

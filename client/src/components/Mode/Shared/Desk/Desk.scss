@@ -6,6 +6,7 @@
     padding: 70px;
     overflow-y: auto;
     flex-direction: column;
+    max-height: calc(100vh - 300px);
 
     .hand {
         &__header {
@@ -48,5 +49,35 @@
         .hand__rect {
             top: -27px !important;
         }
+    }
+}
+
+@media (max-width: 860px) or (max-height: 1080px) {
+    .desk {
+        max-height: calc(90vh);
+    }
+}
+
+@media (max-width: 690px) or (max-height: 860px) {
+    .desk {
+        max-height: calc(110vh);
+    }
+}
+
+@media (max-width: 520px) or (max-height: 690px) {
+    .desk {
+        max-height: calc(125vh);
+    }
+}
+
+@media (max-width: 430px) or (max-height: 520px) {
+    .desk {
+        max-height: calc(135vh);
+    }
+}
+
+@media (max-width: 350px) or (max-height: 430px) {
+    .desk {
+        max-height: calc(150vh);
     }
 }

@@ -109,14 +109,14 @@ export const CursorProvider: FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (root) {
+    if (root && isCursor) {
       document.addEventListener("mousemove", handleMouseMove.bind(this));
 
       return () => {
         document.removeEventListener("mousemove", handleMouseMove.bind(this));
       };
     }
-  }, [root]);
+  }, [root, isCursor]);
 
   const handleDefault = (highlight: boolean = true) => {
     if (root) {

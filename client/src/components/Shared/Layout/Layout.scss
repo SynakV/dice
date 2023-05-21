@@ -53,31 +53,31 @@
     }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 860px) or (max-height: 1080px) {
     .layout__content {
         transform: scale(0.8);
     }
 }
 
-@media (max-width: 690px) {
+@media (max-width: 690px) or (max-height: 860px) {
     .layout__content {
         transform: scale(0.6);
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 520px) or (max-height: 690px) {
     .layout__content {
         transform: scale(0.5);
     }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 430px) or (max-height: 520px) {
     .layout__content {
         transform: scale(0.4);
     }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 350px) or (max-height: 430px) {
     .layout__content {
         transform: scale(0.3);
     }
