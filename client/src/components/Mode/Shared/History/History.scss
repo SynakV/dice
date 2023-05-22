@@ -19,7 +19,7 @@
     &__rounds {
         display: flex;
         overflow-y: auto;
-        max-height: 40vh;
+        max-height: 50vh;
         overflow-x: hidden;
         align-items: center;
         flex-direction: column;
@@ -52,5 +52,35 @@
         .cube-wrapper {
             scale: 0.5;
         }
+    }
+}
+
+@media (max-width: 900px) or (max-height: 900px) {
+    .history__rounds {
+        max-height: 60vh;
+    }
+}
+
+@media (max-width: 700px) or (max-height: 700px) {
+    .history__rounds {
+        max-height: 75vh;
+    }
+}
+
+@media (max-width: 600px) or (max-height: 600px) {
+    .history__rounds {
+        max-height: 95vh;
+    }
+}
+
+@media (max-width: 500px) or (max-height: 500px) {
+    .history__rounds {
+        max-height: 120vh;
+    }
+}
+
+@media (max-width: 350px) or (max-height: 350px) {
+    .history__rounds {
+        max-height: 200vh;
     }
 }
