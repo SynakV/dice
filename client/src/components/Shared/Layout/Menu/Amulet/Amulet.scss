@@ -9,4 +9,40 @@
     display: flex;
     position: absolute;
     justify-content: center;
+    transform-origin: top right;
+    transition: var(--transition-30);
+}
+
+@media (max-width: 800px) or (max-height: 800px) {
+    .amulet {
+        top: 5px;
+    }
+}
+
+@media (max-width: 650px) or (max-height: 650px) {
+    .amulet {
+        top: 4px;
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 500px) or (max-height: 500px) {
+    .amulet {
+        top: 3px;
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 390px) or (max-height: 390px) {
+    .amulet {
+        top: 2px;
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 320px) or (max-height: 320px) {
+    .amulet {
+        top: 0px;
+        transform: scale(0.4);
+    }
 }

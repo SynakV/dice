@@ -52,6 +52,10 @@
 
     &__hands {
         margin: 20px 0;
+        padding: 0 80px;
+        max-height: 45vh;
+        overflow-y: auto;
+        overflow-x: hidden;
 
         .hand {
             &__header {
@@ -91,5 +95,35 @@
             position: absolute;
             left: calc(50% - 4px);
         }
+    }
+}
+
+@media (max-width: 900px) or (max-height: 900px) {
+    .conclusion__hands {
+        max-height: 50vh;
+    }
+}
+
+@media (max-width: 700px) or (max-height: 700px) {
+    .conclusion__hands {
+        max-height: 65vh;
+    }
+}
+
+@media (max-width: 600px) or (max-height: 600px) {
+    .conclusion__hands {
+        max-height: 85vh;
+    }
+}
+
+@media (max-width: 500px) or (max-height: 500px) {
+    .conclusion__hands {
+        max-height: 100vh;
+    }
+}
+
+@media (max-width: 350px) or (max-height: 350px) {
+    .conclusion__hands {
+        max-height: 180vh;
     }
 }

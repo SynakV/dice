@@ -1,12 +1,56 @@
 .navigator {
     top: 15px;
     left: 20px;
-    opacity: 0.5;
     position: absolute;
-    transform: scale(-1);
+    transform-origin: top left;
     transition: var(--transition-30);
 
-    &:hover {
-        opacity: 0.8;
+    &__image {
+        opacity: 0.5;
+        transform: scale(-1);
+        transition: var(--transition-30);
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+@media (max-width: 800px) or (max-height: 800px) {
+    .navigator {
+        top: 10px;
+        left: 18px;
+    }
+}
+
+@media (max-width: 650px) or (max-height: 650px) {
+    .navigator {
+        top: 8px;
+        left: 16px;
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 500px) or (max-height: 500px) {
+    .navigator {
+        top: 6px;
+        left: 12px;
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 390px) or (max-height: 390px) {
+    .navigator {
+        top: 5px;
+        left: 10px;
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 320px) or (max-height: 320px) {
+    .navigator {
+        top: 2px;
+        left: 6px;
+        transform: scale(0.4);
     }
 }
