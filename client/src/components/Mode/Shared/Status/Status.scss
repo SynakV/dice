@@ -5,6 +5,7 @@
     height: 80px;
     position: absolute;
     text-align: center;
+    transform-origin: top;
     color: var(--white-50);
     transform: translateX(-50%);
     transition: var(--transition-30);
@@ -20,37 +21,31 @@
     }
 }
 
-@media (min-width: 800px) or (max-width: 1400px) {
-    .status {
-        transform: translateX(-50%) scale(1);
-    }
-}
-
-@media (max-width: 800px) {
+@media (max-width: 800px) or (max-height: 800px) {
     .status {
         transform: translateX(-50%) scale(0.8);
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 650px) or (max-height: 650px) {
     .status {
         transform: translateX(-50%) scale(0.6);
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 500px) or (max-height: 500px) {
     .status {
         transform: translateX(-50%) scale(0.5);
     }
 }
 
-@media (max-width: 390px) {
+@media (max-width: 390px) or (max-height: 390px) {
     .status {
         transform: translateX(-50%) scale(0.4);
     }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 320px) or (max-height: 320px) {
     .status {
         transform: translateX(-50%) scale(0.3);
     }

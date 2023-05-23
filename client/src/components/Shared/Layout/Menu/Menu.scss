@@ -28,10 +28,50 @@
         font-size: 20px;
         position: absolute;
         color: var(--white-50);
+        transform-origin: right top;
         transition: var(--transition-30);
 
         &:hover {
             color: var(--white-80);
         }
+    }
+}
+
+@media (max-width: 800px) or (max-height: 800px) {
+    .menu__text {
+        top: 28px;
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 650px) or (max-height: 650px) {
+    .menu__text {
+        top: 22px;
+        right: 80px;
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 500px) or (max-height: 500px) {
+    .menu__text {
+        top: 18px;
+        right: 60px;
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 390px) or (max-height: 390px) {
+    .menu__text {
+        top: 15px;
+        right: 50px;
+        transform: scale(0.4);
+    }
+}
+
+@media (max-width: 320px) or (max-height: 320px) {
+    .menu__text {
+        top: 10px;
+        right: 40px;
+        transform: scale(0.3);
     }
 }

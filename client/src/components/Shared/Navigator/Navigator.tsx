@@ -24,14 +24,15 @@ export const Navigator: FC<Props> = ({ url, onNavigate }) => {
 
   return portal(
     <Cursor hint="Back" id="navigator-back">
-      <Image
-        width={50}
-        height={50}
-        alt="arrow-back"
-        className="navigator"
-        onClick={handleNavigate}
-        src="/images/arrow-back.png"
-      />
+      <div className="navigator" onClick={handleNavigate}>
+        <Image
+          width={50}
+          height={50}
+          alt="arrow-back"
+          className="navigator__image"
+          src="/images/arrow-back.png"
+        />
+      </div>
     </Cursor>
   );
 };

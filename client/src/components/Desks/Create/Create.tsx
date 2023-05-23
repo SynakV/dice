@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
@@ -7,7 +8,6 @@ import { useCursor } from "@utils/contexts/CursorProvider";
 import { DeskType, SettingsType } from "@utils/common/types";
 import { Fields, isValid } from "@components/Shared/Settings/Fields/Fields";
 import { useNotification } from "@components/Shared/Notification/Notification";
-import Image from "next/image";
 
 interface Props {
   isOpen: boolean;
