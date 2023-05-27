@@ -39,7 +39,7 @@ export const Menu = () => {
       <Amulet toggleOpen={() => toggleOpen("menu")} />
       {isShow && (
         <div className={`menu__overlay ${fadeInClass}`}>
-          <Cursor id="manage-name" hint="Manage name" position="bottom">
+          <Cursor id="change-name" hint="Change name" position="bottom">
             <span
               className={`menu__text`}
               onClick={() => toggleOpen("credentials")}

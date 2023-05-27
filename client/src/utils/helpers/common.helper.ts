@@ -36,3 +36,7 @@ export const getNameFormatted = (name: string) => {
 
   return name;
 };
+
+export const isRunningInElectron =
+  typeof navigator !== "undefined" &&
+  navigator.userAgent.toLowerCase().indexOf("electron") !== -1;

@@ -1,14 +1,15 @@
 .status {
-    top: 0;
+    top: 8px;
     left: 50%;
     width: 550px;
-    height: 80px;
+    height: 70px;
     position: absolute;
     text-align: center;
     transform-origin: top;
     color: var(--white-50);
     transform: translateX(-50%);
     transition: var(--transition-30);
+    filter: drop-shadow(0 0 2px var(--white-50));
 
     &__text {
         top: 50%;
@@ -35,12 +36,14 @@
 
 @media (max-width: 500px) or (max-height: 500px) {
     .status {
+        top: 5px;
         transform: translateX(-50%) scale(0.5);
     }
 }
 
 @media (max-width: 390px) or (max-height: 390px) {
     .status {
+        top: 4px;
         transform: translateX(-50%) scale(0.4);
     }
 }

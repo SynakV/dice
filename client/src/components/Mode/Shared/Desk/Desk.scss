@@ -9,6 +9,8 @@
     max-height: calc(100vh - 300px);
 
     .hand {
+        gap: 10px 0;
+
         &__header {
             font-size: 30px;
             transition: var(--transition-30);

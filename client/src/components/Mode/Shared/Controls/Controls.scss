@@ -71,6 +71,7 @@
 
         &:hover:not(&--disabled) {
             opacity: 0.8;
+            filter: invert(1) drop-shadow(0 0 2px var(--white-50));
         }
     }
 }

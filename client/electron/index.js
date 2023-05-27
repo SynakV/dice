@@ -2,9 +2,10 @@ const { app, BrowserWindow } = require("electron");
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    fullscreen: true,
   });
+
+  // win.webContents.openDevTools();
 
   win.loadURL("http://localhost:3000");
 

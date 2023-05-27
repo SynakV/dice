@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { cacheAssets } from "@utils/helpers/common.helper";
 import { Menu } from "@components/Shared/Layout/Menu/Menu";
 import { Loading } from "@components/Shared/Loading/Loading";
@@ -12,32 +11,32 @@ interface Props {
 }
 
 export const Layout: FC<Props> = ({ children }) => {
-  const [isShowChildren, setIsShowChildren] = useState(true);
+  // const [isShowChildren, setIsShowChildren] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const handleStart = (url: string) => {
-      console.warn("CHANGE START!");
-      return url !== router.asPath && setIsShowChildren(false);
-    };
+  // useEffect(() => {
+  //   const handleStart = (url: string) => {
+  //     console.warn("CHANGE START!");
+  //     return url !== router.asPath && setIsShowChildren(false);
+  //   };
 
-    const handleComplete = (url: string) => {
-      console.warn("CHANGE END!");
-      return url === router.asPath && setIsShowChildren(true);
-    };
+  //   const handleComplete = (url: string) => {
+  //     console.warn("CHANGE END!");
+  //     return url === router.asPath && setIsShowChildren(true);
+  //   };
 
-    // router.events.on("routeChangeStart", handleStart);
-    // router.events.on("routeChangeComplete", handleComplete);
-    // router.events.on("routeChangeError", handleComplete);
+  //   // router.events.on("routeChangeStart", handleStart);
+  //   // router.events.on("routeChangeComplete", handleComplete);
+  //   // router.events.on("routeChangeError", handleComplete);
 
-    return () => {
-      // router.events.off("routeChangeStart", handleStart);
-      // router.events.off("routeChangeComplete", handleComplete);
-      // router.events.off("routeChangeError", handleComplete);
-    };
-  });
+  //   return () => {
+  //     // router.events.off("routeChangeStart", handleStart);
+  //     // router.events.off("routeChangeComplete", handleComplete);
+  //     // router.events.off("routeChangeError", handleComplete);
+  //   };
+  // });
 
   const loadAssets = async () => {
     await cacheAssets();

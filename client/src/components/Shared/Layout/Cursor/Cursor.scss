@@ -30,6 +30,7 @@
         display: var(--cursor-hint-display);
         top: var(--cursor-hint-position-top);
         left: var(--cursor-hint-position-left);
+        filter: drop-shadow(0 0 2px var(--white-50));
     }
 
     &__text {
