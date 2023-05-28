@@ -9,7 +9,7 @@
     color: var(--white-50);
     transform: translateX(-50%);
     transition: var(--transition-30);
-    filter: drop-shadow(0 0 2px var(--white-50));
+    filter: drop-shadow(0 5px 5px var(--black-50));
 
     &__text {
         top: 50%;

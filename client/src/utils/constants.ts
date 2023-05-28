@@ -143,4 +143,5 @@ export const ASSETS = {
     "roundWin",
     "selectDieForReroll",
   ],
+  VIDEOS: ["video"],
 };

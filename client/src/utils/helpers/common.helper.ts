@@ -1,13 +1,16 @@
 import { ASSETS } from "@utils/constants";
 
-export const cacheAssets = async () => {
+export const cacheAssets = async (callback: Function) => {
   return new Promise(async (res) => {
     const images = await ASSETS.IMAGES.map((src) => {
       return new Promise((res, rej) => {
         const img = new Image();
 
         img.src = `/images/${src}`;
-        img.onload = () => res(null);
+        img.onload = () => {
+          callback();
+          res(null);
+        };
         img.onerror = () => rej();
       });
     });
@@ -16,12 +19,35 @@ export const cacheAssets = async () => {
       return new Promise((res, rej) => {
         const audio = new Audio(`/sounds/${src}.mp3`);
 
-        audio.oncanplaythrough = () => res(null);
+        audio.oncanplaythrough = () => {
+          callback();
+          res(null);
+        };
         audio.onerror = () => rej();
       });
     });
 
-    await Promise.all([...images, ...audios]);
+    // const videos = await ASSETS.VIDEOS.map((src) => {
+    //   return new Promise((res, rej) => {
+    //     const video = document.createElement("video");
+    //     video.src = `/videos/${src}.mp4`;
+    //     video.preload = "auto";
+
+    //     video.oncanplay = () => {
+    //       callback();
+    //       res(null);
+    //     };
+    //     video.onerror = () => {
+    //       rej();
+    //     };
+    //   });
+    // });
+
+    await Promise.all([
+      ...images,
+      ...audios,
+      // ...videos
+    ]);
 
     res(null);
   });
