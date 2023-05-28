@@ -16,8 +16,8 @@
 
     img {
         opacity: 0.5;
-        filter: invert(1);
         transition: var(--transition-30);
+        filter: invert(1) drop-shadow(0 0 5px var(--black-50));
 
         &[alt="grunge-line-1"], &[alt="grunge-line-2"] {
             left: 50%;

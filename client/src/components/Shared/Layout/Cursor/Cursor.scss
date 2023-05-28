@@ -14,11 +14,11 @@
         img {
             top: -15px;
             left: -15px;
-            filter: invert(1);
             position: absolute;
             opacity: var(--cursor-opacity);
             transition: var(--transition-30);
             transform: rotate(-135deg) scale(var(--cursor-scale));
+            filter: invert(1) drop-shadow(0 0 2px var(--black-50));
         }
     }
 
@@ -30,7 +30,7 @@
         display: var(--cursor-hint-display);
         top: var(--cursor-hint-position-top);
         left: var(--cursor-hint-position-left);
-        filter: drop-shadow(0 0 2px var(--white-50));
+        filter: drop-shadow(0 0 5px var(--black-50));
     }
 
     &__text {

@@ -30,12 +30,13 @@
             height: 80px !important;
             width: calc(100% + 80px) !important;
             transition: filter var(--transition-30);
+            filter: drop-shadow(0 5px 5px var(--black-50));
         }
 
         &--highlight {
             .hand {
                 &__rect {
-                    filter: invert(0.6);
+                    filter: drop-shadow(0 5px 5px var(--black-50)) invert(0.6);
                 }
 
                 &__header {

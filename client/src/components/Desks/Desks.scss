@@ -21,10 +21,10 @@
         left: 50%;
         bottom: 25px;
         opacity: 0.5;
-        filter: invert(1);
         position: absolute;
         transform: translateX(-50%);
         transition: var(--transition-30);
+        filter: invert(1) drop-shadow(0 0 2px var(--white-50));
 
         &:hover {
             opacity: 0.8;
@@ -46,6 +46,7 @@
         left: 50%;
         position: absolute;
         transform: translate(-50%, -50%);
+        filter: drop-shadow(0 5px 5px var(--black-50));
     }
 }
 

@@ -118,13 +118,14 @@
             display: block;
             position: absolute;
             transition: var(--transition-30);
+            filter: drop-shadow(0 5px 5px var(--black-50));
             width: calc(var(--square) + var(--half-square));
             height: calc(var(--square) + var(--half-square));
             transform: translate(-15px, -65px) rotateX(45deg) rotateZ(45deg);
 
             &__selected {
                 opacity: 0.8;
-                filter: invert(0.6) !important;
+                filter: drop-shadow(0 5px 5px var(--black-50)) invert(0.6) !important;
             }
         }
     }
@@ -133,7 +134,7 @@
         &:hover  {
             .cube-status {
                 opacity: 0.8;
-                filter: invert(0.6);
+                filter: drop-shadow(0 5px 5px var(--black-50)) invert(0.6);
             }
         }
     }
