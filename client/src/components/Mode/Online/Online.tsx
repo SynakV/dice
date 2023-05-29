@@ -6,6 +6,7 @@ import { Desk } from "@components/Mode/Shared/Desk/Desk";
 import { EVENTS, MESSAGES } from "@utils/common/constants";
 import { Cubes } from "@components/Mode/Online/Cubes/Cubes";
 import { Loading } from "@components/Shared/Loading/Loading";
+import { Confirm } from "@components/Shared/Confirm/Confirm";
 import { Status } from "@components/Mode/Shared/Status/Status";
 import { Settings } from "@components/Shared/Settings/Settings";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
@@ -20,7 +21,6 @@ import {
   getCredentials,
   setCredentials,
 } from "@utils/helpers/storage/storage.helper";
-import { Confirm } from "@components/Shared/Confirm/Confirm";
 
 export const Online: FC = () => {
   const { replace } = useRouter();
