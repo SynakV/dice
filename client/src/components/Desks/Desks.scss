@@ -21,7 +21,7 @@
         left: 50%;
         bottom: 25px;
         opacity: 0.5;
-        position: absolute;
+        position: fixed;
         transform: translateX(-50%);
         transition: var(--transition-30);
         filter: invert(1) drop-shadow(0 0 2px var(--white-50));

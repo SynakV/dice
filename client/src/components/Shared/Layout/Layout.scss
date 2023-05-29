@@ -14,13 +14,13 @@
         overflow: hidden;
         position: absolute;
 
-        // video {
-        //     z-index: -3;
-        //     width: 100vw;
-        //     height: 100vh;
-        //     object-fit: cover;
-        //     position: relative;
-        // }
+        video {
+            z-index: -3;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            position: relative;
+        }
 
         img {
             &[alt="striga"] {
@@ -34,6 +34,7 @@
                 width: calc(100vw + 7%) !important;
                 height: calc(100vh + 6%) !important;
                 transform: translate(-1%, -4%) scale(-1, 1);
+                filter: drop-shadow(0 1px 1px var(--black-50));
             }
 
             &[alt="grunge-mess"] {
@@ -41,6 +42,7 @@
                 width: calc(100vw + 7%) !important;
                 height: calc(100vh + 6%) !important;
                 transform: translate(-1%, -4%) scale(-1, 1);
+                filter: drop-shadow(0 1px 1px var(--black-50));
             }
         }
     }
