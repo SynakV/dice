@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Desk } from "@components/Mode/Shared/Desk/Desk";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { Cubes } from "@components/Mode/Offline/Cubes/Cubes";
 import { Confirm } from "@components/Shared/Confirm/Confirm";
 import { Status } from "@components/Mode/Shared/Status/Status";
@@ -84,13 +85,13 @@ export const Offline = () => {
         title="Game will be lost. Do you want to exit?"
       />
       {isShowGameDesk && (
-        <>
+        <FadeIn>
           <Status />
           <History />
           <Controls />
           <Conclusion />
           <Desk cubes={Cubes} />
-        </>
+        </FadeIn>
       )}
       <Credentials
         isOpen={isOpen}

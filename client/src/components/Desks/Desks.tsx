@@ -6,6 +6,7 @@ import { usePortal } from "@utils/hooks/usePortal";
 import React, { useEffect, useState } from "react";
 import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
@@ -68,7 +69,7 @@ export const Desks = () => {
     <>
       <div className="desks">
         {desks.length ? (
-          <div className="desks__list">
+          <FadeIn className="desks__list">
             {desks.map((desk, index) => {
               const isDisableToJoin = getIsDisabledDesk(desk);
               return (
@@ -118,32 +119,40 @@ export const Desks = () => {
                 </div>
               );
             })}
-          </div>
+          </FadeIn>
         ) : null}
-        {isLoading && <Loading />}
+        {isLoading && (
+          <FadeIn>
+            <Loading />
+          </FadeIn>
+        )}
         {!isLoading && !desks.length && (
-          <Cursor hint="No desks" highlight={false} id="no-desks">
-            <Image
-              width={200}
-              height={180}
-              alt="grunge-no-sign"
-              className="desks__empty"
-              src="/images/grunge-no-sign.png"
-            />
-          </Cursor>
+          <FadeIn>
+            <Cursor hint="No desks" highlight={false} id="no-desks">
+              <Image
+                width={200}
+                height={180}
+                alt="grunge-no-sign"
+                className="desks__empty"
+                src="/images/grunge-no-sign.png"
+              />
+            </Cursor>
+          </FadeIn>
         )}
       </div>
       {portal(
-        <Cursor id="create-new-desk" hint="Create new desk" position="top">
-          <Image
-            width={50}
-            height={50}
-            alt="grunge-plus"
-            className="desks__create"
-            src="/images/grunge-plus.png"
-            onClick={handleToggleOpenModal}
-          />
-        </Cursor>
+        <FadeIn>
+          <Cursor id="create-new-desk" hint="Create new desk" position="top">
+            <Image
+              width={50}
+              height={50}
+              alt="grunge-plus"
+              className="desks__create"
+              src="/images/grunge-plus.png"
+              onClick={handleToggleOpenModal}
+            />
+          </Cursor>
+        </FadeIn>
       )}
       <Create isOpen={isModalOpen} setIsOpen={handleToggleOpenModal} />
     </>

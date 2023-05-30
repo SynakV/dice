@@ -9,6 +9,12 @@ interface Props {
 export const Placeholder: FC<Props> = ({ player }) => (
   <div className="placeholder">
     <Hand player={`Player ${player}`}>
+      <Image
+        fill
+        alt="grunge-rect"
+        className="hand__rect"
+        src="/images/grunge-rect.png"
+      />
       {new Array(5).fill(null).map((_, index) => (
         <div key={index} className="placeholder__wrapper">
           <Image
