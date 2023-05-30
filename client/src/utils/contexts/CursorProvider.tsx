@@ -127,16 +127,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
         "--cursor-rotate",
         `${CURSOR_POSITIONS["default"]}deg`
       );
-      root.style.setProperty(
-        "--cursor-hint-position-top",
-        `${HINT_POSITIONS["default"].top}px`
-      );
-      root.style.setProperty(
-        "--cursor-hint-position-left",
-        `${HINT_POSITIONS["default"].left}px`
-      );
-      root.style.setProperty("--cursor-hint-text", "''");
-      root.style.setProperty("--cursor-hint-display", "none");
+      root.style.setProperty("--cursor-hint-opacity", "0");
     }
   };
 
@@ -168,7 +159,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
         `${HINT_POSITIONS[position].left}px`
       );
       root.style.setProperty("--cursor-hint-text", `'${hint}'`);
-      root.style.setProperty("--cursor-hint-display", "flex");
+      root.style.setProperty("--cursor-hint-opacity", "0.9");
     }
   };
 
@@ -186,16 +177,7 @@ export const CursorProvider: FC<Props> = ({ children }) => {
         "--cursor-rotate",
         `${CURSOR_POSITIONS["default"]}deg`
       );
-      root.style.setProperty(
-        "--cursor-hint-position-top",
-        `${HINT_POSITIONS["default"].top}px`
-      );
-      root.style.setProperty(
-        "--cursor-hint-position-left",
-        `${HINT_POSITIONS["default"].left}px`
-      );
-      root.style.setProperty("--cursor-hint-text", "''");
-      root.style.setProperty("--cursor-hint-display", "none");
+      root.style.setProperty("--cursor-hint-opacity", "0");
     }
   };
 
