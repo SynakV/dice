@@ -22,7 +22,12 @@ export const SocketProvider: FC<Props> = ({ children }) => {
   useEffect(() => {
     (async () => {
       await fetch("/api/socket");
-      setSocket(io("", { path: "/api/socket_io" }));
+      setSocket(
+        io(undefined as any, {
+          path: "/api/socket_io",
+          withCredentials: true,
+        })
+      );
     })();
   }, []);
 
