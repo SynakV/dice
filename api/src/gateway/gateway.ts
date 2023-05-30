@@ -8,7 +8,6 @@ import { Desk } from 'src/desk/desk.model';
 import { Server, Socket } from 'socket.io';
 import { InjectModel } from '@nestjs/mongoose';
 import { instrument } from '@socket.io/admin-ui';
-import { DocumentDeskType } from 'src/utils/types';
 import { deepClone } from 'src/utils/common/helpers';
 import { DEFAULT_CURRENT } from 'src/utils/common/constants';
 import { DeskType, PLAYER_STATUS } from 'src/utils/common/types';
@@ -243,10 +242,7 @@ export class GatewayService implements OnModuleInit {
       .emit(EVENTS.ON_LEAVE_DESK, this.getMessageBody(updatedDesk));
   }
 
-  async handleFinishStageAfterCloseConclusion(
-    _: Socket,
-    updatedDesk: DocumentDeskType,
-  ) {
+  async handleFinishStageAfterCloseConclusion(_: Socket, updatedDesk: any) {
     this.handleCloseConclusion(_, {
       ...updatedDesk,
       _id: updatedDesk._id.toString(),
@@ -263,10 +259,7 @@ export class GatewayService implements OnModuleInit {
     });
   }
 
-  async handleEndGameAfterCloseConclusion(
-    _: Socket,
-    updatedDesk: DocumentDeskType,
-  ) {
+  async handleEndGameAfterCloseConclusion(_: Socket, updatedDesk: any) {
     this.handleEndGame(_, {
       ...updatedDesk,
       _id: updatedDesk._id.toString(),
@@ -282,7 +275,7 @@ export class GatewayService implements OnModuleInit {
     });
   }
 
-  getMessageBody(body: DocumentDeskType | null) {
+  getMessageBody(body: any) {
     if (body) {
       return body;
     } else {

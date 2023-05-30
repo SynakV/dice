@@ -1,7 +1,4 @@
-export const server =
-  process.env.NODE_ENV === "production"
-    ? "https://dice-production.up.railway.app"
-    : "http://localhost:3001";
+export const server = "/api";
 
 export const getRequest = <T>(url: string): Promise<T> =>
   fetch(getUrl(url)).then((r) => r.json());

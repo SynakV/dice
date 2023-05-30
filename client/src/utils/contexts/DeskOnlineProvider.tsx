@@ -31,7 +31,7 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      setDesk(await getRequest<DeskType>("desk/" + query.id));
+      setDesk(await getRequest<DeskType>("desk?id=" + query.id));
     })();
   }, []);
 
