@@ -10,14 +10,15 @@
         &:hover {
             img {
                 opacity: 0.8;
+                filter: drop-shadow(0 0 2px var(--white-50)) invert(1) ;
             }
         }
     }
 
     img {
-        opacity: 0.5;
-        filter: invert(1);
+        opacity: 0.9;
         transition: var(--transition-30);
+        filter: drop-shadow(0 0 2px var(--white-50));
 
         &[alt="grunge-line-1"], &[alt="grunge-line-2"] {
             left: 50%;

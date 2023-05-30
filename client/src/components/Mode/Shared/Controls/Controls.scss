@@ -20,9 +20,9 @@
         opacity: 0.5;
         display: flex;
         font-size: 30px;
-        filter: invert(1);
         position: absolute;
         align-items: center;
+        filter: invert(1) drop-shadow(0 0 5px var(--black-50));
         transition: transform var(--transition-30), opacity var(--transition-30);
 
         &--left {
@@ -71,6 +71,7 @@
 
         &:hover:not(&--disabled) {
             opacity: 0.8;
+            filter: invert(1) drop-shadow(0 0 5px var(--black-50));
         }
     }
 }

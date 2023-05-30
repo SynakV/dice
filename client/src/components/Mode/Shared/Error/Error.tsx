@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { Modal } from "@components/Shared/Modal/Modal";
+import { useCursor } from "@utils/contexts/CursorProvider";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 
 export enum ERRORS {
@@ -32,16 +33,20 @@ export const Error: FC<Props> = ({ type }) => {
 };
 
 const ErrorBody = ({ text }: { text: ReactNode }) => {
+  const Cursor = useCursor();
+
   return (
     <div className="error__main">
       <span className="error__text">{text}</span>
       <Link href="/online">
-        <Image
-          width={50}
-          height={50}
-          alt="arrow-back"
-          src="/images/arrow-back.png"
-        />
+        <Cursor id="oops-back" hint="Back" position="bottom">
+          <Image
+            width={50}
+            height={50}
+            alt="arrow-back"
+            src="/images/arrow-back.png"
+          />
+        </Cursor>
       </Link>
     </div>
   );

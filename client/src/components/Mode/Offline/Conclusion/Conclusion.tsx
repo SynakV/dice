@@ -57,7 +57,7 @@ export const Conclusion = () => {
     }
   }, [rounds]);
 
-  const handleClick = () => {
+  const handleNextRound = () => {
     setIsOpen(false);
     playAudio("hover");
 
@@ -109,7 +109,7 @@ export const Conclusion = () => {
         >
           <Image
             height={30}
-            onClick={handleClick}
+            onClick={handleNextRound}
             width={isLastRound ? 30 : 50}
             className="conclusion__button"
             alt={`${isLastRound ? "grunge-cross" : "grunge-arrow-right"}`}

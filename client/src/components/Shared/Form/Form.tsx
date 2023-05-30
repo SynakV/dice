@@ -36,6 +36,7 @@ export const Text: FC<Text> = ({ value, setValue }) => (
       src="/images/grunge-line.png"
     />
     <input
+      autoFocus
       value={value}
       className="form__input form__input--text"
       onChange={(e) => setValue(e.target.value.toString())}

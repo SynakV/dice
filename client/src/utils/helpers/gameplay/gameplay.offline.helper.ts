@@ -283,7 +283,7 @@ const getNextPlayer = (desk: DeskType) => {
 export const getPlayer = (name: string): PlayerType => ({
   name,
   id: Math.random().toString(),
-  status: PLAYER_STATUS.OFFLINE,
+  status: PLAYER_STATUS.ONLINE,
 });
 
 export const getPlayers = (count: number, player: PlayerType) => {
