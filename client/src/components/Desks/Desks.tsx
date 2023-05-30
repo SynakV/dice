@@ -21,7 +21,18 @@ export const Desks = () => {
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      setDesks(await getRequest<DeskType[]>("desk"));
+
+      const desks = await getRequest<DeskType[]>("desk");
+
+      desks.sort((a, b) =>
+        getIsDisabledDesk(a) === getIsDisabledDesk(b)
+          ? 0
+          : getIsDisabledDesk(a)
+          ? 1
+          : -1
+      );
+
+      setDesks(desks);
       setIsLoading(false);
     })();
   }, []);
@@ -46,18 +57,20 @@ export const Desks = () => {
     navigator.clipboard.writeText(`${window.origin}/online/desk?id=${id}`);
   };
 
+  const getIsDisabledDesk = (desk: DeskType) => {
+    return (
+      desk.gameplay.max.players === desk.gameplay.players.length ||
+      desk.gameplay.isGameStarted
+    );
+  };
+
   return (
     <>
       <div className="desks">
         {desks.length ? (
           <div className="desks__list">
             {desks.map((desk, index) => {
-              const players = {
-                max: desk.gameplay.max.players,
-                current: desk.gameplay.players.length,
-              };
-              const isDisableToJoin =
-                players.current === players.max || desk.gameplay.isGameStarted;
+              const isDisableToJoin = getIsDisabledDesk(desk);
               return (
                 <div
                   key={index}
@@ -83,7 +96,7 @@ export const Desks = () => {
                   </Cursor>
                   <span className="list__title">{desk.name}</span>
                   <span className="list__players">
-                    {players.current}/{players.max}
+                    {desk.gameplay.players.length}/{desk.gameplay.max.players}
                   </span>
                   <Cursor
                     hint="Share"
