@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { Placeholder } from "@components/Mode/Shared/Hand/Placeholder/Placeholder";
 
 interface Props {
@@ -21,13 +22,13 @@ export const Desk: FC<Props> = ({ cubes: Cubes }) => {
   }, [isGameEnded]);
 
   return (
-    <div className="desk">
+    <FadeIn className="desk">
       {players.map((player, index) => (
         <Cubes key={player.id || index} player={player} />
       ))}
       {new Array(placeholderPlayers).fill(null).map((_, index) => (
         <Placeholder key={index} player={players.length + index + 1} />
       ))}
-    </div>
+    </FadeIn>
   );
 };

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { usePortal } from "@utils/hooks/usePortal";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { useGame } from "@utils/contexts/GameContext";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { getNameFormatted } from "@utils/helpers/common.helper";
 import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
@@ -81,11 +82,13 @@ export const Status = () => {
   };
 
   return portal(
-    <Cursor hint="Status" id="status-banner" highlight={false}>
-      <div className="status">
-        <div className="status__text">{getStatus()}</div>
-        <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />
-      </div>
-    </Cursor>
+    <FadeIn>
+      <Cursor hint="Status" id="status-banner" highlight={false}>
+        <div className="status">
+          <div className="status__text">{getStatus()}</div>
+          <Image fill alt="grunge-banner" src="/images/grunge-banner.png" />
+        </div>
+      </Cursor>
+    </FadeIn>
   );
 };

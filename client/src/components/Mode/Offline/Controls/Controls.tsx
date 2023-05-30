@@ -6,6 +6,7 @@ import {
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { playAudio } from "@utils/helpers/audio.helper";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
 
@@ -58,7 +59,7 @@ export const Controls = () => {
     : "Re-roll dice";
 
   return portal(
-    <div className="controls">
+    <FadeIn className="controls">
       <Cursor hint="Settings" position="top-right" id="controls-settings">
         <Button
           position="left"
@@ -109,6 +110,6 @@ export const Controls = () => {
           />
         </Cursor>
       )}
-    </div>
+    </FadeIn>
   );
 };

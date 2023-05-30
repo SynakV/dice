@@ -7,6 +7,7 @@ import {
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
 import { PLAYER_STATUS } from "@utils/common/types";
+import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
 import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
@@ -99,7 +100,7 @@ export const Controls = () => {
     : "Re-roll dice";
 
   return portal(
-    <div className="controls">
+    <FadeIn className="controls">
       {isYouAdmin && (
         <Cursor id="controls-settings" hint="Settings" position="top-right">
           <Button
@@ -155,6 +156,6 @@ export const Controls = () => {
           />
         </Cursor>
       )}
-    </div>
+    </FadeIn>
   );
 };
