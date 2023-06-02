@@ -107,6 +107,7 @@ export const Desks = () => {
                   >
                     <span
                       className="list__share"
+                      tabIndex={-2}
                       onClick={
                         isDisableToJoin
                           ? () => {}

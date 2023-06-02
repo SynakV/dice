@@ -14,21 +14,21 @@ export const Mode = () => {
         <Cursor key={key} hint={title} position="bottom" id={title}>
           <Link href={url} className="mode__option">
             <Image
-              width={200}
-              height={150}
+              width={280}
+              height={200}
               alt="grunge-wifi"
               src="/images/grunge-wifi.webp"
             />
             {url === MODE.offline.url && (
               <>
                 <Image
-                  width={200}
+                  width={280}
                   height={20}
                   alt="grunge-line-1"
                   src="/images/grunge-line.png"
                 />
                 <Image
-                  width={200}
+                  width={280}
                   height={20}
                   alt="grunge-line-2"
                   src="/images/grunge-line.png"

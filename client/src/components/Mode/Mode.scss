@@ -6,12 +6,15 @@
 
     &__option {
         position: relative;
+        transition: var(--transition-30);
 
-        &:hover {
-            img {
-                opacity: 0.8;
-                filter: drop-shadow(0 0 2px var(--white-50)) invert(1) ;
-            }
+        &:hover img {
+            opacity: 0.8;
+            filter: drop-shadow(0 2px 2px var(--black-50)) invert(1);
+        }
+
+        &:active {
+            scale: 0.85;
         }
     }
 

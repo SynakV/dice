@@ -73,6 +73,10 @@
             opacity: 0.8;
             filter: invert(1) drop-shadow(0 0 5px var(--black-50));
         }
+
+        &:active:not(&--disabled) {
+            transform: scale(0.95);
+        }
     }
 }
 

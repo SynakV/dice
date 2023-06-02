@@ -9,8 +9,11 @@
     display: flex;
     position: absolute;
     justify-content: center;
-    transform-origin: top right;
     transition: var(--transition-30);
+
+    &:active {
+        scale: 0.85;
+    }
 }
 
 @media (max-width: 800px) or (max-height: 800px) {
@@ -21,28 +24,32 @@
 
 @media (max-width: 650px) or (max-height: 650px) {
     .amulet {
-        top: 4px;
+        top: -2px;
+        right: -10px;
         transform: scale(0.8);
     }
 }
 
 @media (max-width: 500px) or (max-height: 500px) {
     .amulet {
-        top: 3px;
+        top: -6px;
+        right: -20px;
         transform: scale(0.6);
     }
 }
 
 @media (max-width: 390px) or (max-height: 390px) {
     .amulet {
-        top: 2px;
+        top: -10px;
+        right: -25px;
         transform: scale(0.5);
     }
 }
 
 @media (max-width: 320px) or (max-height: 320px) {
     .amulet {
-        top: 0px;
+        top: -16px;
+        right: -30px;
         transform: scale(0.4);
     }
 }
