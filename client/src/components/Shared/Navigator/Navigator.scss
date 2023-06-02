@@ -7,12 +7,16 @@
 
     &__image {
         opacity: 0.5;
-        transform: scale(-1);
+        transform: rotate(180deg);
         transition: var(--transition-30);
         filter: drop-shadow(0 0 5px var(--black-50));
 
         &:hover {
             opacity: 0.8;
+        }
+
+        &:active {
+            scale: 0.85;
         }
     }
 }

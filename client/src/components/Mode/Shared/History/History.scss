@@ -9,10 +9,8 @@
     }
 
     &__button {
-        left: 50%;
         bottom: 0px;
         position: absolute;
-        transform: translateX(-50%);
         @include modal-button-img;
     }
 

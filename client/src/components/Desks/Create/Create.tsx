@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import { postRequest } from "@utils/api/api";
-import { TIMEOUT_TRANSITION } from "@utils/constants";
 import { Modal } from "@components/Shared/Modal/Modal";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { DeskType, SettingsType } from "@utils/common/types";
@@ -32,17 +31,13 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
           players: settings.players,
         }
       );
-
       if (newDesk._id) {
-        setIsOpen();
-        setTimeout(() => {
-          router.push({
-            pathname: "online/desk",
-            query: {
-              id: newDesk._id,
-            },
-          });
-        }, TIMEOUT_TRANSITION);
+        router.push({
+          pathname: "online/desk",
+          query: {
+            id: newDesk._id,
+          },
+        });
       } else {
         notification(newDesk.message);
       }

@@ -29,6 +29,10 @@
         &:hover {
             opacity: 0.8;
         }
+
+        &:active {
+            transform: translateX(-50%) scale(0.85);
+        }
     }
 
     &__list {
@@ -88,6 +92,10 @@
                 }
             }
         }
+
+        &:active:not(:focus-within) {
+            scale: 0.95;
+         }
     }
 
     &__background {
@@ -120,6 +128,10 @@
 
         &:hover:not(&--disabled) {
             color: var(--white-50);
+        }
+
+        &:active:not(&--disabled) {
+            scale: 0.9;
         }
     }
 }

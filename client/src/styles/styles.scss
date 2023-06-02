@@ -6,6 +6,10 @@
     &:hover {
         opacity: 0.8;
     }
+
+    &:active {
+        transform: scale(0.85);
+    }
 }
 
 @import '../components/Shared/Shared.scss', './animations.scss';
