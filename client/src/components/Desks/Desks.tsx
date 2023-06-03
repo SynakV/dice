@@ -106,7 +106,9 @@ export const Desks = () => {
                     id={`share-${desk?._id || Math.random()}`}
                   >
                     <span
-                      className="list__share"
+                      className={`list__share ${
+                        isDisableToJoin ? "list__share--disabled" : ""
+                      }`}
                       tabIndex={-2}
                       onClick={
                         isDisableToJoin

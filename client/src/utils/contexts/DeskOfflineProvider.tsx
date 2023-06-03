@@ -19,7 +19,7 @@ import {
   afterChangeSettings,
   getPlayer,
 } from "@utils/helpers/gameplay/gameplay.offline.helper";
-import { useGame } from "./GameContext";
+import { useGame } from "@utils/contexts/GameContext";
 
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   const { player, setPlayer } = useGame();

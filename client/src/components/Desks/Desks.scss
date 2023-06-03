@@ -93,7 +93,7 @@
             }
         }
 
-        &:active:not(:focus-within) {
+        &:active:not(:focus-within):not(&--disabled) {
             scale: 0.95;
          }
     }
@@ -122,10 +122,6 @@
     }
 
     &__share {
-        &--disabled {
-            color: var(--white-20);
-        }
-
         &:hover:not(&--disabled) {
             color: var(--white-50);
         }
