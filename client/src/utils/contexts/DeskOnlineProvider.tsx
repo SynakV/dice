@@ -30,10 +30,12 @@ export const DeskOnlineProvider: FC<DeskCommonProps> = ({ children }) => {
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
 
   useEffect(() => {
-    (async () => {
-      setDesk(await getRequest<DeskType>("desk/" + query.id));
-    })();
-  }, []);
+    if (query.id) {
+      (async () => {
+        setDesk(await getRequest<DeskType>("desk/" + query.id));
+      })();
+    }
+  }, [query]);
 
   const startGame = () => {
     setDesk((prev) => afterStartGame(prev, socket));
