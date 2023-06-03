@@ -18,10 +18,13 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
   const Cursor = useCursor();
   const { notification } = useNotification();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [settings, setSettings] = useState<SettingsType | null>(null);
 
   const handleCreateNewDesk = async () => {
     if (settings && isValid(settings, notification)) {
+      setIsLoading(true);
+
       const newDesk: DeskType & { message: string } = await postRequest(
         "desk",
         {
@@ -31,6 +34,7 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
           players: settings.players,
         }
       );
+
       if (newDesk._id) {
         router.push({
           pathname: "online/desk",
@@ -41,6 +45,8 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
       } else {
         notification(newDesk.message);
       }
+
+      setIsLoading(false);
     }
   };
 
@@ -59,13 +65,24 @@ export const Create: FC<Props> = ({ isOpen, setIsOpen }) => {
             src="/images/grunge-cross.png"
           />
         </Cursor>
-        <Cursor id="modal-create-desk-create" position="bottom" hint="Create">
+        <Cursor
+          highlight={!isLoading}
+          id="modal-create-desk-create"
+          hint={isLoading ? "Loading..." : "Create"}
+          position={isLoading ? "default" : "bottom"}
+        >
           <Image
             width={30}
             height={30}
             alt="grunge-check-mark"
-            onClick={handleCreateNewDesk}
+            onClick={isLoading ? () => {} : () => handleCreateNewDesk()}
             src="/images/grunge-check-mark.png"
+            className={`footer__create ${
+              isLoading ? "footer__create--disabled" : ""
+            }`}
+            style={{
+              animation: isLoading ? "flickerAnimation 0.8s infinite" : "",
+            }}
           />
         </Cursor>
       </div>
