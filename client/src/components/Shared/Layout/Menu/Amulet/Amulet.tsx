@@ -22,7 +22,15 @@ export const Amulet: FC<Props> = ({ toggleOpen }) => {
           src="/images/amulet.png"
         />
       </Cursor>
-      <svg style={{ opacity: 0, position: "absolute", zIndex: -99999 }}>
+      <svg
+        style={{
+          width: 0,
+          height: 0,
+          opacity: 0,
+          zIndex: -99999,
+          position: "absolute",
+        }}
+      >
         <circle>
           <animate
             to="1"
