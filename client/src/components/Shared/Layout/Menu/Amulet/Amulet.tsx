@@ -1,6 +1,6 @@
+import Image from "next/image";
 import React, { FC } from "react";
 import { useCursor } from "@utils/contexts/CursorProvider";
-import { Music } from "@components/Shared/Layout/Menu/Amulet/Music/Music";
 
 interface Props {
   toggleOpen: () => void;
@@ -11,9 +11,15 @@ export const Amulet: FC<Props> = ({ toggleOpen }) => {
 
   return (
     <Cursor id="menu" hint="Menu" position="bottom-left">
-      <div className="amulet" onClick={toggleOpen}>
-        <Music />
-      </div>
+      <Image
+        priority
+        width={100}
+        height={55}
+        alt="amulet"
+        className="amulet"
+        onClick={toggleOpen}
+        src="/images/amulet.png"
+      />
     </Cursor>
   );
 };
