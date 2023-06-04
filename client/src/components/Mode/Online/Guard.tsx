@@ -10,7 +10,9 @@ interface Props {
 
 export const Guard: FC<Props> = ({ children }) => {
   const { player } = useGame();
-  const { desk }: { desk: DeskType & { status?: number } } = useDesk();
+  const {
+    desk,
+  }: { desk: DeskType & { status?: number; statusCode?: number } } = useDesk();
 
   const [error, setError] = useState<ERRORS | null>(null);
   const [isShowChildren, setIsShowChildren] = useState(false);
@@ -22,6 +24,10 @@ export const Guard: FC<Props> = ({ children }) => {
 
     if (desk.status === 404) {
       return setError(ERRORS.GAME_DOES_NOT_EXIST);
+    }
+
+    if (desk.statusCode === 500) {
+      return setError(ERRORS.GAME_WENT_WRONG);
     }
 
     if (desk.gameplay.isGameStarted && !player?.id) {

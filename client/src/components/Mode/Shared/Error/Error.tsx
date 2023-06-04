@@ -6,6 +6,7 @@ import { useCursor } from "@utils/contexts/CursorProvider";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 
 export enum ERRORS {
+  GAME_WENT_WRONG,
   GAME_DOES_NOT_EXIST,
   GAME_ALREADY_STARTED,
   GAME_FULL_OF_PLAYERS,
@@ -25,6 +26,7 @@ export const Error: FC<Props> = ({ type }) => {
 
   return portal(
     <Modal className="error" title="Oops..." isOpen={isOpen}>
+      {type === ERRORS.GAME_WENT_WRONG && <GameWentWrong />}
       {type === ERRORS.GAME_DOES_NOT_EXIST && <GameDoesNotExist />}
       {type === ERRORS.GAME_FULL_OF_PLAYERS && <GameFullOfPlayers />}
       {type === ERRORS.GAME_ALREADY_STARTED && <GameAlreadyStarted />}
@@ -52,13 +54,30 @@ const ErrorBody = ({ text }: { text: ReactNode }) => {
   );
 };
 
+const GoBackParagraph = () => (
+  <p>Go to home page and join/create another desk.</p>
+);
+
+const GameWentWrong = () => {
+  return (
+    <ErrorBody
+      text={
+        <>
+          <p>Sorry, seems like something wrong on the server side.</p>
+          <GoBackParagraph />
+        </>
+      }
+    />
+  );
+};
+
 const GameDoesNotExist = () => {
   return (
     <ErrorBody
       text={
         <>
           <p>Sorry, seems like desk does not exist anymore.</p>
-          <p>Go to home page and join/create another desk.</p>
+          <GoBackParagraph />
         </>
       }
     />
@@ -71,7 +90,7 @@ const GameFullOfPlayers = () => {
       text={
         <>
           <p>Sorry, game is already full of players.</p>
-          <p>Go to home page and join/create another desk.</p>
+          <GoBackParagraph />
         </>
       }
     />
@@ -84,7 +103,7 @@ const GameAlreadyStarted = () => {
       text={
         <>
           <p>Sorry, you're late. Game already started.</p>
-          <p>Go to home page and join/create another desk.</p>
+          <GoBackParagraph />
         </>
       }
     />

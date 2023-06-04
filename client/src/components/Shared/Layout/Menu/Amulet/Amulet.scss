@@ -1,8 +1,6 @@
-@import './Music/Music.scss';
-
 .amulet {
     right: 0;
-    top: 8px;
+    top: 18px;
     z-index: 10;
     height: 55px;
     width: 100px;
@@ -18,13 +16,13 @@
 
 @media (max-width: 800px) or (max-height: 800px) {
     .amulet {
-        top: 5px;
+        top: 15px;
     }
 }
 
 @media (max-width: 650px) or (max-height: 650px) {
     .amulet {
-        top: -2px;
+        top: 6px;
         right: -10px;
         transform: scale(0.8);
     }
@@ -32,7 +30,7 @@
 
 @media (max-width: 500px) or (max-height: 500px) {
     .amulet {
-        top: -6px;
+        top: 0px;
         right: -20px;
         transform: scale(0.6);
     }
@@ -40,7 +38,7 @@
 
 @media (max-width: 390px) or (max-height: 390px) {
     .amulet {
-        top: -10px;
+        top: -5px;
         right: -25px;
         transform: scale(0.5);
     }
@@ -48,7 +46,7 @@
 
 @media (max-width: 320px) or (max-height: 320px) {
     .amulet {
-        top: -16px;
+        top: -12px;
         right: -30px;
         transform: scale(0.4);
     }
