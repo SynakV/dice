@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useFadeIn } from "@utils/hooks/useFadeIn";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { CredentialsType, PlayerType } from "@utils/common/types";
 import { Rules } from "@components/Shared/Layout/Menu/Rules/Rules";
 import { Amulet } from "@components/Shared/Layout/Menu/Amulet/Amulet";
@@ -9,6 +8,7 @@ import {
   setCredentials,
 } from "@utils/helpers/storage/storage.helper";
 import { useCursor } from "@utils/contexts/CursorProvider";
+import { playSound, useMedia } from "@utils/contexts/MediaProvider";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 
 export const Menu = () => {
@@ -16,13 +16,14 @@ export const Menu = () => {
     menu: false,
     credentials: false,
   });
-  const { isShow, fadeInClass } = useFadeIn(isOpen.menu);
   const Cursor = useCursor();
+  const { volume, setVolume } = useMedia();
+  const { isShow, fadeInClass } = useFadeIn(isOpen.menu);
 
   const player: PlayerType = getCredentials();
 
   const toggleOpen = (key: "menu" | "credentials") => {
-    playAudio("hover");
+    playSound("hover");
     setIsOpen((prev) => ({
       ...prev,
       [key]: !prev[key],
@@ -47,7 +48,16 @@ export const Menu = () => {
               {player?.name}
             </span>
           </Cursor>
-
+          {/* <div className="menu__volume">
+            <input
+              min={0}
+              max={1}
+              step={0.1}
+              type="range"
+              value={volume}
+              onChange={(e) => setVolume(e.target.valueAsNumber)}
+            />
+          </div> */}
           <Rules />
           <Credentials
             credentials={player}

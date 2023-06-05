@@ -1,4 +1,4 @@
-@import './Menu/Menu.scss', '../../Desks/Desks.scss', '../../Mode/Mode.scss', './Cursor/Cursor.scss';
+@import './Menu/Menu.scss', '../../Desks/Desks.scss', '../../Mode/Mode.scss', './Cursor/Cursor.scss', './Media/Media.scss';
 
 .layout {
     width: 100vw;
@@ -13,14 +13,6 @@
         height: 100vh;
         overflow: hidden;
         position: absolute;
-
-        video {
-            z-index: -3;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            position: relative;
-        }
 
         img {
             &[alt="striga"] {

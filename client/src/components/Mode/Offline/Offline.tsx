@@ -18,16 +18,21 @@ import { History } from "@components/Mode/Shared/History/History";
 import { CredentialsType, PlayerType } from "@utils/common/types";
 import { Controls } from "@components/Mode/Offline/Controls/Controls";
 import { Conclusion } from "@components/Mode/Offline/Conclusion/Conclusion";
+import { DEFAULT_FADE_TIME, useMedia } from "@utils/contexts/MediaProvider";
 
 export const Offline = () => {
   const { desk } = useDesk();
   const { replace } = useRouter();
+  const { playVideo, playMusic } = useMedia();
   const { player, setPlayer, isInitSettings, toggleGameOpen } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
+    playVideo({ appFadeDuration: DEFAULT_FADE_TIME });
+    playMusic({ name: "Striga", switchDuration: DEFAULT_FADE_TIME });
+
     setPlayer(getCredentials());
   }, []);
 

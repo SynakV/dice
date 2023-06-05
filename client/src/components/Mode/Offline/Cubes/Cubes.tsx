@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { FC, useEffect } from "react";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { CubesType, PlayerType } from "@utils/common/types";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
+import { playSound } from "@utils/contexts/MediaProvider";
 import { useCursor } from "@utils/contexts/CursorProvider";
 
 interface Props {
@@ -81,7 +81,7 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     const reRollIndexes = getReRollIndexes(ranking);
 
-    playAudio("playerThinking").onended = () => {
+    playSound("playerThinking").onended = () => {
       if (reRollIndexes.length) {
         handle.startThrowDice();
       } else {
@@ -91,7 +91,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   }, [desk]);
 
   const handleRollDice = () => {
-    playAudio("handMixDice").onended = () => {
+    playSound("handMixDice").onended = () => {
       handleSetRoll();
     };
   };
@@ -103,14 +103,14 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     const newCubes = getDiceForReroll(cubes || ranking.cubes) || [];
 
-    playAudio("handMixDice").onended = () => {
+    playSound("handMixDice").onended = () => {
       handleSetRoll(newCubes);
     };
   };
 
   const handleSelectDie = (index: number | number[]) => {
     if (ranking?.cubes) {
-      playAudio("selectDieForReroll");
+      playSound("selectDieForReroll");
       const selectedDice = getCubesReroll(index, ranking?.cubes);
       handle.selectDice(selectedDice);
 
@@ -129,7 +129,7 @@ export const Cubes: FC<Props> = ({ player }) => {
       stage: desk.gameplay.current.stage,
     });
 
-    playAudio("handThrowDice").onended = () => {
+    playSound("handThrowDice").onended = () => {
       handle.finishThrowDice();
     };
   };

@@ -5,20 +5,30 @@ import {
   isPass,
   getCurrentRanking,
 } from "@utils/helpers/gameplay/cubes.helper";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
+import { playSound, useMedia } from "@utils/contexts/MediaProvider";
 
 export const Controls = () => {
   const portal = usePortal();
   const Cursor = useCursor();
   const { handle, desk } = useDesk();
+  const { playMusic, playVideo } = useMedia();
   const { player, toggleGameOpen } = useGame();
 
   const handleGameStart = () => {
     handle.startGame();
-    playAudio("nextRoundStart");
+
+    playMusic({ name: "Battle", isSwitchInPage: true, switchDuration: 1000 });
+
+    playVideo({
+      name: "Fight",
+      isSwitchInPage: true,
+      videoFadeDuraion: 1000,
+    });
+
+    playSound("nextRoundStart");
   };
 
   const handleRollDice = () => {

@@ -15,7 +15,7 @@ import {
 } from "@utils/common/constants";
 import { NAMES } from "@utils/constants";
 import { deepClone } from "@utils/common/helpers";
-import { playAudio } from "@utils/helpers/audio.helper";
+import { playSound } from "@utils/contexts/MediaProvider";
 
 export const afterStartGame = (prev: DeskType): DeskType => ({
   ...prev,
@@ -90,7 +90,7 @@ export const afterFinishThrowDice = (prev: DeskType): DeskType => {
   const isRoundOnGoing = !isLastStage && !isLastPlayerDidntThrowYet;
 
   if (isRoundOnGoing) {
-    playAudio("playerThinking");
+    playSound("playerThinking");
   }
 
   return {

@@ -8,6 +8,7 @@ import { Loading } from "../Shared/Loading/Loading";
 import { Create } from "@components/Desks/Create/Create";
 import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
+import { DEFAULT_FADE_TIME, useMedia } from "@utils/contexts/MediaProvider";
 import { useNotification } from "@components/Shared/Notification/Notification";
 
 export const Desks = () => {
@@ -15,6 +16,7 @@ export const Desks = () => {
   const router = useRouter();
   const portal = usePortal();
   const { notification } = useNotification();
+  const { playMusic, playVideo } = useMedia();
 
   const [isLoading, setIsLoading] = useState(false);
   const [desks, setDesks] = useState<DeskType[]>([]);
@@ -36,6 +38,9 @@ export const Desks = () => {
       setDesks(desks);
       setIsLoading(false);
     })();
+
+    playVideo({ name: "Intro", appFadeDuration: DEFAULT_FADE_TIME });
+    playMusic({ name: "Striga", switchDuration: DEFAULT_FADE_TIME });
   }, []);
 
   const [isModalOpen, setIsMOdalOpen] = useState(false);

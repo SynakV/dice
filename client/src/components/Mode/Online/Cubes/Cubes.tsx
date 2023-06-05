@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { DICE } from "@utils/constants";
 import React, { FC, useEffect } from "react";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { Cube } from "@components/Mode/Shared/Desk/Cube/Cube";
 import { CubesType, PLAYER_STATUS, PlayerType } from "@utils/common/types";
 import {
@@ -20,6 +19,7 @@ import {
 } from "@utils/helpers/gameplay/cubes.helper";
 import { useGame } from "@utils/contexts/GameContext";
 import { Hand } from "@components/Mode/Shared/Hand/Hand";
+import { playSound } from "@utils/contexts/MediaProvider";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { getAdmin } from "@utils/helpers/gameplay/gameplay.online.helper";
 
@@ -81,7 +81,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   }, [desk]);
 
   const handleRollDice = () => {
-    playAudio("handMixDice", true).onended = () => {
+    playSound("handMixDice", true).onended = () => {
       handleSetRoll();
     };
   };
@@ -93,7 +93,7 @@ export const Cubes: FC<Props> = ({ player }) => {
 
     const newCubes = getDiceForReroll(cubes || ranking.cubes) || [];
 
-    playAudio("handMixDice", true).onended = () => {
+    playSound("handMixDice", true).onended = () => {
       handleSetRoll(newCubes);
     };
   };
@@ -119,7 +119,7 @@ export const Cubes: FC<Props> = ({ player }) => {
       stage: desk.gameplay.current.stage,
     });
 
-    playAudio("handThrowDice", true).onended = () => {
+    playSound("handThrowDice", true).onended = () => {
       handle.finishThrowDice();
     };
   };
