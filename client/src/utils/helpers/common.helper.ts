@@ -15,7 +15,7 @@ export const cacheAssets = async () => {
       });
     });
 
-    const audios = await ASSETS.SOUNDS.map((src) => {
+    const audio = await ASSETS.SOUNDS.map((src) => {
       return new Promise((res, rej) => {
         const audio = new Audio(`/sounds/${src}.mp3`);
 
@@ -27,10 +27,10 @@ export const cacheAssets = async () => {
       });
     });
 
-    // const videos = await ASSETS.VIDEOS.map((src) => {
+    // const video = await ASSETS.VIDEOS.map((src) => {
     //   return new Promise((res, rej) => {
     //     const video = document.createElement("video");
-    //     video.src = `/videos/${src}.mp4`;
+    //     video.src = `/video/${src}.mp4`;
     //     video.preload = "auto";
 
     //     video.oncanplay = () => {
@@ -43,7 +43,7 @@ export const cacheAssets = async () => {
     //   });
     // });
 
-    await Promise.all([...images, ...audios]);
+    await Promise.all([...images, ...audio]);
 
     res(null);
   });

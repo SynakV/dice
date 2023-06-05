@@ -236,7 +236,7 @@ export const MediaProvider: FC<Props> = ({ children }) => {
         video.removeChild(video.firstChild!);
       }
 
-      videoSource.setAttribute("src", `/videos/${name}.webm`);
+      videoSource.setAttribute("src", `/video/${name}.webm`);
       videoSource.setAttribute("type", "video/webm");
       video.setAttribute("crossorigin", "anonymous");
       video.appendChild(videoSource);
