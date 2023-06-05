@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 import { useFadeIn } from "@utils/hooks/useFadeIn";
 import { CredentialsType, PlayerType } from "@utils/common/types";
@@ -7,22 +8,23 @@ import {
   getCredentials,
   setCredentials,
 } from "@utils/helpers/storage/storage.helper";
+import { playSound } from "@utils/contexts/MediaProvider";
 import { useCursor } from "@utils/contexts/CursorProvider";
-import { playSound, useMedia } from "@utils/contexts/MediaProvider";
+import { Media } from "@components/Shared/Layout/Menu/Media/Media";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState({
     menu: false,
+    media: false,
     credentials: false,
   });
   const Cursor = useCursor();
-  const { volume, setVolume } = useMedia();
   const { isShow, fadeInClass } = useFadeIn(isOpen.menu);
 
   const player: PlayerType = getCredentials();
 
-  const toggleOpen = (key: "menu" | "credentials") => {
+  const toggleOpen = (key: "menu" | "media" | "credentials") => {
     playSound("hover");
     setIsOpen((prev) => ({
       ...prev,
@@ -48,17 +50,22 @@ export const Menu = () => {
               {player?.name}
             </span>
           </Cursor>
-          {/* <div className="menu__volume">
-            <input
-              min={0}
-              max={1}
-              step={0.1}
-              type="range"
-              value={volume}
-              onChange={(e) => setVolume(e.target.valueAsNumber)}
+          <Cursor id="menu-media" hint="Audio">
+            <Image
+              priority
+              width={40}
+              height={40}
+              alt="media"
+              className="menu__media"
+              src="/images/grunge-music.png"
+              onClick={() => toggleOpen("media")}
             />
-          </div> */}
+          </Cursor>
           <Rules />
+          <Media
+            isOpen={isOpen.media}
+            toggleIsOpen={() => toggleOpen("media")}
+          />
           <Credentials
             credentials={player}
             isOpen={isOpen.credentials}

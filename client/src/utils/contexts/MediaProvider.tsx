@@ -54,9 +54,9 @@ interface Props {
 }
 
 let newRoute = "";
-let isInitLoading = true;
 let fadeInMusic: any = null;
 let fadeOutMusic: any = null;
+let volumeChangeFade: any = null;
 
 export const MediaProvider: FC<Props> = ({ children }) => {
   const router = useRouter();
@@ -104,7 +104,6 @@ export const MediaProvider: FC<Props> = ({ children }) => {
     }
 
     const loadMusic = () => {
-      // console.log(music.src, name);
       if (music.src.includes(name)) {
         return;
       }
@@ -129,9 +128,24 @@ export const MediaProvider: FC<Props> = ({ children }) => {
     setVolume(volume);
     setStorageItem(STORAGE_ITEMS.VOLUME, volume.toString());
 
-    if (music) {
-      music.volume = volume;
+    if (!music) {
+      return;
     }
+
+    // clearInterval(volumeChangeFade);
+
+    // const step = (music.volume - volume) / 3;
+    // const volumeStep = Math.abs(step);
+
+    // volumeChangeFade = setInterval(() => {
+    //   if () {
+
+    //   } else {
+
+    //   }
+    // }, 100);
+
+    music.volume = volume;
   };
 
   const handleSetAppFadeAnimation = (
