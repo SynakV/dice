@@ -149,6 +149,7 @@ export const Cubes: FC<Props> = ({ player }) => {
   return (
     <Hand
       player={player.name}
+      id={`player-${player.id}`}
       ranking={ranking?.value.name}
       className={`${isHighlightPlayer ? "hand--highlight" : ""}`}
     >

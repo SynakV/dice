@@ -30,7 +30,7 @@ export const Offline = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
-    playVideo({ appFadeDuration: DEFAULT_FADE_TIME });
+    playVideo({ name: "Intro", appFadeDuration: DEFAULT_FADE_TIME });
     playMusic({ name: "Striga", switchDuration: DEFAULT_FADE_TIME });
 
     setPlayer(getCredentials());

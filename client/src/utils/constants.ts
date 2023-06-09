@@ -78,7 +78,7 @@ export const SETTINGS = {
   MAX: {
     WINS: 5,
     STAGES: 5,
-    PLAYERS: 5,
+    PLAYERS: 8,
   },
 };
 
@@ -124,6 +124,7 @@ export const ASSETS = {
     "grunge-square.png",
     "grunge-cursor.png",
     "grunge-no-sign.png",
+    "grunge-triangle.png",
     "grunge-caretaker.png",
     "grunge-check-mark.png",
     "grunge-arrow-right.png",
