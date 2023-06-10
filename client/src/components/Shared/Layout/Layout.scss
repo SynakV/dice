@@ -14,14 +14,6 @@
         overflow: hidden;
         position: absolute;
 
-        video {
-            z-index: -3;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            position: relative;
-        }
-
         img {
             &[alt="striga"] {
                 z-index: -3;

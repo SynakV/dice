@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { playAudio } from "@utils/helpers/audio.helper";
 import {
   FC,
   Dispatch,
@@ -10,6 +9,7 @@ import {
   SetStateAction,
 } from "react";
 import { PlayerType } from "@utils/common/types";
+import { playSound } from "@utils/contexts/MediaProvider";
 
 export enum GAME_OPEN {
   HISTORY,
@@ -71,8 +71,8 @@ export const GameProvider: FC<Props> = ({ children }) => {
   const isOnline = route.includes("online");
 
   const toggleGameOpen = (key: GAME_OPEN) => {
-    if (!isInitSettings) {
-      playAudio("hover");
+    if (!isInitSettings || isOnline) {
+      playSound("hover");
     }
     setGameOpen((prev) => {
       return {

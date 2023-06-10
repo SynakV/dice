@@ -4,9 +4,39 @@
     gap: 80px 0;
     display: flex;
     padding: 70px;
-    overflow-y: auto;
+    overflow-y: hidden;
     flex-direction: column;
     max-height: calc(100vh - 300px);
+
+    &__triangle {
+        left: 50%;
+        translate: -50%;
+        position: absolute;
+        transition: var(--transition-30);
+        filter: drop-shadow(0 0 5px white) invert(0.5);
+
+        &--disabled {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        &:hover:not(&--disabled) {
+            filter: drop-shadow(0 0 5px white) invert(0.8);
+        }
+
+        &:active:not(&--disabled) {
+            scale: 0.9;
+        }
+
+        &[alt="grunge-triangle-top"] {
+            top: 40px;
+        }
+        
+        &[alt="grunge-triangle-bottom"] {
+            bottom: 40px;
+            rotate: 180deg;
+        }
+    }
 
     .hand {
         gap: 10px 0;

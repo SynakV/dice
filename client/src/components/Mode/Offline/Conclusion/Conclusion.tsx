@@ -2,7 +2,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDesk } from "@utils/contexts/DeskContext";
 import { Modal } from "@components/Shared/Modal/Modal";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import {
   getWinTotals,
@@ -17,6 +16,7 @@ import {
   getWinnerIcons,
   playWinnerSound,
 } from "@components/Mode/Shared/Conclusion/Conclusion";
+import { playSound } from "@utils/contexts/MediaProvider";
 import { useCursor } from "@utils/contexts/CursorProvider";
 
 export const Conclusion = () => {
@@ -28,6 +28,7 @@ export const Conclusion = () => {
   } = useDesk();
   const Cursor = useCursor();
   const { player, toggleGameOpen } = useGame();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLastRound, setIsLastRound] = useState(false);
 
@@ -59,7 +60,7 @@ export const Conclusion = () => {
 
   const handleNextRound = () => {
     setIsOpen(false);
-    playAudio("hover");
+    playSound("hover");
 
     setTimeout(() => {
       handle.closeConclusion(isLastRound);

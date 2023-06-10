@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useDesk } from "@utils/contexts/DeskContext";
 import React, { FC, useEffect, useState } from "react";
-import { playAudio } from "@utils/helpers/audio.helper";
 import { Desk } from "@components/Mode/Shared/Desk/Desk";
 import { EVENTS, MESSAGES } from "@utils/common/constants";
 import { Cubes } from "@components/Mode/Online/Cubes/Cubes";
@@ -12,6 +11,13 @@ import { Settings } from "@components/Shared/Settings/Settings";
 import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { History } from "@components/Mode/Shared/History/History";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
+import {
+  useMedia,
+  playSound,
+  MUSIC_NAME,
+  VIDEO_NAME,
+  DEFAULT_FADE_TIME,
+} from "@utils/contexts/MediaProvider";
 import { Controls } from "@components/Mode/Online/Controls/Controls";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
 import { Conclusion } from "@components/Mode/Online/Conclusion/Conclusion";
@@ -26,6 +32,7 @@ export const Online: FC = () => {
   const { replace } = useRouter();
   const { notification } = useNotification();
   const { desk, socket, setDesk } = useDesk();
+  const { playMusic, playVideo } = useMedia();
   const { player, setPlayer, toggleGameOpen, setIsControlsLoading } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +74,17 @@ export const Online: FC = () => {
     }
   }, [player]);
 
+  useEffect(() => {
+    playMusic({
+      name: MUSIC_NAME.PREFIGHT,
+      switchDuration: DEFAULT_FADE_TIME,
+    });
+    playVideo({
+      name: VIDEO_NAME.PREFIGHT,
+      appFadeDuration: DEFAULT_FADE_TIME,
+    });
+  }, []);
+
   const handleInitializePlayer = ({ name }: CredentialsType) => {
     setPlayer({ id: socket?.id } as PlayerType);
     socket?.emit(MESSAGES.JOIN_DESK, {
@@ -101,18 +119,31 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_START_GAME, (desk: DeskType) => {
       setDesk(desk);
       setIsControlsLoading(false);
-      playAudio("nextRoundStart");
+
+      playMusic({
+        name: MUSIC_NAME.FIGHT,
+        isSwitchInPage: true,
+        switchDuration: 1000,
+      });
+
+      playVideo({
+        name: VIDEO_NAME.FIGHT,
+        isSwitchInPage: true,
+        videoFadeDuraion: 1000,
+      });
+
+      playSound("nextRoundStart");
     });
 
     socket.on(EVENTS.ON_START_THROW_DICE, (desk: DeskType) => {
       setDesk(desk);
-      playAudio("handMixDice");
+      playSound("handMixDice");
       setIsControlsLoading(false);
     });
 
     socket.on(EVENTS.ON_THROW_DICE, (desk: DeskType) => {
       setDesk(desk);
-      playAudio("handThrowDice");
+      playSound("handThrowDice");
     });
 
     socket.on(EVENTS.ON_FINISH_THROW_DICE, (desk: DeskType) => {
@@ -122,14 +153,14 @@ export const Online: FC = () => {
       if (desk.gameplay.isShowConclusion) {
         toggleGameOpen(GAME_OPEN.CONCLUSION);
       } else {
-        playAudio("playerThinking");
+        playSound("playerThinking");
       }
     });
 
     socket.on(EVENTS.ON_SELECT_DICE, (desk: DeskType) => {
       setDesk(desk);
       setIsControlsLoading(false);
-      playAudio("selectDieForReroll");
+      playSound("selectDieForReroll");
     });
 
     socket.on(EVENTS.ON_CLOSE_CONCLUSION, (desk: DeskType) => {
@@ -139,6 +170,19 @@ export const Online: FC = () => {
 
     socket.on(EVENTS.ON_END_GAME, (desk: DeskType) => {
       setDesk(desk);
+
+      playMusic({
+        name: MUSIC_NAME.PREFIGHT,
+        isSwitchInPage: true,
+        switchDuration: 1000,
+      });
+
+      playVideo({
+        name: VIDEO_NAME.PREFIGHT,
+        isSwitchInPage: true,
+        videoFadeDuraion: 1000,
+      });
+
       toggleGameOpen(GAME_OPEN.CONCLUSION);
     });
 

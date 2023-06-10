@@ -1,4 +1,4 @@
-@import './Amulet/Amulet.scss', './Rules/Rules.scss';
+@import './Amulet/Amulet.scss', './Rules/Rules.scss', './Media/Media.scss';
 
 .menu {
     top: 0;
@@ -13,7 +13,7 @@
         overflow-y: auto;
         animation: fadeIn 0.3s;
         background: rgba(0, 0, 0, 0.95);
-        transition: var(--transition-30) opacity;
+        transition: opacity var(--transition-30);
 
         &.closing {
             opacity: 0;
@@ -38,43 +38,98 @@
             scale: 0.85;
         }
     }
+
+    &__media {
+        top: 20px;
+        left: 25px;
+        z-index: 10;
+        display: flex;
+        position: absolute;
+        filter: invert(0.5);
+        justify-content: center;
+        transition: var(--transition-30);
+    
+        &:active {
+            scale: 0.85;
+        }
+    }
 }
 
 @media (max-width: 800px) or (max-height: 800px) {
-    .menu__text {
-        top: 25px;
-        transform: scale(0.8);
+    .menu {
+        &__text {
+            top: 25px;
+            transform: scale(0.8);
+        }
+
+        &__media {
+            top: 16px;
+            left: 20px;
+            transform: scale(0.9);
+        }
     }
 }
 
 @media (max-width: 650px) or (max-height: 650px) {
-    .menu__text {
-        top: 18px;
-        right: 75px;
-        transform: scale(0.6);
+    .menu {
+        &__text {
+            top: 18px;
+            right: 75px;
+            transform: scale(0.6);
+        }
+
+        &__media {
+            top: 10px;
+            left: 12px;
+            transform: scale(0.7);
+        }
     }
 }
 
 @media (max-width: 500px) or (max-height: 500px) {
-    .menu__text {
-        top: 12px;
-        right: 50px;
-        transform: scale(0.5);
+    .menu {
+        &__text {
+            top: 12px;
+            right: 50px;
+            transform: scale(0.5);
+        }
+
+        &__media {
+            top: 5px;
+            left: 5px;
+            transform: scale(0.5);
+        }
     }
 }
 
 @media (max-width: 390px) or (max-height: 390px) {
-    .menu__text {
-        top: 8px;
-        right: 40px;
-        transform: scale(0.4);
+    .menu {
+        &__text {
+            top: 8px;
+            right: 40px;
+            transform: scale(0.4);
+        }
+
+        &__media {
+            top: 0px;
+            left: 0px;
+            transform: scale(0.4);
+        }
     }
 }
 
 @media (max-width: 320px) or (max-height: 320px) {
-    .menu__text {
-        top: 3px;
-        right: 25px;
-        transform: scale(0.3);
+    .menu {
+        &__text {
+            top: 3px;
+            right: 25px;
+            transform: scale(0.3);
+        }
+
+        &__media {
+            top: -5px;
+            left: -5px;
+            transform: scale(0.3);
+        }
     }
 }

@@ -1,12 +1,30 @@
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MODE } from "@utils/constants";
+import React, { useEffect } from "react";
 import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
+import {
+  useMedia,
+  MUSIC_NAME,
+  VIDEO_NAME,
+  DEFAULT_FADE_TIME,
+} from "@utils/contexts/MediaProvider";
 
 export const Mode = () => {
   const Cursor = useCursor();
+  const { playMusic, playVideo } = useMedia();
+
+  useEffect(() => {
+    playVideo({
+      name: VIDEO_NAME.PREPARATION,
+      appFadeDuration: DEFAULT_FADE_TIME,
+    });
+    playMusic({
+      name: MUSIC_NAME.PREPARATION,
+      switchDuration: DEFAULT_FADE_TIME,
+    });
+  }, []);
 
   return (
     <FadeIn className="mode">

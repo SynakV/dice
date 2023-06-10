@@ -23,7 +23,7 @@
         position: absolute;
         align-items: center;
         filter: invert(1) drop-shadow(0 0 5px var(--black-50));
-        transition: transform var(--transition-30), opacity var(--transition-30);
+        transition: transform var(--transition-30), opacity var(--transition-30), scale var(--transition-30);
 
         &--left {
             left: 0;
@@ -75,7 +75,7 @@
         }
 
         &:active:not(&--disabled) {
-            transform: scale(0.95);
+            scale: 0.95;
         }
     }
 }

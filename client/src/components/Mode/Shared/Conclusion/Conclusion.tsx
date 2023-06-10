@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { playAudio } from "@utils/helpers/audio.helper";
+import { playSound } from "@utils/contexts/MediaProvider";
 
 export const getWinnerIcons = (wins: number = 0, isCurrent: boolean) => {
   return wins > 0 ? (
@@ -18,8 +18,8 @@ export const playWinnerSound = (
   const isGameWinner = phase === "game";
 
   if (isYouAmongWinners) {
-    playAudio(isGameWinner ? "gameWin" : "roundWin");
+    playSound(isGameWinner ? "gameWin" : "roundWin");
   } else {
-    playAudio(isGameWinner ? "gameLoose" : "roundLoose");
+    playSound(isGameWinner ? "gameLoose" : "roundLoose");
   }
 };
