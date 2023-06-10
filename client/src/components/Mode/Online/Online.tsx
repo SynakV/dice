@@ -12,9 +12,11 @@ import { GAME_OPEN, useGame } from "@utils/contexts/GameContext";
 import { History } from "@components/Mode/Shared/History/History";
 import { Navigator } from "@components/Shared/Navigator/Navigator";
 import {
-  DEFAULT_FADE_TIME,
-  playSound,
   useMedia,
+  playSound,
+  MUSIC_NAME,
+  VIDEO_NAME,
+  DEFAULT_FADE_TIME,
 } from "@utils/contexts/MediaProvider";
 import { Controls } from "@components/Mode/Online/Controls/Controls";
 import { Credentials } from "@components/Shared/Credentials/Credentials";
@@ -73,8 +75,14 @@ export const Online: FC = () => {
   }, [player]);
 
   useEffect(() => {
-    playMusic({ name: "Striga", switchDuration: DEFAULT_FADE_TIME });
-    playVideo({ name: "Intro", appFadeDuration: DEFAULT_FADE_TIME });
+    playMusic({
+      name: MUSIC_NAME.PREFIGHT,
+      switchDuration: DEFAULT_FADE_TIME,
+    });
+    playVideo({
+      name: VIDEO_NAME.PREFIGHT,
+      appFadeDuration: DEFAULT_FADE_TIME,
+    });
   }, []);
 
   const handleInitializePlayer = ({ name }: CredentialsType) => {
@@ -112,10 +120,14 @@ export const Online: FC = () => {
       setDesk(desk);
       setIsControlsLoading(false);
 
-      playMusic({ name: "Battle", isSwitchInPage: true, switchDuration: 1000 });
+      playMusic({
+        name: MUSIC_NAME.FIGHT,
+        isSwitchInPage: true,
+        switchDuration: 1000,
+      });
 
       playVideo({
-        name: "Fight",
+        name: VIDEO_NAME.FIGHT,
         isSwitchInPage: true,
         videoFadeDuraion: 1000,
       });
@@ -159,10 +171,14 @@ export const Online: FC = () => {
     socket.on(EVENTS.ON_END_GAME, (desk: DeskType) => {
       setDesk(desk);
 
-      playMusic({ name: "Striga", isSwitchInPage: true, switchDuration: 1000 });
+      playMusic({
+        name: MUSIC_NAME.PREFIGHT,
+        isSwitchInPage: true,
+        switchDuration: 1000,
+      });
 
       playVideo({
-        name: "Intro",
+        name: VIDEO_NAME.PREFIGHT,
         isSwitchInPage: true,
         videoFadeDuraion: 1000,
       });

@@ -8,7 +8,12 @@ import {
 import { FadeIn } from "@components/Shared/FadeIn/FadeIn";
 import { useCursor } from "@utils/contexts/CursorProvider";
 import { Button } from "@components/Mode/Shared/Controls/Controls";
-import { playSound, useMedia } from "@utils/contexts/MediaProvider";
+import {
+  useMedia,
+  playSound,
+  MUSIC_NAME,
+  VIDEO_NAME,
+} from "@utils/contexts/MediaProvider";
 
 export const Controls = () => {
   const portal = usePortal();
@@ -20,10 +25,14 @@ export const Controls = () => {
   const handleGameStart = () => {
     handle.startGame();
 
-    playMusic({ name: "Battle", isSwitchInPage: true, switchDuration: 1000 });
+    playMusic({
+      name: MUSIC_NAME.FIGHT,
+      isSwitchInPage: true,
+      switchDuration: 1000,
+    });
 
     playVideo({
-      name: "Fight",
+      name: VIDEO_NAME.FIGHT,
       isSwitchInPage: true,
       videoFadeDuraion: 1000,
     });

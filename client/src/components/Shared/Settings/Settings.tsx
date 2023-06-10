@@ -46,6 +46,9 @@ export const Settings = () => {
 
   const handleConfirm = (isConfirmed: boolean) => {
     if (isConfirmed && settings && isValid(settings, notification)) {
+      if (desk.gameplay.isGameStarted && !isOnline) {
+        handle.endGame();
+      }
       handle.changeSettings(settings);
       toggleGameOpen(GAME_OPEN.SETTINGS);
     }

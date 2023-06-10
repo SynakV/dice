@@ -16,8 +16,8 @@ import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 const DEFAULT_VALUES = {
   volume: 1,
   playMusic: () => {},
-  setVolume: () => {},
   playVideo: () => {},
+  setVolume: () => {},
 };
 
 export const DEFAULT_FADE_TIME = 2000;
@@ -30,14 +30,14 @@ interface MediaContextType {
 }
 
 type VideoOptionsType = {
-  name?: string;
+  name?: VIDEO_NAME;
   isSwitchInPage?: boolean;
   appFadeDuration?: number;
   videoFadeDuraion?: number;
 };
 
 type MusicOptionsType = {
-  name: string;
+  name: MUSIC_NAME;
   switchDuration: number;
   isSwitchInPage?: boolean;
 };
@@ -45,6 +45,20 @@ type MusicOptionsType = {
 enum FADE {
   IN = "In",
   OUT = "Out",
+}
+
+export enum VIDEO_NAME {
+  FIGHT = "Fight",
+  PREFIGHT = "Prefight",
+  BOTHERING = "Bothering",
+  PREPARATION = "Preparation",
+}
+
+export enum MUSIC_NAME {
+  FIGHT = "Fight",
+  PREFIGHT = "Prefight",
+  BOTHERING = "Bothering",
+  PREPARATION = "Preparation",
 }
 
 export const MediaContext = createContext<MediaContextType>(DEFAULT_VALUES);
@@ -108,7 +122,7 @@ export const MediaProvider: FC<Props> = ({ children }) => {
         return;
       }
 
-      music.src = `/music/${name}.mp3`;
+      music.src = `/music/${name}.webm`;
       music.load();
       music.play();
     };

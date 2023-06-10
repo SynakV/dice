@@ -16,8 +16,8 @@ import {
   getWinnerIcons,
   playWinnerSound,
 } from "@components/Mode/Shared/Conclusion/Conclusion";
+import { playSound } from "@utils/contexts/MediaProvider";
 import { useCursor } from "@utils/contexts/CursorProvider";
-import { playSound, useMedia } from "@utils/contexts/MediaProvider";
 
 export const Conclusion = () => {
   const {
@@ -27,7 +27,6 @@ export const Conclusion = () => {
     },
   } = useDesk();
   const Cursor = useCursor();
-  const { playMusic, playVideo } = useMedia();
   const { player, toggleGameOpen } = useGame();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -62,16 +61,6 @@ export const Conclusion = () => {
   const handleNextRound = () => {
     setIsOpen(false);
     playSound("hover");
-
-    if (isLastRound) {
-      playMusic({ name: "Striga", isSwitchInPage: true, switchDuration: 1000 });
-
-      playVideo({
-        name: "Intro",
-        isSwitchInPage: true,
-        videoFadeDuraion: 1000,
-      });
-    }
 
     setTimeout(() => {
       handle.closeConclusion(isLastRound);

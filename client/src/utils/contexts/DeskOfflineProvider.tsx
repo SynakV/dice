@@ -20,9 +20,15 @@ import {
   getPlayer,
 } from "@utils/helpers/gameplay/gameplay.offline.helper";
 import { useGame } from "@utils/contexts/GameContext";
+import {
+  useMedia,
+  MUSIC_NAME,
+  VIDEO_NAME,
+} from "@utils/contexts/MediaProvider";
 
 export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   const { player, setPlayer } = useGame();
+  const { playMusic, playVideo } = useMedia();
   const [desk, setDesk] = useState<DeskType>(DEFAULT_DESK);
 
   const startGame = () => {
@@ -54,6 +60,18 @@ export const DeskOfflineProvider: FC<DeskCommonProps> = ({ children }) => {
   };
 
   const endGame = () => {
+    playMusic({
+      name: MUSIC_NAME.PREFIGHT,
+      isSwitchInPage: true,
+      switchDuration: 1000,
+    });
+
+    playVideo({
+      name: VIDEO_NAME.PREFIGHT,
+      isSwitchInPage: true,
+      videoFadeDuraion: 1000,
+    });
+
     setDesk(afterEndGame);
   };
 

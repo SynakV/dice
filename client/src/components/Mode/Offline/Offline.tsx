@@ -18,7 +18,12 @@ import { History } from "@components/Mode/Shared/History/History";
 import { CredentialsType, PlayerType } from "@utils/common/types";
 import { Controls } from "@components/Mode/Offline/Controls/Controls";
 import { Conclusion } from "@components/Mode/Offline/Conclusion/Conclusion";
-import { DEFAULT_FADE_TIME, useMedia } from "@utils/contexts/MediaProvider";
+import {
+  useMedia,
+  MUSIC_NAME,
+  VIDEO_NAME,
+  DEFAULT_FADE_TIME,
+} from "@utils/contexts/MediaProvider";
 
 export const Offline = () => {
   const { desk } = useDesk();
@@ -30,8 +35,14 @@ export const Offline = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
-    playVideo({ name: "Intro", appFadeDuration: DEFAULT_FADE_TIME });
-    playMusic({ name: "Striga", switchDuration: DEFAULT_FADE_TIME });
+    playVideo({
+      name: VIDEO_NAME.PREFIGHT,
+      appFadeDuration: DEFAULT_FADE_TIME,
+    });
+    playMusic({
+      name: MUSIC_NAME.PREFIGHT,
+      switchDuration: DEFAULT_FADE_TIME,
+    });
 
     setPlayer(getCredentials());
   }, []);
