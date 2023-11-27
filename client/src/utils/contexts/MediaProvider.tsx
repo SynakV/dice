@@ -14,7 +14,7 @@ import {
 import { STORAGE_ITEMS } from "@utils/helpers/storage/constants";
 
 const DEFAULT_VALUES = {
-  volume: 1,
+  volume: 0.1,
   playMusic: () => {},
   playVideo: () => {},
   setVolume: () => {},
@@ -343,7 +343,7 @@ export const playSound = (url: string, isMuted: boolean = false) => {
 };
 
 const getVolume = () => {
-  let volume = getStorageItem(STORAGE_ITEMS.VOLUME) || 1;
+  let volume = getStorageItem(STORAGE_ITEMS.VOLUME) || DEFAULT_VALUES.volume;
 
   if (typeof +volume !== "number" || +volume > 1 || +volume < 0) {
     volume = 1;
