@@ -1,6 +1,6 @@
 export const server =
   process.env.NODE_ENV === "production"
-    ? "https://dice-api-bice.vercel.app"
+    ? "https://dice-25qp.onrender.com"
     : "http://localhost:3001";
 
 export const getRequest = <T>(url: string): Promise<T> =>
